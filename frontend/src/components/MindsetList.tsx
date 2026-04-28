@@ -25,7 +25,7 @@ export function MindsetList({ mindsets, selectedIndex, onSelect }: MindsetListPr
             type="button"
           >
             <p className="font-medium">{mindset.name}</p>
-            <p className="text-xs text-muted">{mindset.anchors.length} anchors</p>
+            <p className="text-xs text-muted">{mindset.foci.length} foci</p>
           </button>
         </li>
       ))}

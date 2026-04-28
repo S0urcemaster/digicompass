@@ -16,7 +16,7 @@ export interface CompassImage {
   rating: Rating;
 }
 
-export interface Anchor {
+export interface Focus {
   saying: Saying;
   image: CompassImage;
   rating: Rating;
@@ -25,7 +25,7 @@ export interface Anchor {
 
 export interface Mindset {
   name: string;
-  anchors: Anchor[];
+  foci: Focus[];
   rating: Rating;
   notes: string;
 }

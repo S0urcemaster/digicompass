@@ -35,11 +35,11 @@ A user can choose from a sayings and image database and combine them to a mindse
 
 ### Mindset
 - name
-- anchors: Anchor[]
+- foci: Focus[]
 - rating: Rating
 - notes
 
-### Anchor
+### Focus
 - saying
 - image
 - rating: Rating
@@ -73,12 +73,12 @@ A user can choose from a sayings and image database and combine them to a mindse
 
 ### Edit Mindset
 - Change Mindset name
-- Display list of set Anchors
-- Add Anchor
-- Remove Anchor
+- Display list of set Foci
+- Add Focus
+- Remove Focus
 - Rate Mindset
 
-### Edit Anchor
+### Edit Focus
 - Select saying
 - Change saying categories
 - Change saying rating

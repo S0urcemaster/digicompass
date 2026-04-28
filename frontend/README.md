@@ -9,7 +9,7 @@
 ## Why this stack
 
 - Fast iteration and simple deploy pipeline with Vite
-- Typed domain modeling for Digi Compass entities (mindsets, anchors, sayings, images)
+- Typed domain modeling for Digi Compass entities (mindsets, foci, sayings, images)
 - Lightweight client state for editor workflows without boilerplate
 - Clear split between local UI state and remote data synchronization
 
