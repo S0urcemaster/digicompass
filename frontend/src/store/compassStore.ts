@@ -11,7 +11,14 @@ interface CompassState {
 
 const initialState: DigiCompass = {
   username: 'Guest',
-  mindsets: []
+  mindsets: [
+    {
+      name: '',
+      foci: [],
+      rating: 0,
+      notes: ''
+    }
+  ]
 };
 
 export const useCompassStore = create<CompassState>((set) => ({
