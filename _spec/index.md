@@ -85,3 +85,6 @@ A user can choose from a sayings and image database and combine them to a mindse
 - Select image
 - Change image categories
 - Change image rating
+
+## Frontend
+- Mobile First
