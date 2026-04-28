@@ -87,4 +87,8 @@ A user can choose from a sayings and image database and combine them to a mindse
 - Change image rating
 
 ## Frontend
+
+In the frontend you can switch Mindsets for certain situations 
+
 - Mobile First
+- 
