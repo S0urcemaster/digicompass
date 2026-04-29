@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { IMAGES } from '../data/images';
+import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
 
 const VIEW_LABELS = {
@@ -33,6 +36,9 @@ function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
       <img
         alt={focus.saying.text}
         className="absolute inset-0 h-full w-full object-cover"
+        decoding="async"
+        fetchPriority={isMain ? 'high' : 'low'}
+        loading={isMain ? 'eager' : 'lazy'}
         src={focus.image.url}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/65" />
@@ -68,6 +74,10 @@ export function App() {
   const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? 0;
   const remainingFoci =
     currentMindset?.foci.filter((_, index) => index !== visibleFocusIndex).slice(0, 4) ?? [];
+
+  useEffect(() => {
+    void preloadImages(IMAGES.map((image) => image.url));
+  }, []);
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
