@@ -46,17 +46,28 @@ A user can choose from a sayings and image database and combine them to a mindse
 - notes
 
 ### Saying
+- id
 - text
+- fontSize
+- top
 - categories: Category[]
 - rating: Rating
 
 ### Image
+- id
 - url
 - categories: Category[]
 - rating: Rating
 
 ### Category
+- id
 - text
+
+### Collection
+- sayings: Saying[]
+- images: Image[]
+- foci: Focus[]
+- mindsets: Mindset[]
 
 ### Rating
 - decimal 0-1

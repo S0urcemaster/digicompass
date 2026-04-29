@@ -3,16 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --color-surface: #f2efe6;
-  --color-panel: #fffdf8;
-  --color-accent: #1f6f78;
-  --color-ink: #202124;
-  --color-muted: #5f6368;
+  --color-surface: #e8ddcb;
+  --color-panel: #fffaf2;
+  --color-accent: #2d6a66;
+  --color-ink: #201a18;
+  --color-muted: #6c6258;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 10% 0%, #f9f6ee 0%, var(--color-surface) 50%, #ebe4d3 100%);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 250, 242, 0.96) 0%, rgba(255, 250, 242, 0) 36%),
+    radial-gradient(circle at right 20%, rgba(184, 80, 66, 0.14) 0%, rgba(184, 80, 66, 0) 32%),
+    linear-gradient(180deg, #d8ccb8 0%, var(--color-surface) 45%, #d5c6ae 100%);
   color: var(--color-ink);
-  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+#root {
+  min-height: 100vh;
 }
