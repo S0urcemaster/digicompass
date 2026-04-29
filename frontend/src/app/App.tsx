@@ -6,7 +6,51 @@ const VIEW_LABELS = {
   collection: 'Collection',
 } as const;
 
-const getPreviewUrl = (url: string) => url.replace('/images/', '/images/preview/');
+type FocusTileProps = {
+  focus: {
+    saying: {
+      text: string;
+      fontSize: number;
+    };
+    image: {
+      url: string;
+    };
+  };
+  variant?: 'main' | 'preview';
+};
+
+function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
+  const isMain = variant === 'main';
+  const imageUrl = focus.image.url.toLowerCase();
+  const textColorClass = imageUrl.includes('dunkel') ? 'text-white' : imageUrl.includes('hell') ? 'text-[#1b1714]' : 'text-white';
+
+  return (
+    <div
+      className={`relative overflow-hidden bg-[#201a18] text-white ${
+        isMain ? 'aspect-[733/1024] rounded-[24px]' : 'aspect-[733/1024] rounded-[20px]'
+      }`}
+    >
+      <img
+        alt={focus.saying.text}
+        className="absolute inset-0 h-full w-full object-cover"
+        src={focus.image.url}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/65" />
+      <div
+        className={`absolute left-1/2 top-[8%] z-10 w-[88%] -translate-x-1/2 text-center font-serif leading-[1.08] drop-shadow-[0_6px_12px_rgba(0,0,0,0.48)] ${textColorClass} ${
+          isMain ? '' : 'px-2'
+        }`}
+        style={{
+          fontSize: isMain
+            ? `clamp(3.3rem, ${focus.saying.fontSize / 9}vw, ${focus.saying.fontSize * 2}px)`
+            : `clamp(1.425rem, ${focus.saying.fontSize / 18.67}vw, ${Math.max(30, focus.saying.fontSize * 0.72)}px)`,
+        }}
+      >
+        {focus.saying.text}
+      </div>
+    </div>
+  );
+}
 
 export function App() {
   const {
@@ -107,61 +151,28 @@ export function App() {
                 </div>
               </div>
 
-              <article className="overflow-hidden rounded-[24px] bg-[#201a18] text-white shadow-[0_30px_80px_rgba(32,26,24,0.32)]">
-                <div className="relative min-h-[420px] w-full sm:min-h-[560px]">
-                  <img
-                    alt={currentFocus.saying.text}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    src={currentFocus.image.url}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/70" />
-                  <div
-                    className="absolute left-1/2 z-10 w-[88%] -translate-x-1/2 text-center font-serif leading-[1.08] text-white drop-shadow-[0_6px_12px_rgba(0,0,0,0.48)]"
-                    style={{
-                      fontSize: `clamp(1.65rem, ${currentFocus.saying.fontSize / 18}vw, ${currentFocus.saying.fontSize}px)`,
-                      top: `${currentFocus.saying.top}%`,
-                    }}
-                  >
-                    {currentFocus.saying.text}
-                  </div>
+              <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
+                <article className="overflow-hidden rounded-[24px] bg-[#201a18] text-white shadow-[0_30px_80px_rgba(32,26,24,0.32)]">
+                  <FocusTile focus={currentFocus} variant="main" />
+                </article>
 
-                  <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-5">
-                    <div className="rounded-[22px] border border-white/15 bg-black/30 p-3 backdrop-blur-md sm:p-4">
-                      <div className="mb-3 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.24em] text-white/70">
-                        <span>Other foci</span>
-                        <span>{remainingFoci.length} previews</span>
-                      </div>
+                <section className="grid gap-3 sm:grid-cols-2 sm:grid-rows-2 lg:auto-rows-[minmax(0,0.88fr)]">
+                  {remainingFoci.map((focus) => {
+                    const nextIndex = currentMindset.foci.indexOf(focus);
 
-                      <div className="space-y-2">
-                        {remainingFoci.map((focus) => {
-                          const nextIndex = currentMindset.foci.indexOf(focus);
-
-                          return (
-                            <button
-                              key={`${focus.saying.id}-${focus.image.id}`}
-                              className="flex w-full items-center gap-3 rounded-[18px] bg-white/10 p-2 text-left transition hover:bg-white/18"
-                              onClick={() => selectFocus(nextIndex)}
-                              type="button"
-                            >
-                              <img
-                                alt={focus.saying.text}
-                                className="h-16 w-16 rounded-[14px] object-cover sm:h-20 sm:w-20"
-                                src={getPreviewUrl(focus.image.url)}
-                              />
-                              <div className="min-w-0 flex-1">
-                                <p className="line-clamp-3 text-sm leading-5 text-white/95">{focus.saying.text}</p>
-                                <p className="mt-1 text-xs uppercase tracking-[0.18em] text-white/60">
-                                  Focus rating {focus.rating.toFixed(2)}
-                                </p>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </article>
+                    return (
+                      <button
+                        key={`${focus.saying.id}-${focus.image.id}`}
+                        className="overflow-hidden rounded-[20px] bg-[#201a18] text-left shadow-[0_18px_48px_rgba(32,26,24,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_56px_rgba(32,26,24,0.28)]"
+                        onClick={() => selectFocus(nextIndex)}
+                        type="button"
+                      >
+                        <FocusTile focus={focus} />
+                      </button>
+                    );
+                  })}
+                </section>
+              </section>
 
               <section className="grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[20px] bg-[#f4e8d5] p-4">

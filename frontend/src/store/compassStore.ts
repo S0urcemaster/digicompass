@@ -25,6 +25,8 @@ interface CompassState {
 }
 
 const initialState: DigiCompass = factoryState;
+const resetFactoryStoreOnReloadInDev = import.meta.env.DEV;
+
 const clampIndex = (index: number, length: number) => {
   if (length <= 0) {
     return 0;
@@ -153,6 +155,13 @@ export const useCompassStore = create<CompassState>()(
     }),
     {
       name: 'compass-store',
+      merge: (persistedState, currentState) =>
+        resetFactoryStoreOnReloadInDev
+          ? currentState
+          : {
+              ...currentState,
+              ...(persistedState as Partial<CompassState>),
+            },
     }
   )
 );

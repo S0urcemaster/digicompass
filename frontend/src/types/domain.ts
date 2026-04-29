@@ -9,7 +9,6 @@ export interface Saying {
   id: number
   text: string;
   fontSize: number;
-  top: number
   categories: Category[];
   rating: Rating;
 }

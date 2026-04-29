@@ -99,6 +99,8 @@ A user can choose from a sayings and image database and combine them to a mindse
 
 ## Frontend
 
+Mobile first
+
 ### Local Storage
 
 A localstorage CompassStore object is created for a new user or reused if exists
@@ -113,13 +115,11 @@ There are different views / of which only 1 is active at once
 
 ### Primary View
 
-Here you can see the first focus of the first (=current) mindset in compassstore . The image is displayed in screenwidth together with the saying directly on it in saying.fontSize at position saying.top . At the bottom of the image there is a list with the other 4 foci with a preview image left (from public/images/preview) together with the saying right to it
+Here you can see the first focus of the first (=current) mindset in compassstore . The image is displayed in half screenwidth together with the saying directly on it in big letters / with saying.fontSize near the top . The other 4 foci are located right of the main focus also with the text on it in a 2x2 square : matching the big image,s size
+
+The image has to be cut to a size of 733x1024
 
 Clicking on one of the other foci makes that one the current one / displays the big image together with the saying above it
 
 Above the first mindset image is a mindset selector . There you can switch your current situation
 
-In the frontend you can switch Mindsets for certain situations 
-
-- Mobile First
-- 
