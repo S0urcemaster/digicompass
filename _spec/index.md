@@ -49,7 +49,6 @@ A user can choose from a sayings and image database and combine them to a mindse
 - id
 - text
 - fontSize
-- top
 - categories: Category[]
 - rating: Rating
 
@@ -105,6 +104,7 @@ Mobile first
 
 A localstorage CompassStore object is created for a new user or reused if exists
 Autosave : After every action : the localStorage is updated
+In dev mode the factoryState is reloaded on each browser reload instead of reusing persisted localStorage data
 
 There are different views / of which only 1 is active at once
 
@@ -119,7 +119,14 @@ Here you can see the first focus of the first (=current) mindset in compassstore
 
 The image has to be cut to a size of 733x1024
 
+Sayings on images use bright text on images with "dunkel" in the filename and dark text on images with "hell" in the filename
+
+The saying on the main image is larger than the sayings on the 2x2 preview images
+
 Clicking on one of the other foci makes that one the current one / displays the big image together with the saying above it
 
 Above the first mindset image is a mindset selector . There you can switch your current situation
 
+Below the image area there are additional cards for focus rating / categories / notes
+
+The app shell also contains a username field and a top level view switcher for Primary / Focus Editor / Collection
