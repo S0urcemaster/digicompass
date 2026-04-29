@@ -8,6 +8,8 @@ export interface Category {
 export interface Saying {
   id: number
   text: string;
+  fontSize: number;
+  top: number
   categories: Category[];
   rating: Rating;
 }
@@ -26,9 +28,16 @@ export interface Focus {
   notes: string;
 }
 
+export interface Collection {
+  sayings: Saying[]
+  images: CompassImage[]
+  foci: Focus[]
+  mindsets: Mindset[]
+}
+
 export interface Mindset {
   name: string;
-  foci: Focus[];
+  foci: Focus[]; // limited to 5
   rating: Rating;
   notes: string;
 }
