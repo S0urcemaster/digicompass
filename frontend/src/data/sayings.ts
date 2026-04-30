@@ -187,4 +187,10 @@ export const SAYINGS: Saying[] = [
   { id: 182, text: 'Wer nichts weiß : muss alles glauben', fontSize: 56, categories: [CATEGORIES.glaube, CATEGORIES.wahrheit], rating: 0.5 },
   { id: 183, text: 'Die Jahre lehren viel : was die Tage niemals wissen', fontSize: 50, categories: [CATEGORIES.wissen, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 184, text: 'Ich weiß : dass ich nichts weiß', fontSize: 56, categories: [CATEGORIES.erkenntnis, CATEGORIES.leben], rating: 0.5 },
+
+  { id: 184, text: 'Wer nicht Gerechtigkeit jagt : jagt nur für sich selbst - denn für wen sonst ?', fontSize: 50, categories: [CATEGORIES.gerechtigkeit, CATEGORIES.egoismus], rating: 0.5 },
+  { id: 184, text: 'Der Charakter von anderen ist keine Entschuldigung !', fontSize: 50, categories: [CATEGORIES.identitaet, CATEGORIES.verantwortung], rating: 0.5 },
+  { id: 184, text: 'Manche brauchen die Zahlen - manche nutzen sie', fontSize: 50, categories: [CATEGORIES.abhaengigkeit, CATEGORIES.klugheit], rating: 0.5 },
+  { id: 184, text: 'Die Polizei ist gut für Rache, ansonsten kommt sie meistens zu spät', fontSize: 50, categories: [CATEGORIES.logik, CATEGORIES.erkenntnis, CATEGORIES.humor], rating: 0.5 },
+  { id: 184, text: 'Das Gegenteil von Autonomie ist Abhängigkeit', fontSize: 50, categories: [CATEGORIES.erkenntnis, CATEGORIES.leben], rating: 0.5 },
 ];
