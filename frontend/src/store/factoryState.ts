@@ -30,64 +30,52 @@ const createMindset = (
 
 const factoryMindsets: Mindset[] = [
   createMindset(
-    'Fokus',
+    'Angst',
     [
-      [34, 2, 0.84, 'Decision locked. Move forward instead of reopening the same question.'],
-      [38, 0, 0.79, 'Use this when priorities need a harder no.'],
-      [11, 1, 0.72, 'Keep the before-state visible before trying to improve anything.'],
-      [30, 2, 0.8, 'Persistence matters less than aiming at the right target.'],
-      [107, 1, 0.83, 'Let intuition speak, but keep reason in the room.'],
+      [0, 0, 0.89, 'Fear is present, but action still happens.'],
+      [1, 1, 0.86, 'Useful when failure is being imagined before anything has happened.'],
+      [5, 2, 0.83, 'Exposure reduces fear more reliably than avoidance.'],
+      [7, 1, 0.88, 'Courage is not the absence of fear but movement through it.'],
+      [9, 0, 0.82, 'Facing fear repeatedly makes it smaller.'],
     ],
-    0.8,
-    'Shortlist for clarity, commitment, and disciplined attention.'
+    0.86,
+    'Examples for fear, exposure, and courage under tension.'
   ),
   createMindset(
-    'Mut',
+    'Autonomie',
     [
-      [0, 1, 0.88, 'Courage here means acting while fear is still present.'],
-      [7, 2, 0.86, 'Treat fear as part of the process, not evidence to stop.'],
-      [9, 0, 0.8, 'Exposure first, confidence second.'],
-      [122, 2, 0.81, 'Keep moving even when confidence is not available on demand.'],
-      [128, 1, 0.84, 'A living mindset needs some willingness to risk.'],
+      [189, 3, 0.87, 'Autonomy starts by seeing dependence clearly.'],
+      [112, 4, 0.84, 'Self-rule matters before trying to direct anyone else.'],
+      [19, 3, 0.82, 'Own excuses are usually the first constraint to remove.'],
+      [30, 4, 0.8, 'Independence needs a chosen direction, not just persistence.'],
+      [152, 3, 0.85, 'Agency becomes visible in the options you create.'],
     ],
     0.84,
-    'Examples for action under uncertainty.'
+    'Examples for agency, self-direction, and responsibility.'
   ),
   createMindset(
-    'Wissen',
+    'Bewusstsein',
     [
-      [164, 0, 0.82, 'Translate insight into a repeatable capability.'],
-      [176, 1, 0.77, 'Keep theory and practice close enough to challenge each other.'],
-      [179, 2, 0.74, 'Sharing is part of learning, not a follow-up step.'],
-      [161, 0, 0.8, 'Interrogate certainty before calling it knowledge.'],
-      [180, 1, 0.78, 'Doubt is productive when it creates room for better links.'],
-    ],
-    0.79,
-    'Sample set for learning, application, and knowledge transfer.'
-  ),
-  createMindset(
-    'Wahrheit',
-    [
-      [15, 0, 0.87, 'Use when your own thoughts are becoming too convincing.'],
-      [58, 1, 0.83, 'Search is healthier than premature certainty.'],
-      [64, 2, 0.82, 'Convictions can distort just as effectively as lies.'],
-      [115, 1, 0.8, 'Truth becomes practical only when defended against distortion.'],
-      [116, 0, 0.85, 'Power without reality-testing is just force.'],
+      [43, 5, 0.86, 'Awareness improves when you have something that reflects you back.'],
+      [81, 6, 0.81, 'Do not lose sight of yourself while managing everything else.'],
+      [147, 7, 0.84, 'Reflection is uncomfortable precisely when it matters.'],
+      [148, 5, 0.83, 'The act of honest self-observation is already change.'],
+      [163, 6, 0.8, 'Perception and understanding shape each other.'],
     ],
     0.83,
-    'Counterweight against self-deception and borrowed certainty.'
+    'Examples for reflection, self-observation, and awareness.'
   ),
   createMindset(
-    'Schicksal',
+    'Denken',
     [
-      [139, 2, 0.86, 'Accept the shape of events without becoming passive.'],
-      [142, 0, 0.8, 'You do not control the cards, only the play.'],
-      [143, 1, 0.73, 'Meaning matters more than randomness in this frame.'],
-      [44, 2, 0.78, 'Defiance can still be a response to fate.'],
-      [157, 1, 0.81, 'Future potential starts inside present imperfection.'],
+      [13, 8, 0.86, 'Too much attention to outside judgment distorts your thinking.'],
+      [97, 9, 0.79, 'Thought is useful when it serves judgment rather than vanity.'],
+      [98, 10, 0.84, 'Thinking without action is incomplete.'],
+      [100, 9, 0.8, 'Good judgment includes knowing when to confront a problem.'],
+      [156, 8, 0.78, 'Clear thinking often returns when the noise drops.'],
     ],
-    0.8,
-    'For situations where acceptance and agency need to coexist.'
+    0.81,
+    'Examples for judgment, thought, and disciplined reasoning.'
   ),
 ];
 
