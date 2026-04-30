@@ -1,4 +1,5 @@
 export type Rating = number;
+export type ImageColor = string;
 
 export interface Category {
   id: number
@@ -16,6 +17,7 @@ export interface Saying {
 export interface CompassImage {
   id: number
   url: string;
+  color: ImageColor;
   categories: Category[];
   rating: Rating;
 }

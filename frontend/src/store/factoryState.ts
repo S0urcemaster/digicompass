@@ -2,14 +2,24 @@ import { IMAGES } from "../data/images";
 import { SAYINGS } from "../data/sayings";
 import { Focus, Mindset, DigiCompass } from "../types/domain";
 
+const getImageById = (imageId: number) => {
+  const image = IMAGES.find((entry) => entry.id === imageId);
+
+  if (!image) {
+    throw new Error(`Factory state references missing image id ${imageId}.`);
+  }
+
+  return image;
+};
+
 const createFocus = (
   sayingIndex: number,
-  imageIndex: number,
+  imageId: number,
   rating: number,
   notes: string
 ): Focus => ({
   saying: SAYINGS[sayingIndex],
-  image: IMAGES[imageIndex],
+  image: getImageById(imageId),
   rating,
   notes,
 });
@@ -46,9 +56,9 @@ const factoryMindsets: Mindset[] = [
     [
       [189, 3, 0.87, 'Autonomy starts by seeing dependence clearly.'],
       [112, 4, 0.84, 'Self-rule matters before trying to direct anyone else.'],
-      [19, 3, 0.82, 'Own excuses are usually the first constraint to remove.'],
-      [30, 4, 0.8, 'Independence needs a chosen direction, not just persistence.'],
-      [152, 3, 0.85, 'Agency becomes visible in the options you create.'],
+      [19, 11, 0.82, 'Own excuses are usually the first constraint to remove.'],
+      [30, 11, 0.8, 'Independence needs a chosen direction, not just persistence.'],
+      [152, 4, 0.85, 'Agency becomes visible in the options you create.'],
     ],
     0.84,
     'Examples for agency, self-direction, and responsibility.'
