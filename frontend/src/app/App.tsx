@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
+import type { ImageColor } from '../types/domain';
 
 const VIEW_LABELS = {
   primary: 'Primary',
@@ -16,11 +17,23 @@ type FocusTileProps = {
       fontSize: number;
     };
     image: {
-      color: string;
+      color: ImageColor;
       url: string;
     };
   };
   variant?: 'main' | 'preview';
+};
+
+const getImageTextColor = (imageColor: ImageColor) => {
+  if (imageColor.startsWith('hell')) {
+    return "#0e0601";
+  }
+
+  if (imageColor.startsWith('dunkel')) {
+    return "#f1eade";
+  }
+
+  return "#0e0601";
 };
 
 function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
@@ -48,7 +61,7 @@ function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
           isMain ? '' : 'px-2'
         }`}
         style={{
-          color: focus.image.color,
+          color: getImageTextColor(focus.image.color),
           fontSize: isMain
             ? `clamp(3.3rem, ${focus.saying.fontSize / 9}vw, ${focus.saying.fontSize * 2}px)`
             : `clamp(1.425rem, ${focus.saying.fontSize / 18.67}vw, ${Math.max(30, focus.saying.fontSize * 0.72)}px)`,

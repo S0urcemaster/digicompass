@@ -66,7 +66,7 @@ Users browse a base library of sayings and images, select items into their own c
 - categories: Category[]
 - rating: Rating
 
-`color` defines the text color used when a saying is rendered on top of the image.
+`color` stores the image tone from the filename such as `hell`, `dunkel`, `hell dunkel`, or `dunkel hell`.
 
 ### Category
 
@@ -187,7 +187,7 @@ This is the main implemented view.
 
 Current implementation note:
 
-- Text color is driven by the image's `color` field, not by filename parsing.
+- `image.color` matches the filename tone, and the saying text color in the views is rendered as the opposite tone.
 
 ## Focus Editor View
 
@@ -200,11 +200,18 @@ Planned purpose:
 
 ## Collection View
 
-This view exists in store state and in the top-level navigation, but it is not designed yet in the UI.
-
-Planned purpose:
-
 - manage what belongs to the user's personal collection
 - provide separate sections or tabs for mindsets, foci, images, and sayings
 - support selecting items from the base library into the collection
 - make the collection the only source for creating new foci and new mindsets
+
+### Sayings
+
+
+### Images
+
+Here the user can browse all available images mapped in data/images.ts
+Layout similar to the primary view : A big image for the currently selected image / but lets try 3 columns for the long lazy loading image list
+Above the images field is a text input to narrow the image list to the category typed in
+On the big image in the top right corner is a big round checkbox button to add/remove it to/from the user collection
+On the bottom of the big image are 5 clickable stars . When an image is in the user collection : the image rating can be set

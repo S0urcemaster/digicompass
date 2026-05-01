@@ -7,9 +7,12 @@ After reading it, complete the open tasks in that order
 
 ## Planned Tasks (do not execute yet)
 
+1. Implement the ## Collection view section of the spec
+
 
 ## Completed Tasks
 
+- Update the images.ts data with the updated files in public/images . use opposite text color to file name
 - Write to the spec that a user always works on his collection / never on the whole data - so Foci are created from images/sayings the user must previously choose into his collection . Mindsets also only use Foci from the collection
 - Redesing the frontend towards the new "## Frontend" -section in _spec/index.md
 - Update compassStore with the _spec and domain.ts changes . Leave the factoryMindsets alone for now
