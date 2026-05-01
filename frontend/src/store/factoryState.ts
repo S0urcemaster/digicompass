@@ -1,6 +1,6 @@
 import { IMAGES } from "../data/images";
 import { SAYINGS } from "../data/sayings";
-import { Focus, Mindset, DigiCompass } from "../types/domain";
+import type { DigiCompass, Focus, Mindset } from "../types/domain";
 
 const getImageById = (imageId: number) => {
   const image = IMAGES.find((entry) => entry.id === imageId);
@@ -12,13 +12,23 @@ const getImageById = (imageId: number) => {
   return image;
 };
 
+const getSayingByIndex = (sayingIndex: number) => {
+  const saying = SAYINGS[sayingIndex];
+
+  if (!saying) {
+    throw new Error(`Factory state references missing saying index ${sayingIndex}.`);
+  }
+
+  return saying;
+};
+
 const createFocus = (
   sayingIndex: number,
   imageId: number,
   rating: number,
   notes: string
 ): Focus => ({
-  saying: SAYINGS[sayingIndex],
+  saying: getSayingByIndex(sayingIndex),
   image: getImageById(imageId),
   rating,
   notes,
@@ -26,78 +36,87 @@ const createFocus = (
 
 const createMindset = (
   name: string,
-  focusSpecs: Array<[number, number, number, string]>,
+  focusIndexes: number[],
+  collectionFoci: Focus[],
   rating: number,
   notes: string
 ): Mindset => ({
   name,
-  foci: focusSpecs.map(([sayingIndex, imageIndex, focusRating, focusNotes]) =>
-    createFocus(sayingIndex, imageIndex, focusRating, focusNotes)
-  ),
+  foci: focusIndexes.map((focusIndex) => {
+    const focus = collectionFoci[focusIndex];
+
+    if (!focus) {
+      throw new Error(`Factory state references missing collection focus index ${focusIndex}.`);
+    }
+
+    return focus;
+  }),
   rating,
   notes,
 });
 
+const collectionSayingIndexes = [
+  0, 3, 11, 15, 18, 23, 30, 38, 45, 52,
+  57, 64, 71, 80, 92, 103, 117, 131, 152, 180,
+];
+
+const collectionImageIds = [
+  0, 1, 3, 5, 8, 12, 13, 16, 20, 24,
+  30, 32, 35, 41, 44, 48, 53, 57, 63, 71,
+];
+
+const collectionFocusSpecs: Array<[number, number, number, string]> = [
+  [0, 57, 0.81, "A sharp saying on a bright freedom image keeps the tension useful."],
+  [15, 13, 0.78, "Doubt and dark atmosphere work well together here."],
+  [23, 3, 0.84, "Small causes and large effects fit this open scene."],
+  [38, 41, 0.76, "The short line gives the image room to breathe."],
+  [52, 30, 0.82, "This pairing feels strange on purpose and works as a prompt."],
+  [71, 8, 0.73, "Time and shadow create a steady, reflective focus."],
+  [92, 63, 0.88, "Action-first language fits the lighter upward image."],
+  [103, 24, 0.79, "Learning through pain fits a darker, more compressed frame."],
+  [131, 5, 0.85, "Reason and courage land well on a clean autonomy image."],
+  [180, 48, 0.8, "Doubt-driven knowledge benefits from the heavier freedom tone."],
+];
+
+const collectionSayings = collectionSayingIndexes.map(getSayingByIndex);
+const collectionImages = collectionImageIds.map(getImageById);
+const collectionFoci = collectionFocusSpecs.map(([sayingIndex, imageId, rating, notes]) =>
+  createFocus(sayingIndex, imageId, rating, notes)
+);
+
 const factoryMindsets: Mindset[] = [
   createMindset(
-    'Angst',
-    [
-      [0, 0, 0.89, 'Fear is present, but action still happens.'],
-      [1, 1, 0.86, 'Useful when failure is being imagined before anything has happened.'],
-      [5, 2, 0.83, 'Exposure reduces fear more reliably than avoidance.'],
-      [7, 1, 0.88, 'Courage is not the absence of fear but movement through it.'],
-      [9, 0, 0.82, 'Facing fear repeatedly makes it smaller.'],
-    ],
+    "Signal",
+    [0, 3, 6, 8, 9],
+    collectionFoci,
+    0.82,
+    "A mixed set for movement, choice, and forward pressure."
+  ),
+  createMindset(
+    "Widerstand",
+    [1, 4, 5, 7, 9],
+    collectionFoci,
+    0.79,
+    "Built from darker pairings and more friction-heavy sayings."
+  ),
+  createMindset(
+    "Klarheit",
+    [2, 3, 6, 8, 9],
+    collectionFoci,
     0.86,
-    'Examples for fear, exposure, and courage under tension.'
-  ),
-  createMindset(
-    'Autonomie',
-    [
-      [189, 3, 0.87, 'Autonomy starts by seeing dependence clearly.'],
-      [112, 4, 0.84, 'Self-rule matters before trying to direct anyone else.'],
-      [19, 11, 0.82, 'Own excuses are usually the first constraint to remove.'],
-      [30, 11, 0.8, 'Independence needs a chosen direction, not just persistence.'],
-      [152, 4, 0.85, 'Agency becomes visible in the options you create.'],
-    ],
-    0.84,
-    'Examples for agency, self-direction, and responsibility.'
-  ),
-  createMindset(
-    'Bewusstsein',
-    [
-      [43, 5, 0.86, 'Awareness improves when you have something that reflects you back.'],
-      [81, 6, 0.81, 'Do not lose sight of yourself while managing everything else.'],
-      [147, 7, 0.84, 'Reflection is uncomfortable precisely when it matters.'],
-      [148, 5, 0.83, 'The act of honest self-observation is already change.'],
-      [163, 6, 0.8, 'Perception and understanding shape each other.'],
-    ],
-    0.83,
-    'Examples for reflection, self-observation, and awareness.'
-  ),
-  createMindset(
-    'Denken',
-    [
-      [13, 8, 0.86, 'Too much attention to outside judgment distorts your thinking.'],
-      [97, 9, 0.79, 'Thought is useful when it serves judgment rather than vanity.'],
-      [98, 10, 0.84, 'Thinking without action is incomplete.'],
-      [100, 9, 0.8, 'Good judgment includes knowing when to confront a problem.'],
-      [156, 8, 0.78, 'Clear thinking often returns when the noise drops.'],
-    ],
-    0.81,
-    'Examples for judgment, thought, and disciplined reasoning.'
+    "A slightly cleaner set that still keeps some tension."
   ),
 ];
 
 const factoryState: DigiCompass = {
-  username: 'Guest',
+  username: "Guest",
   mindsets: factoryMindsets,
   collection: {
-    sayings: [],
-    images: [],
-    foci: [],
-    mindsets: []
-  }
+    sayings: collectionSayings,
+    images: collectionImages,
+    foci: collectionFoci,
+    mindsets: factoryMindsets,
+  },
 };
 
-export default factoryState
+export default factoryState;
