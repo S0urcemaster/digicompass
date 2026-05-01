@@ -41,16 +41,17 @@ const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/pre
 const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
 
 type StarRatingProps = {
+  className?: string;
   disabled?: boolean;
   rating: Rating;
   onChange?: (rating: Rating) => void;
 };
 
-function StarRating({ disabled = false, rating, onChange }: StarRatingProps) {
+function StarRating({ className, disabled = false, rating, onChange }: StarRatingProps) {
   const filledStars = Math.round(clampRating(rating) * 5);
 
   return (
-    <div className="flex items-center gap-1.5">
+    <div className={`flex items-center gap-1.5 ${className ?? ''}`}>
       {Array.from({ length: 5 }, (_, index) => {
         const starValue = clampRating((index + 1) / 5);
         const active = index < filledStars;
@@ -138,27 +139,27 @@ function CollectionImagePanel({
     >
       <button
         aria-label={`Open ${image.categories.map((category) => category.text).join(', ')} image`}
-        className="relative block w-full cursor-zoom-in"
+        className="absolute inset-0 z-0 block cursor-zoom-in"
         onClick={onOpenModal}
         type="button"
-      >
-        <img
-          alt={image.categories.map((category) => category.text).join(', ')}
-          className="aspect-[733/1024] w-full object-cover xl:h-full xl:aspect-auto"
-          decoding="async"
-          fetchPriority="high"
-          loading="eager"
-          src={image.url}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
-      </button>
+      />
+
+      <img
+        alt={image.categories.map((category) => category.text).join(', ')}
+        className="aspect-[733/1024] w-full object-cover xl:h-full xl:aspect-auto"
+        decoding="async"
+        fetchPriority="high"
+        loading="eager"
+        src={image.url}
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
       <button
         aria-label={isInCollection ? 'Remove image from collection' : 'Add image to collection'}
         aria-pressed={isInCollection}
-        className={`absolute left-4 top-4 flex h-14 w-14 items-center justify-center rounded-full border text-xl font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition sm:left-5 sm:top-5 ${
+        className={`absolute left-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border text-[1.875rem] font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${
           isInCollection
-            ? 'border-[#2d6a66] bg-[#2d6a66] text-white'
+            ? 'border-[#d48a1f] bg-[#d48a1f] text-white'
             : 'border-white/75 bg-white/88 text-ink backdrop-blur'
         }`}
         onClick={onToggleCollection}
@@ -167,19 +168,42 @@ function CollectionImagePanel({
         {isInCollection ? '✓' : '+'}
       </button>
 
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/82 via-black/48 to-transparent px-4 pb-4 pt-14 sm:px-5 sm:pb-5">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">Category</p>
-          <p className="mt-2 text-lg font-semibold text-white">
+      <button
+        aria-label="Open enlarged image"
+        className="absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border border-white/75 bg-white/88 text-ink shadow-[0_16px_30px_rgba(0,0,0,0.22)] backdrop-blur transition hover:bg-white"
+        onClick={onOpenModal}
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          className="h-9 w-9"
+          fill="none"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+        </svg>
+      </button>
+
+      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t from-black/82 via-black/48 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
+        <div className="pointer-events-none">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70">Category</p>
+          <p className="mt-3 text-[1.65rem] font-semibold leading-tight text-white">
             {image.categories.map((category) => category.text).join(' / ')}
           </p>
         </div>
 
-        <div className="text-right">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+        <div className="z-10 text-right">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
             {isInCollection ? `Rating ${image.rating.toFixed(2)}` : 'Add to rate'}
           </p>
-          <StarRating disabled={!isInCollection} rating={image.rating} onChange={onSetRating} />
+          <StarRating
+            className="origin-right scale-150 justify-end"
+            disabled={!isInCollection}
+            rating={image.rating}
+            onChange={onSetRating}
+          />
         </div>
       </div>
     </article>
@@ -465,7 +489,7 @@ export function App() {
                                 key={image.id}
                                 className={`group relative overflow-hidden rounded-[18px] text-left transition ${
                                   isSelected
-                                    ? 'ring-2 ring-accent shadow-[0_18px_40px_rgba(45,106,102,0.18)]'
+                                    ? 'ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]'
                                     : 'ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]'
                                 }`}
                                 onClick={() => setSelectedCollectionImageId(image.id)}
@@ -484,7 +508,7 @@ export function App() {
                                   </p>
                                 </div>
                                 {isCollected ? (
-                                  <div className="absolute right-2 top-2 rounded-full bg-[#2d6a66] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                                  <div className="absolute right-2 top-2 rounded-full bg-[#d48a1f] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
                                     Added
                                   </div>
                                 ) : null}
