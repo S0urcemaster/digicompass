@@ -1,23 +1,24 @@
 # Digi Compass Agent Specification
 
-Digi Compass is a web application that aims at generating collections of human mindsets out of short passages of text / sayings combined with AI pictures.
+Digi Compass is a web application for building personal mindset collections from short sayings paired with AI images.
 
-A user can choose from a sayings and image database and combine them to a mindset object which can be rated and annotated.
+Users browse a base library of sayings and images, select items into their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
 
 ## Project Structure
 
 - `_spec/`: This specification
 - `frontend/`: Web frontend (React + TypeScript + Vite)
 - `frontend/src/types/domain.ts`: Base domain model types
-- `frontend/src/store/compassStore.ts`: Initial client state store (Zustand)
-- `frontend/src/app/` and `frontend/src/components/`: Base application shell and UI components
+- `frontend/src/store/compassStore.ts`: Client state store (Zustand + persist)
+- `frontend/src/app/` and `frontend/src/components/`: Application shell and UI components
 
 ## Technology
 
 - Framework: React 18 + TypeScript
 - Build tool: Vite
-- State management: Zustand for local editing/session state
-- Data fetching/cache: TanStack Query
+- State management: Zustand for local editing and session state
+- Persistence: Zustand `persist` with browser localStorage
+- Data fetching/cache: TanStack Query is installed and provided at app root, but not yet used for remote data
 - Styling: Tailwind CSS with CSS variables
 - Linting: ESLint (TypeScript + React hooks)
 
@@ -25,113 +26,185 @@ A user can choose from a sayings and image database and combine them to a mindse
 
 - Categories
 - Sayings
-- AI Images
+- AI images
 
 ## Model
 
 ### DigiCompass
+
 - username
 - mindsets: Mindset[]
+- collection: Collection
 
 ### Mindset
+
 - name
-- foci: Focus[]
+- foci: Focus[] (currently intended to be limited to 5)
 - rating: Rating
 - notes
 
 ### Focus
-- saying
-- image
+
+- saying: Saying
+- image: CompassImage
 - rating: Rating
 - notes
 
 ### Saying
+
 - id
 - text
 - fontSize
 - categories: Category[]
 - rating: Rating
 
-### Image
+### CompassImage
+
 - id
 - url
+- color
 - categories: Category[]
 - rating: Rating
 
+`color` defines the text color used when a saying is rendered on top of the image.
+
 ### Category
+
 - id
 - text
 
 ### Collection
+
 - sayings: Saying[]
-- images: Image[]
+- images: CompassImage[]
 - foci: Focus[]
 - mindsets: Mindset[]
 
+The collection is the user's working set. Users do not work directly on the whole base library when creating higher-level objects.
+
+Creation rules:
+
+- A focus may only be created from a saying that is already in `collection.sayings`.
+- A focus may only be created from an image that is already in `collection.images`.
+- A mindset may only be created from foci that are already in `collection.foci`.
+- `collection.mindsets` contains only mindsets assembled from collected foci.
+
 ### Rating
-- decimal 0-1
+
+- decimal from 0 to 1
+
+## Store Shape
+
+The persisted CompassStore currently contains both domain data and UI state:
+
+- `data: DigiCompass`
+- `activeView: 'primary' | 'focus-editor' | 'collection'`
+- `selectedMindsetIndex: number`
+- `selectedFocusIndex: number`
+
+The store currently supports:
+
+- changing username
+- switching the active top-level view
+- selecting the current mindset
+- selecting the current focus
+- adding, removing, and updating mindsets
+- adding, removing, and updating foci within a mindset
 
 ## Functions Overview
 
-### DigiCompass
+### Implemented now
+
 - Display username
 - Change username
-- Display current Mindset
-- Display list of other Mindsets
-- Select current Mindset by selecting other mindset
-- Edit Mindset
+- Display current mindset
+- Display list of other mindsets
+- Select current mindset
+- Select current focus within the mindset
+- Switch between top-level views
 
-### Edit Mindset
-- Change Mindset name
-- Display list of set Foci
-- Add Focus
-- Remove Focus
-- Rate Mindset
+### Planned next
 
-### Edit Focus
-- Select saying
+#### Edit Mindset
+
+- Change mindset name
+- Display list of set foci
+- Add focus from the personal collection only
+- Remove focus
+- Rate mindset
+
+#### Edit Focus
+
+- Select saying from the personal collection
 - Change saying categories
 - Change saying rating
-- Select image
+- Select image from the personal collection
 - Change image categories
 - Change image rating
 
+#### Collection Management
+
+- Add and remove sayings from the personal collection
+- Add and remove images from the personal collection
+- Add and remove foci from the personal collection
+- Add and remove whole mindsets from the personal collection
+- Create foci only from collected sayings and collected images
+- Create mindsets only from collected foci
+
 ## Frontend
 
-Mobile first
+Mobile first.
 
 ### Local Storage
 
-A localstorage CompassStore object is created for a new user or reused if exists
-Autosave : After every action : the localStorage is updated
-In dev mode the factoryState is reloaded on each browser reload instead of reusing persisted localStorage data
+For a new user, a localStorage-backed CompassStore is created. For a returning user, the persisted store is reused.
 
-There are different views / of which only 1 is active at once
+Autosave happens through Zustand persistence after each state change.
 
-- Primary : Shows your currently active Mindset
-- Focus- Editor : Join an image with a saying
-- Collection : Add and remove sayings, images, foci and whole mindsets to your collection
-- 
+In development mode, the app reloads `factoryState` on browser refresh instead of reusing persisted localStorage data.
 
-### Primary View
+### Views
 
-Here you can see the first focus of the first (=current) mindset in compassstore . The image is displayed in half screenwidth together with the saying directly on it in big letters / with saying.fontSize near the top . The other 4 foci are located right of the main focus also with the text on it in a 2x2 square : matching the big image,s size
+Only one top-level view is active at a time:
 
-The image has to be cut to a size of 733x1024
+- `Primary`: shows the currently active mindset
+- `Focus Editor`: planned screen for joining an image with a saying
+- `Collection`: planned screen for managing the personal collection
 
-Sayings on images use bright text on images with "dunkel" in the filename and dark text on images with "hell" in the filename
+## Primary View
 
-The saying on the main image is larger than the sayings on the 2x2 preview images
+This is the main implemented view.
 
-Clicking on one of the other foci makes that one the current one / displays the big image together with the saying above it
+- It shows the currently selected focus of the currently selected mindset from CompassStore.
+- The main image uses a `733x1024` aspect ratio.
+- The saying is rendered directly on top of the image near the top.
+- The current focus is shown as the large image.
+- Up to 4 other foci from the same mindset are shown as preview tiles.
+- Clicking a preview tile makes it the current focus.
+- A mindset selector above the image area switches the current mindset.
+- Additional cards below the image area show focus rating, categories, and notes.
+- The app shell also contains a username field and a top-level view switcher for `Primary`, `Focus Editor`, and `Collection`.
 
-Above the first mindset image is a mindset selector . There you can switch your current situation
+Current implementation note:
 
-Below the image area there are additional cards for focus rating / categories / notes
+- Text color is driven by the image's `color` field, not by filename parsing.
 
-The app shell also contains a username field and a top level view switcher for Primary / Focus Editor / Collection
+## Focus Editor View
 
-### Collection View
+This view exists in store state and in the top-level navigation, but it is not designed yet in the UI.
 
-Here the user can manage : what to include into his collection (domain.ts) . There is a tab switch for Mindset, Foci, Images and sayings . The complete library 
+Planned purpose:
 
+- join an image with a saying into a focus
+- edit focus-level metadata
+
+## Collection View
+
+This view exists in store state and in the top-level navigation, but it is not designed yet in the UI.
+
+Planned purpose:
+
+- manage what belongs to the user's personal collection
+- provide separate sections or tabs for mindsets, foci, images, and sayings
+- support selecting items from the base library into the collection
+- make the collection the only source for creating new foci and new mindsets

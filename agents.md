@@ -3,20 +3,20 @@ After reading it, complete the open tasks in that order
 
 ## Open Tasks
 
-1. Create a collection in store/factoryState.ts : 20 sayings, 10 images, 
+1. Create a factory collection in store/factoryState.ts : 20 sayings, 20 images, 10 Foci 3 mindsets from that 10 Foci . make random combinations and dont stick to categories right now
 
 ## Planned Tasks (do not execute yet)
 
 
-
 ## Completed Tasks
 
-- Propose the frontend toolchain (framework, state management, styling, and test setup), then implement it.
-- Created Sayings and Categories data files
-- Set up `/frontend` with the chosen toolchain and base project structure.
-- Update the model description in _spec/index.md with my changes in domain.ts
-- Update compassStore with the _spec and domain.ts changes . Leave the factoryMindsets alone for now
+- Write to the spec that a user always works on his collection / never on the whole data - so Foci are created from images/sayings the user must previously choose into his collection . Mindsets also only use Foci from the collection
 - Redesing the frontend towards the new "## Frontend" -section in _spec/index.md
+- Update compassStore with the _spec and domain.ts changes . Leave the factoryMindsets alone for now
+- Update the model description in _spec/index.md with my changes in domain.ts
+- Set up `/frontend` with the chosen toolchain and base project structure.
+- Created Sayings and Categories data files
+- Propose the frontend toolchain (framework, state management, styling, and test setup), then implement it.
 
 ## Non- Agent
 
