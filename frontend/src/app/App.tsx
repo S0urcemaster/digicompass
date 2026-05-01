@@ -137,13 +137,6 @@ function CollectionImagePanel({
     <article
       className={`relative overflow-hidden rounded-[28px] bg-[#201a18] shadow-[0_30px_90px_rgba(32,26,24,0.28)] ${panelClassName ?? ''}`}
     >
-      <button
-        aria-label={`Open ${image.categories.map((category) => category.text).join(', ')} image`}
-        className="absolute inset-0 z-0 block cursor-zoom-in"
-        onClick={onOpenModal}
-        type="button"
-      />
-
       <img
         alt={image.categories.map((category) => category.text).join(', ')}
         className="aspect-[733/1024] w-full object-cover xl:h-full xl:aspect-auto"
