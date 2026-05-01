@@ -3,7 +3,7 @@ After reading it, complete the open tasks in that order
 
 ## Open Tasks
 
-1. Create a factory collection in store/factoryState.ts : 20 sayings, 20 images, 10 Foci 3 mindsets from that 10 Foci . make random combinations and dont stick to categories right now
+1. Create a factory collection in store/factoryState.ts : 20 sayings, 20 images, 10 Foci and 3 mindsets . make random combinations and dont stick to categories right now
 
 ## Planned Tasks (do not execute yet)
 
@@ -21,8 +21,12 @@ After reading it, complete the open tasks in that order
 - Created Sayings and Categories data files
 - Propose the frontend toolchain (framework, state management, styling, and test setup), then implement it.
 
-## Non- Agent
+## Agent Snippets (non-agent section)
 
-### new context snippet
+### New Context Snippet
 
 Start with agent.md
+
+### Continue Snippet
+
+Continue with the next task in agents.md
