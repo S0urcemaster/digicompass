@@ -130,3 +130,8 @@ Above the first mindset image is a mindset selector . There you can switch your 
 Below the image area there are additional cards for focus rating / categories / notes
 
 The app shell also contains a username field and a top level view switcher for Primary / Focus Editor / Collection
+
+### Collection View
+
+Here the user can manage : what to include into his collection (domain.ts) . There is a tab switch for Mindset, Foci, Images and sayings . The complete library 
+

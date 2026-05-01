@@ -91,7 +91,13 @@ const factoryMindsets: Mindset[] = [
 
 const factoryState: DigiCompass = {
   username: 'Guest',
-  mindsets: factoryMindsets
+  mindsets: factoryMindsets,
+  collection: {
+    sayings: [],
+    images: [],
+    foci: [],
+    mindsets: []
+  }
 };
 
 export default factoryState

@@ -5,10 +5,10 @@ export const CATEGORIES: Record<string, Category> = {
   autonomie: { id: 1, text: 'Autonomie' },
   bewusstsein: { id: 2, text: 'Bewusstsein' },
   denken: { id: 3, text: 'Denken' },
-  dimension: { id: 4, text: 'Dimension' },
-  dummheit: { id: 5, text: 'Dummheit' },
-  entscheidung: { id: 6, text: 'Entscheidung' },
-  erfahrung: { id: 7, text: 'Erfahrung' },
+  dimension: { id: 4, text: 'Dimension' }, //
+  dummheit: { id: 5, text: 'Dummheit' }, //
+  entscheidung: { id: 6, text: 'Entscheidung' }, //
+  erfahrung: { id: 7, text: 'Erfahrung' }, //
   erfolg: { id: 8, text: 'Erfolg' },
   erkenntnis: { id: 9, text: 'Erkenntnis' },
   fortschritt: { id: 10, text: 'Fortschritt' },

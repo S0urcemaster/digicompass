@@ -46,4 +46,5 @@ export interface Mindset {
 export interface DigiCompass {
   username: string;
   mindsets: Mindset[];
+  collection: Collection
 }
