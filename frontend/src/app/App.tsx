@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
@@ -39,6 +39,7 @@ const getImageTextColor = (imageColor: ImageColor) => {
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 
 const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
+const COLLECTION_IMAGE_PAGE_SIZE = 20;
 
 type StarRatingProps = {
   className?: string;
@@ -218,8 +219,10 @@ export function App() {
     selectMindset,
   } = useCompassStore();
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
+  const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
+  const collectionImageListRef = useRef<HTMLDivElement | null>(null);
   const currentMindset = data.mindsets[selectedMindsetIndex];
   const currentFocus = currentMindset?.foci[selectedFocusIndex] ?? currentMindset?.foci[0];
   const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? 0;
@@ -230,6 +233,12 @@ export function App() {
     normalizedImageFilter.length === 0
       ? true
       : image.categories.some((category) => category.text.toLowerCase().includes(normalizedImageFilter))
+  );
+  const collectionImagePageCount = Math.max(1, Math.ceil(filteredCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
+  const safeCollectionImagePage = Math.min(collectionImagePage, collectionImagePageCount - 1);
+  const pagedCollectionImages = filteredCollectionImages.slice(
+    safeCollectionImagePage * COLLECTION_IMAGE_PAGE_SIZE,
+    (safeCollectionImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
   );
   const selectedCollectionImage =
     filteredCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? filteredCollectionImages[0] ?? null;
@@ -251,6 +260,20 @@ export function App() {
 
     void preloadImages([selectedCollectionImage.url]);
   }, [selectedCollectionImage]);
+
+  useEffect(() => {
+    if (collectionImagePage !== safeCollectionImagePage) {
+      setCollectionImagePage(safeCollectionImagePage);
+    }
+  }, [collectionImagePage, safeCollectionImagePage]);
+
+  useEffect(() => {
+    setCollectionImagePage(0);
+  }, [normalizedImageFilter]);
+
+  useEffect(() => {
+    collectionImageListRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+  }, [safeCollectionImagePage]);
 
   useEffect(() => {
     if (selectedCollectionImageId === null && filteredCollectionImages[0]) {
@@ -461,19 +484,47 @@ export function App() {
                   />
 
                   <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 min-[900px]:h-full">
-                    <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="mb-3 space-y-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Factory images</p>
                         <p className="mt-1 text-sm text-muted">
                           {filteredCollectionImages.length} shown, {data.collection.images.length} in your collection
                         </p>
                       </div>
+
+                      {filteredCollectionImages.length > 0 ? (
+                        <div className="flex items-center gap-3">
+                          <button
+                            aria-label="Previous image page"
+                            className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                            disabled={safeCollectionImagePage === 0}
+                            onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
+                            type="button"
+                          >
+                            ← Prev
+                          </button>
+                          <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                            {safeCollectionImagePage + 1} / {collectionImagePageCount}
+                          </div>
+                          <button
+                            aria-label="Next image page"
+                            className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                            disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
+                            onClick={() =>
+                              setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))
+                            }
+                            type="button"
+                          >
+                            Next →
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
 
                     {filteredCollectionImages.length > 0 ? (
-                      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                      <div className="min-h-0 flex-1 overflow-y-auto pr-1" ref={collectionImageListRef}>
                         <div className="grid grid-cols-3 gap-3">
-                          {filteredCollectionImages.map((image) => {
+                          {pagedCollectionImages.map((image) => {
                             const isSelected = image.id === selectedCollectionImage.id;
                             const isCollected = data.collection.images.some((entry) => entry.id === image.id);
 
