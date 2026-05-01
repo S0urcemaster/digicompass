@@ -139,7 +139,7 @@ function CollectionImagePanel({
     >
       <img
         alt={image.categories.map((category) => category.text).join(', ')}
-        className="aspect-[733/1024] w-full object-cover xl:h-full xl:aspect-auto"
+        className="aspect-[733/1024] w-full object-cover min-[900px]:h-full min-[900px]:aspect-auto"
         decoding="async"
         fetchPriority="high"
         loading="eager"
@@ -446,11 +446,11 @@ export function App() {
               </div>
 
               {selectedCollectionImage && selectedImageDetails ? (
-                <div className="mt-5 grid gap-5 xl:h-[min(78vh,56rem)] xl:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
+                <div className="mt-5 grid gap-5 min-[900px]:h-[min(78vh,56rem)] min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
                   <CollectionImagePanel
                     image={selectedImageDetails}
                     isInCollection={Boolean(collectedImage)}
-                    panelClassName="xl:h-full"
+                    panelClassName="min-[900px]:h-full"
                     onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
                     onSetRating={(rating) => setCollectionImageRating(selectedCollectionImage.id, rating)}
                     onToggleCollection={() =>
@@ -460,7 +460,7 @@ export function App() {
                     }
                   />
 
-                  <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 xl:h-full">
+                  <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 min-[900px]:h-full">
                     <div className="mb-3 flex items-center justify-between gap-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Factory images</p>
