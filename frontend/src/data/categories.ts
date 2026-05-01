@@ -12,7 +12,7 @@ export const CATEGORIES: Record<string, Category> = {
   erfolg: { id: 8, text: 'Erfolg' },
   erkenntnis: { id: 9, text: 'Erkenntnis' }, //
   fortschritt: { id: 10, text: 'Fortschritt' },
-  freiheit: { id: 11, text: 'Freiheit' },
+  freiheit: { id: 11, text: 'Freiheit' }, //
   frieden: { id: 12, text: 'Frieden' },
   geduld: { id: 13, text: 'Geduld' },
   gelassenheit: { id: 14, text: 'Gelassenheit' },

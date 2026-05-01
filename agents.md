@@ -3,7 +3,7 @@ After reading it, complete the open tasks in that order
 
 ## Open Tasks
 
-1. Implement the "## Collection view" section of the spec
+1. Implement the "## Collection view" / Images section of the spec
 
 ## Planned Tasks (do not execute yet)
 
@@ -26,7 +26,7 @@ After reading it, complete the open tasks in that order
 
 ### New Context Snippet
 
-Start with agent.md
+Start with agents.md
 
 ### Continue Snippet
 

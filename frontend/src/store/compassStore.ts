@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { DigiCompass, Focus, Mindset, Rating } from '../types/domain';
+import type { CompassImage, DigiCompass, Focus, Mindset, Rating } from '../types/domain';
 import factoryState from './factoryState';
 
 export type CompassView = 'primary' | 'focus-editor' | 'collection';
@@ -22,6 +22,9 @@ interface CompassState {
   addFocus: (mindsetIndex: number, focus: Focus) => void;
   removeFocus: (mindsetIndex: number, focusIndex: number) => void;
   updateFocus: (mindsetIndex: number, focusIndex: number, patch: Partial<Focus>) => void;
+  addCollectionImage: (image: CompassImage) => void;
+  removeCollectionImage: (imageId: number) => void;
+  setCollectionImageRating: (imageId: number, rating: Rating) => void;
 }
 
 const initialState: DigiCompass = factoryState;
@@ -34,6 +37,11 @@ const clampIndex = (index: number, length: number) => {
 
   return Math.max(0, Math.min(index, length - 1));
 };
+
+const cloneImage = (image: CompassImage): CompassImage => ({
+  ...image,
+  categories: [...image.categories],
+});
 
 export const useCompassStore = create<CompassState>()(
   persist(
@@ -150,6 +158,53 @@ export const useCompassStore = create<CompassState>()(
                   }
                 : mindset
             ),
+          },
+        })),
+      addCollectionImage: (image) =>
+        set((state) => {
+          if (state.data.collection.images.some((entry) => entry.id === image.id)) {
+            return state;
+          }
+
+          return {
+            data: {
+              ...state.data,
+              collection: {
+                ...state.data.collection,
+                images: [...state.data.collection.images, cloneImage(image)],
+              },
+            },
+          };
+        }),
+      removeCollectionImage: (imageId) =>
+        set((state) => {
+          const foci = state.data.collection.foci.filter((focus) => focus.image.id !== imageId);
+          const validFocusKeys = new Set(foci.map((focus) => `${focus.saying.id}:${focus.image.id}`));
+
+          return {
+            data: {
+              ...state.data,
+              collection: {
+                ...state.data.collection,
+                images: state.data.collection.images.filter((image) => image.id !== imageId),
+                foci,
+                mindsets: state.data.collection.mindsets.filter((mindset) =>
+                  mindset.foci.every((focus) => validFocusKeys.has(`${focus.saying.id}:${focus.image.id}`))
+                ),
+              },
+            },
+          };
+        }),
+      setCollectionImageRating: (imageId, rating) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            collection: {
+              ...state.data.collection,
+              images: state.data.collection.images.map((image) =>
+                image.id === imageId ? { ...image, rating } : image
+              ),
+            },
           },
         })),
     }),

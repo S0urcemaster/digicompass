@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
-import type { ImageColor } from '../types/domain';
+import type { CompassImage, ImageColor, Rating } from '../types/domain';
 
 const VIEW_LABELS = {
   primary: 'Primary',
@@ -35,6 +35,48 @@ const getImageTextColor = (imageColor: ImageColor) => {
 
   return "#0e0601";
 };
+
+const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
+
+const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
+
+type StarRatingProps = {
+  disabled?: boolean;
+  rating: Rating;
+  onChange?: (rating: Rating) => void;
+};
+
+function StarRating({ disabled = false, rating, onChange }: StarRatingProps) {
+  const filledStars = Math.round(clampRating(rating) * 5);
+
+  return (
+    <div className="flex items-center gap-1.5">
+      {Array.from({ length: 5 }, (_, index) => {
+        const starValue = clampRating((index + 1) / 5);
+        const active = index < filledStars;
+
+        return (
+          <button
+            key={starValue}
+            aria-label={`Set rating to ${index + 1} stars`}
+            className={`text-2xl leading-none transition ${
+              disabled
+                ? 'cursor-not-allowed text-white/35'
+                : active
+                  ? 'text-[#ffd56a] hover:scale-105'
+                  : 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
+            }`}
+            disabled={disabled}
+            onClick={() => onChange?.(starValue)}
+            type="button"
+          >
+            ★
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
   const isMain = variant === 'main';
@@ -73,26 +115,140 @@ function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
   );
 }
 
+type CollectionImagePanelProps = {
+  image: CompassImage;
+  isInCollection: boolean;
+  panelClassName?: string;
+  onToggleCollection: () => void;
+  onOpenModal: () => void;
+  onSetRating: (rating: Rating) => void;
+};
+
+function CollectionImagePanel({
+  image,
+  isInCollection,
+  panelClassName,
+  onToggleCollection,
+  onOpenModal,
+  onSetRating,
+}: CollectionImagePanelProps) {
+  return (
+    <article
+      className={`relative overflow-hidden rounded-[28px] bg-[#201a18] shadow-[0_30px_90px_rgba(32,26,24,0.28)] ${panelClassName ?? ''}`}
+    >
+      <button
+        aria-label={`Open ${image.categories.map((category) => category.text).join(', ')} image`}
+        className="relative block w-full cursor-zoom-in"
+        onClick={onOpenModal}
+        type="button"
+      >
+        <img
+          alt={image.categories.map((category) => category.text).join(', ')}
+          className="aspect-[733/1024] w-full object-cover xl:h-full xl:aspect-auto"
+          decoding="async"
+          fetchPriority="high"
+          loading="eager"
+          src={image.url}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
+      </button>
+
+      <button
+        aria-label={isInCollection ? 'Remove image from collection' : 'Add image to collection'}
+        aria-pressed={isInCollection}
+        className={`absolute left-4 top-4 flex h-14 w-14 items-center justify-center rounded-full border text-xl font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition sm:left-5 sm:top-5 ${
+          isInCollection
+            ? 'border-[#2d6a66] bg-[#2d6a66] text-white'
+            : 'border-white/75 bg-white/88 text-ink backdrop-blur'
+        }`}
+        onClick={onToggleCollection}
+        type="button"
+      >
+        {isInCollection ? '✓' : '+'}
+      </button>
+
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/82 via-black/48 to-transparent px-4 pb-4 pt-14 sm:px-5 sm:pb-5">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">Category</p>
+          <p className="mt-2 text-lg font-semibold text-white">
+            {image.categories.map((category) => category.text).join(' / ')}
+          </p>
+        </div>
+
+        <div className="text-right">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+            {isInCollection ? `Rating ${image.rating.toFixed(2)}` : 'Add to rate'}
+          </p>
+          <StarRating disabled={!isInCollection} rating={image.rating} onChange={onSetRating} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export function App() {
   const {
     activeView,
+    addCollectionImage,
     data,
+    removeCollectionImage,
     selectedFocusIndex,
     selectedMindsetIndex,
+    setCollectionImageRating,
     setActiveView,
     setUsername,
     selectFocus,
     selectMindset,
   } = useCompassStore();
+  const [collectionImageFilter, setCollectionImageFilter] = useState('');
+  const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
+  const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const currentMindset = data.mindsets[selectedMindsetIndex];
   const currentFocus = currentMindset?.foci[selectedFocusIndex] ?? currentMindset?.foci[0];
   const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? 0;
   const remainingFoci =
     currentMindset?.foci.filter((_, index) => index !== visibleFocusIndex).slice(0, 4) ?? [];
+  const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
+  const filteredCollectionImages = IMAGES.filter((image) =>
+    normalizedImageFilter.length === 0
+      ? true
+      : image.categories.some((category) => category.text.toLowerCase().includes(normalizedImageFilter))
+  );
+  const selectedCollectionImage =
+    filteredCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? filteredCollectionImages[0] ?? null;
+  const collectedImage = selectedCollectionImage
+    ? data.collection.images.find((image) => image.id === selectedCollectionImage.id) ?? null
+    : null;
+  const selectedImageDetails = collectedImage ?? selectedCollectionImage;
+  const zoomedImage =
+    zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   useEffect(() => {
-    void preloadImages(IMAGES.map((image) => image.url));
+    void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
   }, []);
+
+  useEffect(() => {
+    if (!selectedCollectionImage) {
+      return;
+    }
+
+    void preloadImages([selectedCollectionImage.url]);
+  }, [selectedCollectionImage]);
+
+  useEffect(() => {
+    if (selectedCollectionImageId === null && filteredCollectionImages[0]) {
+      setSelectedCollectionImageId(filteredCollectionImages[0].id);
+      return;
+    }
+
+    if (
+      selectedCollectionImageId !== null &&
+      filteredCollectionImages.length > 0 &&
+      !filteredCollectionImages.some((image) => image.id === selectedCollectionImageId)
+    ) {
+      setSelectedCollectionImageId(filteredCollectionImages[0].id);
+    }
+  }, [filteredCollectionImages, selectedCollectionImageId]);
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
@@ -219,13 +375,162 @@ export function App() {
           ) : (
             <p className="mt-6 text-sm text-muted">No mindset data available.</p>
           )
+        ) : activeView === 'collection' ? (
+          <section className="mt-6 space-y-5">
+            <div className="flex flex-wrap gap-2">
+              <button
+                className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-[0_12px_28px_rgba(32,26,24,0.18)]"
+                type="button"
+              >
+                Images
+              </button>
+              <button
+                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                disabled
+                type="button"
+              >
+                Sayings
+              </button>
+              <button
+                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                disabled
+                type="button"
+              >
+                Foci
+              </button>
+              <button
+                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                disabled
+                type="button"
+              >
+                Mindsets
+              </button>
+            </div>
+
+            <section className="rounded-[26px] bg-[#f6efe2] p-4 sm:p-5">
+              <div className="flex flex-col gap-3 border-b border-amber-950/10 pb-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Collection</p>
+                  <h2 className="mt-2 text-2xl font-semibold text-ink">Images</h2>
+                </div>
+
+                <label className="block max-w-md" htmlFor="collection-image-filter">
+                  <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-muted">
+                    Filter by category
+                  </span>
+                  <input
+                    id="collection-image-filter"
+                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    placeholder="Type a category like Freiheit or Erkenntnis"
+                    value={collectionImageFilter}
+                    onChange={(event) => setCollectionImageFilter(event.target.value)}
+                  />
+                </label>
+              </div>
+
+              {selectedCollectionImage && selectedImageDetails ? (
+                <div className="mt-5 grid gap-5 xl:h-[min(78vh,56rem)] xl:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
+                  <CollectionImagePanel
+                    image={selectedImageDetails}
+                    isInCollection={Boolean(collectedImage)}
+                    panelClassName="xl:h-full"
+                    onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
+                    onSetRating={(rating) => setCollectionImageRating(selectedCollectionImage.id, rating)}
+                    onToggleCollection={() =>
+                      collectedImage
+                        ? removeCollectionImage(selectedCollectionImage.id)
+                        : addCollectionImage(selectedCollectionImage)
+                    }
+                  />
+
+                  <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 xl:h-full">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Factory images</p>
+                        <p className="mt-1 text-sm text-muted">
+                          {filteredCollectionImages.length} shown, {data.collection.images.length} in your collection
+                        </p>
+                      </div>
+                    </div>
+
+                    {filteredCollectionImages.length > 0 ? (
+                      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                        <div className="grid grid-cols-3 gap-3">
+                          {filteredCollectionImages.map((image) => {
+                            const isSelected = image.id === selectedCollectionImage.id;
+                            const isCollected = data.collection.images.some((entry) => entry.id === image.id);
+
+                            return (
+                              <button
+                                key={image.id}
+                                className={`group relative overflow-hidden rounded-[18px] text-left transition ${
+                                  isSelected
+                                    ? 'ring-2 ring-accent shadow-[0_18px_40px_rgba(45,106,102,0.18)]'
+                                    : 'ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]'
+                                }`}
+                                onClick={() => setSelectedCollectionImageId(image.id)}
+                                type="button"
+                              >
+                                <img
+                                  alt={image.categories.map((category) => category.text).join(', ')}
+                                  className="aspect-[733/1024] w-full object-cover"
+                                  decoding="async"
+                                  loading="lazy"
+                                  src={getPreviewImageUrl(image.url)}
+                                />
+                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/72 to-transparent px-2 pb-2 pt-8">
+                                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/92">
+                                    {image.categories[0]?.text ?? 'Unsorted'}
+                                  </p>
+                                </div>
+                                {isCollected ? (
+                                  <div className="absolute right-2 top-2 rounded-full bg-[#2d6a66] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                                    Added
+                                  </div>
+                                ) : null}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                        <p className="text-sm text-muted">No images match this category filter.</p>
+                      </div>
+                    )}
+                  </section>
+                </div>
+              ) : (
+                <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                  <p className="text-sm text-muted">No images are available for this filter.</p>
+                </div>
+              )}
+            </section>
+
+            {zoomedImage ? (
+              <button
+                aria-label="Close enlarged image"
+                className="fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/84 px-4 py-6"
+                onClick={() => setZoomedImageId(null)}
+                type="button"
+              >
+                <img
+                  alt={zoomedImage.categories.map((category) => category.text).join(', ')}
+                  className="max-h-full max-w-full rounded-[24px] object-contain shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
+                  decoding="async"
+                  loading="eager"
+                  src={zoomedImage.url}
+                />
+              </button>
+            ) : null}
+          </section>
         ) : (
           <section className="mt-6 rounded-[24px] border border-dashed border-amber-950/15 bg-[#fbf6ec] p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">{VIEW_LABELS[activeView]}</p>
             <h2 className="mt-2 text-2xl font-semibold text-ink">Prepared in store, not designed yet</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              The store already supports view switching and focus editing state. This screen is intentionally left as
-              the next implementation step while the primary mobile view is now aligned with the spec.
+              Focus Editor remains the next screen after collection images. Its state exists, but its UI is still
+              intentionally pending.
             </p>
           </section>
         )}

@@ -200,18 +200,28 @@ Planned purpose:
 
 ## Collection View
 
-- manage what belongs to the user's personal collection
-- provide separate sections or tabs for mindsets, foci, images, and sayings
-- support selecting items from the base library into the collection
-- make the collection the only source for creating new foci and new mindsets
+### Overview
 
-### Sayings
-
+- Manage what belongs to the user's personal collection / support selecting items from the base library into the collection
+- Provide separate sections or tabs for sayings, images, foci and mindsets
 
 ### Images
 
 Here the user can browse all available images mapped in data/images.ts
-Layout similar to the primary view : A big image for the currently selected image / but lets try 3 columns for the long lazy loading image list
+Layout is plit in half horizontally . Left is a big image of the selected item . right is a 3-column list of image previews of the factory images . use the images in public/images/preview here
 Above the images field is a text input to narrow the image list to the category typed in
-On the big image in the top right corner is a big round checkbox button to add/remove it to/from the user collection
+On the big image in the top left corner is a big round checkbox button to add/remove it to/from the user collection
 On the bottom of the big image are 5 clickable stars . When an image is in the user collection : the image rating can be set
+When clicking on the big image itself : its modal maximizing / closes on click / for the user to have a closer look
+
+### Sayings
+
+todo
+
+### Foci
+
+todo
+
+### Mindsets
+
+todo
