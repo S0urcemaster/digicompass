@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
@@ -39,7 +39,7 @@ const getImageTextColor = (imageColor: ImageColor) => {
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 
 const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
-const COLLECTION_IMAGE_PAGE_SIZE = 20;
+const COLLECTION_IMAGE_PAGE_SIZE = 12;
 
 type StarRatingProps = {
   className?: string;
@@ -140,7 +140,7 @@ function CollectionImagePanel({
     >
       <img
         alt={image.categories.map((category) => category.text).join(', ')}
-        className="aspect-[733/1024] w-full object-cover min-[900px]:h-full min-[900px]:aspect-auto"
+        className="w-full object-contain min-[900px]:h-full"
         decoding="async"
         fetchPriority="high"
         loading="eager"
@@ -222,7 +222,6 @@ export function App() {
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
-  const collectionImageListRef = useRef<HTMLDivElement | null>(null);
   const currentMindset = data.mindsets[selectedMindsetIndex];
   const currentFocus = currentMindset?.foci[selectedFocusIndex] ?? currentMindset?.foci[0];
   const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? 0;
@@ -270,10 +269,6 @@ export function App() {
   useEffect(() => {
     setCollectionImagePage(0);
   }, [normalizedImageFilter]);
-
-  useEffect(() => {
-    collectionImageListRef.current?.scrollTo({ top: 0, behavior: 'auto' });
-  }, [safeCollectionImagePage]);
 
   useEffect(() => {
     if (selectedCollectionImageId === null && filteredCollectionImages[0]) {
@@ -522,7 +517,7 @@ export function App() {
                     </div>
 
                     {filteredCollectionImages.length > 0 ? (
-                      <div className="min-h-0 flex-1 overflow-y-auto pr-1" ref={collectionImageListRef}>
+                      <div className="pr-1">
                         <div className="grid grid-cols-3 gap-3">
                           {pagedCollectionImages.map((image) => {
                             const isSelected = image.id === selectedCollectionImage.id;
