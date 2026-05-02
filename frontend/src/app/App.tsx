@@ -46,6 +46,7 @@ type StarRatingProps = {
   disabled?: boolean;
   rating: Rating;
   onChange?: (rating: Rating) => void;
+  starClassName?: string;
   tone?: 'light' | 'dark';
 };
 
@@ -114,7 +115,14 @@ const getCollectionInfoUiClasses = (imageColor: ImageColor): {
   };
 };
 
-function StarRating({ className, disabled = false, rating, onChange, tone = 'dark' }: StarRatingProps) {
+function StarRating({
+  className,
+  disabled = false,
+  rating,
+  onChange,
+  starClassName,
+  tone = 'dark',
+}: StarRatingProps) {
   const filledStars = Math.round(clampRating(rating) * 5);
 
   return (
@@ -127,7 +135,7 @@ function StarRating({ className, disabled = false, rating, onChange, tone = 'dar
           <button
             key={starValue}
             aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
-            className={`text-2xl leading-none transition ${
+            className={`${starClassName ?? 'text-2xl'} leading-none transition ${
               disabled
                 ? tone === 'light'
                   ? 'cursor-not-allowed text-[#1f1712]/28'
@@ -263,17 +271,17 @@ function CollectionImagePanel({
       </button>
 
       <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${infoUi.overlay}`}>
-        <div className="pointer-events-none">
-          <p className={`text-[1.65rem] font-semibold leading-tight ${infoUi.titleText}`}>
-            {image.categories.map((category) => category.text).join(' / ')}
-          </p>
-        </div>
+        <div className="flex-1" />
 
         <div className="z-10 text-right">
+          <p className={`mb-3 text-[1.65rem] font-semibold leading-tight ${infoUi.titleText}`}>
+            {image.categories.map((category) => category.text).join(' / ')}
+          </p>
           <StarRating
-            className="origin-right scale-150 justify-end"
+            className="w-full justify-between px-2"
             disabled={!isInCollection}
             rating={image.rating}
+            starClassName="text-[3.25rem]"
             tone={infoUi.tone}
             onChange={onSetRating}
           />
