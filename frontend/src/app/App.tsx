@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Tabs } from '../components/Tabs';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
 import { useCompassStore } from '../store/compassStore';
@@ -10,20 +11,17 @@ const VIEW_LABELS = {
   collection: 'Sammlung',
 } as const;
 
-const TAB_BUTTON_CLASS =
-  'w-full rounded-full px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100';
+const VIEW_TABS = Object.entries(VIEW_LABELS).map(([value, label]) => ({
+  label,
+  value: value as keyof typeof VIEW_LABELS,
+}));
 
-const getTabButtonClassName = (active: boolean, disabled = false) => {
-  if (disabled) {
-    return `${TAB_BUTTON_CLASS} bg-white/70 text-muted ring-amber-950/10`;
-  }
-
-  if (active) {
-    return `${TAB_BUTTON_CLASS} bg-ink text-white ring-ink shadow-[0_10px_24px_rgba(32,26,24,0.18)]`;
-  }
-
-  return `${TAB_BUTTON_CLASS} bg-white/80 text-muted ring-amber-950/10 hover:bg-white hover:text-ink`;
-};
+const COLLECTION_TABS = [
+  { label: 'Bilder', value: 'images' },
+  { disabled: true, label: 'Sprüche', value: 'sayings' },
+  { disabled: true, label: 'Foki', value: 'foci' },
+  { disabled: true, label: 'Mindsets', value: 'mindsets' },
+] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
 type FocusTileProps = {
   focus: {
@@ -67,8 +65,12 @@ type StarRatingProps = {
 };
 
 const getCollectionUiTone = (imageColor: ImageColor): 'light' | 'dark' => {
-  if (imageColor === 'hell') {
+  if (imageColor.startsWith('hell')) {
     return 'dark';
+  }
+
+  if (imageColor.startsWith('dunkel')) {
+    return 'light';
   }
 
   return 'light';
@@ -353,6 +355,10 @@ export function App() {
   const selectedImageDetails = collectedImage ?? selectedCollectionImage;
   const zoomedImage =
     zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
+  const mindsetTabs = data.mindsets.map((mindset, index) => ({
+    label: mindset.name,
+    value: String(index),
+  }));
 
   useEffect(() => {
     void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
@@ -414,20 +420,12 @@ export function App() {
             </label>
           </div>
 
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            {Object.entries(VIEW_LABELS).map(([view, label]) => {
-              return (
-                <button
-                  key={view}
-                  className={getTabButtonClassName(activeView === view)}
-                  onClick={() => setActiveView(view as keyof typeof VIEW_LABELS)}
-                  type="button"
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
+          <Tabs
+            activeValue={activeView}
+            className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+            items={VIEW_TABS}
+            onChange={setActiveView}
+          />
       </header>
 
       {activeView === 'primary' ? (
@@ -444,23 +442,13 @@ export function App() {
                   </div>
                 </div>
 
-                <div
+                <Tabs
+                  activeValue={String(selectedMindsetIndex)}
                   className="grid gap-2"
+                  items={mindsetTabs}
+                  onChange={(value) => selectMindset(Number(value))}
                   style={{ gridTemplateColumns: `repeat(${Math.max(data.mindsets.length, 1)}, minmax(0, 1fr))` }}
-                >
-                  {data.mindsets.map((mindset, index) => {
-                    return (
-                      <button
-                        key={`${mindset.name}-${index}`}
-                        className={getTabButtonClassName(selectedMindsetIndex === index)}
-                        onClick={() => selectMindset(index)}
-                        type="button"
-                      >
-                        {mindset.name}
-                      </button>
-                    );
-                  })}
-                </div>
+                />
               </div>
 
               <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
@@ -508,35 +496,11 @@ export function App() {
         )
       ) : activeView === 'collection' ? (
         <section className="mt-6 space-y-5">
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              <button
-                className={getTabButtonClassName(true)}
-                type="button"
-              >
-                Bilder
-              </button>
-              <button
-                className={getTabButtonClassName(false, true)}
-                disabled
-                type="button"
-              >
-                Sprüche
-              </button>
-              <button
-                className={getTabButtonClassName(false, true)}
-                disabled
-                type="button"
-              >
-                Foki
-              </button>
-              <button
-                className={getTabButtonClassName(false, true)}
-                disabled
-                type="button"
-              >
-                Mindsets
-              </button>
-            </div>
+            <Tabs
+              activeValue="images"
+              className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+              items={[...COLLECTION_TABS]}
+            />
 
             <section>
               {selectedCollectionImage && selectedImageDetails ? (
