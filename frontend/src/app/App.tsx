@@ -83,6 +83,37 @@ const getCollectionUiClasses = (imageColor: ImageColor) => {
   };
 };
 
+const getCollectionInfoUiClasses = (imageColor: ImageColor): {
+  overlay: string;
+  metaText: string;
+  titleText: string;
+  badge: string;
+  tileLabel: string;
+  tone: 'light' | 'dark';
+} => {
+  const tone: 'light' | 'dark' = getCollectionUiTone(imageColor) === 'dark' ? 'light' : 'dark';
+
+  if (tone === 'dark') {
+    return {
+      overlay: 'from-black/84 via-black/52 to-transparent',
+      metaText: 'text-white/72',
+      titleText: 'text-white',
+      badge: 'bg-[#1f1712]/88 text-[#f6efe2]',
+      tileLabel: 'bg-[#1f1712]/82 text-white',
+      tone,
+    };
+  }
+
+  return {
+    overlay: 'from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent',
+    metaText: 'text-[#5b4330]/78',
+    titleText: 'text-[#1f1712]',
+    badge: 'bg-[#fff7ed]/92 text-[#1f1712]',
+    tileLabel: 'bg-[#fff7ed]/92 text-[#1f1712]',
+    tone,
+  };
+};
+
 function StarRating({ className, disabled = false, rating, onChange, tone = 'dark' }: StarRatingProps) {
   const filledStars = Math.round(clampRating(rating) * 5);
 
@@ -177,7 +208,8 @@ function CollectionImagePanel({
   onSetRating,
   showImageId = false,
 }: CollectionImagePanelProps) {
-  const ui = getCollectionUiClasses(image.color);
+  const actionUi = getCollectionUiClasses(image.color);
+  const infoUi = getCollectionInfoUiClasses(image.color);
 
   return (
     <article
@@ -193,7 +225,7 @@ function CollectionImagePanel({
       />
       {showImageId ? (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <div className={`rounded-full px-6 py-3 text-5xl font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] ${ui.badge}`}>
+          <div className={`rounded-full px-6 py-3 text-5xl font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] ${infoUi.badge}`}>
             {image.id}
           </div>
         </div>
@@ -204,7 +236,7 @@ function CollectionImagePanel({
         aria-label={isInCollection ? 'Bild aus der Sammlung entfernen' : 'Bild zur Sammlung hinzufügen'}
         aria-pressed={isInCollection}
         className={`absolute left-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border text-[1.875rem] font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${
-          ui.actionButton
+          actionUi.actionButton
         }`}
         onClick={onToggleCollection}
         type="button"
@@ -214,7 +246,7 @@ function CollectionImagePanel({
 
       <button
         aria-label="Vergrößertes Bild öffnen"
-        className={`absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${ui.actionButton}`}
+        className={`absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${actionUi.actionButton}`}
         onClick={onOpenModal}
         type="button"
       >
@@ -230,23 +262,19 @@ function CollectionImagePanel({
         </svg>
       </button>
 
-      <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${ui.overlay}`}>
+      <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${infoUi.overlay}`}>
         <div className="pointer-events-none">
-          <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${ui.metaText}`}>Kategorie</p>
-          <p className={`mt-3 text-[1.65rem] font-semibold leading-tight ${ui.titleText}`}>
+          <p className={`text-[1.65rem] font-semibold leading-tight ${infoUi.titleText}`}>
             {image.categories.map((category) => category.text).join(' / ')}
           </p>
         </div>
 
         <div className="z-10 text-right">
-          <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.22em] ${ui.metaText}`}>
-            {isInCollection ? `Bewertung ${image.rating.toFixed(2)}` : 'Zum Bewerten hinzufügen'}
-          </p>
           <StarRating
             className="origin-right scale-150 justify-end"
             disabled={!isInCollection}
             rating={image.rating}
-            tone={ui.tone}
+            tone={infoUi.tone}
             onChange={onSetRating}
           />
         </div>
@@ -516,7 +544,7 @@ export function App() {
                           onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
                           type="button"
                         >
-                          ← Zurück
+                          ←
                         </button>
                         <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
                           {safeCollectionImagePage + 1} / {collectionImagePageCount}
@@ -530,7 +558,7 @@ export function App() {
                           }
                           type="button"
                         >
-                          Weiter →
+                          →
                         </button>
                       </div>
                     ) : null}
@@ -556,7 +584,7 @@ export function App() {
                           {pagedCollectionImages.map((image) => {
                             const isSelected = image.id === selectedCollectionImage.id;
                             const isCollected = data.collection.images.some((entry) => entry.id === image.id);
-                            const ui = getCollectionUiClasses(image.color);
+                            const infoUi = getCollectionInfoUiClasses(image.color);
 
                             return (
                               <button
@@ -578,18 +606,18 @@ export function App() {
                                 />
                                 {showCollectionImageIds ? (
                                   <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                                    <div className={`rounded-full px-4 py-2 text-3xl font-semibold shadow-[0_10px_22px_rgba(0,0,0,0.16)] ${ui.badge}`}>
+                                    <div className={`rounded-full px-4 py-2 text-3xl font-semibold shadow-[0_10px_22px_rgba(0,0,0,0.16)] ${infoUi.badge}`}>
                                       {image.id}
                                     </div>
                                   </div>
                                 ) : null}
-                                <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t px-2 pb-2 pt-8 ${ui.overlay}`}>
-                                  <p className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${ui.tileLabel}`}>
+                                <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t px-2 pb-2 pt-8 ${infoUi.overlay}`}>
+                                  <p className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${infoUi.tileLabel}`}>
                                     {image.categories[0]?.text ?? 'Unsortiert'}
                                   </p>
                                 </div>
                                 {isCollected ? (
-                                  <div className={`absolute right-2 top-2 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${ui.badge}`}>
+                                  <div className={`absolute right-2 top-2 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${infoUi.badge}`}>
                                     Hinzugefügt
                                   </div>
                                 ) : null}
