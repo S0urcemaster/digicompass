@@ -327,5 +327,6 @@ export const SAYINGS: Saying[] = [
   { id: 323, text: 'Finde dich wieder in der vollständigen Akzeptanz all dessen : was gerade ist', fontSize: 44, categories: [CATEGORIES.gelassenheit, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 324, text: 'Mache zuerst das Notwendige - dann das Mögliche - und plötzlich schaffst Du das Unmögliche !', fontSize: 38, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 325, text: 'Nimm den Schlüssel zur nächsten Tür und lasse diesen Raum hinter dir', fontSize: 38, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
-  { id: 325, text: 'Wenn du nicht musst : warte bis zum Schluss', fontSize: 44, categories: [CATEGORIES.handeln, CATEGORIES.geduld], rating: 0.5 },
+  { id: 326, text: 'Wenn du nicht musst : warte bis zum Schluss', fontSize: 44, categories: [CATEGORIES.handeln, CATEGORIES.geduld], rating: 0.5 },
+  { id: 327, text: 'Talent bedeutet Zeit / die andere nicht haben', fontSize: 44, categories: [CATEGORIES.zeit, CATEGORIES.identität], rating: 0.5 },
 ];
