@@ -46,62 +46,65 @@ const getVariantClassName = ({
   tone,
   variant,
 }: Pick<ButtonProps, 'active' | 'disabled' | 'selected' | 'tone' | 'variant'>) => {
+  const defaultBg = tone === 'light' ? 'bg-[var(--button-bg-light)]' : 'bg-[var(--button-bg-dark)]';
+  const activeBg = tone === 'light' ? 'bg-[var(--button-bg-light-active)]' : 'bg-[var(--button-bg-dark-active)]';
+
   if (variant === 'nav-tab') {
     if (disabled) {
-      return 'bg-white/70 text-muted ring-amber-950/10';
+      return `${defaultBg} text-muted ring-amber-950/10 opacity-70`;
     }
 
     if (active) {
-      return 'bg-ink text-white ring-ink';
+      return `${activeBg} text-white ring-ink`;
     }
 
-    return 'bg-white/80 text-muted ring-amber-950/10 hover:bg-white hover:text-ink';
+    return `${defaultBg} text-muted ring-amber-950/10 hover:text-ink`;
   }
 
   if (variant === 'tab') {
     if (disabled) {
-      return 'bg-white/70 text-muted ring-amber-950/10';
+      return `${defaultBg} text-muted ring-amber-950/10 opacity-70`;
     }
 
     if (active) {
-      return 'bg-ink text-white ring-ink';
+      return `${activeBg} text-white ring-ink`;
     }
 
-    return 'bg-white/80 text-muted ring-amber-950/10 hover:bg-white hover:text-ink';
+    return `${defaultBg} text-muted ring-amber-950/10 hover:text-ink`;
   }
 
   if (variant === 'star') {
     if (disabled) {
-      return tone === 'light' ? 'text-[#1f1712]/28' : 'text-white/35';
+      return `${defaultBg} ${tone === 'light' ? 'text-[#1f1712]/28' : 'text-white/35'} opacity-70`;
     }
 
     if (active) {
-      return tone === 'light' ? 'text-[#8b4d16] hover:scale-105' : 'text-[#ffd56a] hover:scale-105';
+      return `${activeBg} ${tone === 'light' ? 'text-[#8b4d16]' : 'text-[#ffd56a]'} hover:scale-105`;
     }
 
     return tone === 'light'
-      ? 'text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]'
-      : 'text-white/55 hover:scale-105 hover:text-[#ffe19b]';
+      ? `${defaultBg} text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]`
+      : `${defaultBg} text-white/55 hover:scale-105 hover:text-[#ffe19b]`;
   }
 
   if (variant === 'overlay-action') {
     return tone === 'light'
-      ? 'border-[#1f1712]/78 bg-[#1f1712]/88 text-[#f6efe2] backdrop-blur hover:bg-[#17110d]'
-      : 'border-white/78 bg-[#fff7ed]/90 text-[#1f1712] backdrop-blur hover:bg-[#fffaf4]';
+      ? `border-[#1f1712]/78 ${active ? activeBg : defaultBg} text-[#f6efe2] backdrop-blur`
+      : `border-white/78 ${active ? activeBg : defaultBg} text-[#1f1712] backdrop-blur`;
   }
 
   if (variant === 'surface') {
     return selected
-      ? 'ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]'
-      : 'ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]';
+      ? `${activeBg} ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]`
+      : `${defaultBg} ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]`;
   }
 
   if (variant === 'pager') {
-    return 'bg-[#efe2cc] text-ink hover:bg-[#e8d5b6]';
+    return `${defaultBg} text-ink`;
   }
 
   if (variant === 'toggle') {
-    return active ? 'bg-ink' : 'bg-[#d8c8b2]';
+    return active ? activeBg : defaultBg;
   }
 
   if (variant === 'scrim') {
@@ -120,14 +123,14 @@ export function Button({
   fullWidth = false,
   selected = false,
   shape = 'none',
-  tone = 'dark',
+  tone = 'light',
   type = 'button',
   variant,
   ...props
 }: ButtonProps) {
   const classes = cn(
-    variant === 'nav-tab' && 'px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
-    variant === 'tab' && 'px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
+    variant === 'nav-tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
+    variant === 'tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
     variant === 'star' && 'leading-none transition',
     variant === 'overlay-action' && 'flex items-center justify-center border font-semibold transition',
     variant === 'surface' && 'transition',

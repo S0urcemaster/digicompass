@@ -8,6 +8,10 @@
   --color-accent: #af6d10;
   --color-ink: #201a18;
   --color-muted: #6c6258;
+  --button-bg-light: rgba(234, 203, 203, 0.8);
+  --button-bg-light-active: #875656;
+  --button-bg-dark: rgb(31 23 18 / 0.88);
+  --button-bg-dark-active: #17110d;
 }
 
 * {

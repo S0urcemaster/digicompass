@@ -24,7 +24,7 @@ export function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
         alt={focus.saying.text}
         className="absolute inset-0 h-full w-full object-cover"
         decoding="async"
-        fetchPriority={isMain ? 'high' : 'low'}
+        fetchpriority={isMain ? 'high' : 'low'}
         loading={isMain ? 'eager' : 'lazy'}
         src={focus.image.url}
       />

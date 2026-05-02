@@ -29,7 +29,7 @@ export function CollectionImagePanel({
         alt={image.categories.map((category) => category.text).join(', ')}
         className="min-[900px]:h-full w-full object-contain"
         decoding="async"
-        fetchPriority="high"
+        fetchpriority="high"
         loading="eager"
         src={image.url}
       />
