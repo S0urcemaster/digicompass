@@ -5,7 +5,6 @@ import { IMAGES } from '../../../data/images';
 import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
-import { getCollectionInfoUiClasses } from '../shared/imageTone';
 
 const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
@@ -160,7 +159,6 @@ export function CollectionView({
                     {pagedCollectionImages.map((image) => {
                       const isSelected = image.id === selectedCollectionImage.id;
                       const isCollected = collectionImages.some((entry) => entry.id === image.id);
-                      const infoUi = getCollectionInfoUiClasses(image.color);
 
                       return (
                         <Button
@@ -180,18 +178,18 @@ export function CollectionView({
                           />
                           {showCollectionImageIds ? (
                             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                              <div className={`rounded-full px-4 py-2 text-3xl font-semibold shadow-[0_10px_22px_rgba(0,0,0,0.16)] ${infoUi.badge}`}>
+                              <div className="rounded-full bg-[#fff7ed]/92 px-4 py-2 text-3xl font-semibold text-[#1f1712] shadow-[0_10px_22px_rgba(0,0,0,0.16)]">
                                 {image.id}
                               </div>
                             </div>
                           ) : null}
-                          <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t px-2 pb-2 pt-8 ${infoUi.overlay}`}>
-                            <p className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${infoUi.tileLabel}`}>
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-2 pb-2 pt-8">
+                            <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712]">
                               {image.categories[0]?.text ?? 'Unsortiert'}
                             </p>
                           </div>
                           {isCollected ? (
-                            <div className={`absolute right-2 top-2 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${infoUi.badge}`}>
+                            <div className="absolute right-2 top-2 rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f1712]">
                               Hinzugefügt
                             </div>
                           ) : null}

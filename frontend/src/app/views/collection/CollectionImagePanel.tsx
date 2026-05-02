@@ -1,6 +1,5 @@
 import { Button } from '../../../components/Button';
 import type { CompassImage, Rating } from '../../../types/domain';
-import { getCollectionInfoUiClasses, getCollectionUiClasses } from '../shared/imageTone';
 import { StarRating } from '../shared/StarRating';
 
 type CollectionImagePanelProps = {
@@ -22,9 +21,6 @@ export function CollectionImagePanel({
   onSetRating,
   showImageId = false,
 }: CollectionImagePanelProps) {
-  const actionUi = getCollectionUiClasses(image.color);
-  const infoUi = getCollectionInfoUiClasses(image.color);
-
   return (
     <article
       className={`relative overflow-hidden rounded-[28px] bg-[#201a18] shadow-[0_30px_90px_rgba(32,26,24,0.28)] ${panelClassName ?? ''}`}
@@ -39,7 +35,7 @@ export function CollectionImagePanel({
       />
       {showImageId ? (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <div className={`rounded-full px-6 py-3 text-5xl font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] ${infoUi.badge}`}>
+          <div className="rounded-full bg-[#fff7ed]/92 px-6 py-3 text-5xl font-semibold text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.18)]">
             {image.id}
           </div>
         </div>
@@ -52,7 +48,7 @@ export function CollectionImagePanel({
         className="absolute left-6 top-6 z-10 h-[5.25rem] w-[5.25rem] text-[1.875rem]"
         onClick={onToggleCollection}
         shape="round"
-        tone={actionUi.tone}
+        tone="light"
         variant="overlay-action"
       >
         {isInCollection ? '✓' : '+'}
@@ -63,7 +59,7 @@ export function CollectionImagePanel({
         className="absolute right-6 top-6 z-10 h-[5.25rem] w-[5.25rem]"
         onClick={onOpenModal}
         shape="round"
-        tone={actionUi.tone}
+        tone="light"
         variant="overlay-action"
       >
         <svg
@@ -78,11 +74,11 @@ export function CollectionImagePanel({
         </svg>
       </Button>
 
-      <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${infoUi.overlay}`}>
+      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
         <div className="flex-1" />
 
         <div className="z-10 text-right">
-          <p className={`mb-3 text-[1.65rem] font-semibold leading-tight ${infoUi.titleText}`}>
+          <p className="mb-3 text-[1.65rem] font-semibold leading-tight text-[#1f1712]">
             {image.categories.map((category) => category.text).join(' / ')}
           </p>
           <StarRating
@@ -91,7 +87,7 @@ export function CollectionImagePanel({
             disabled={!isInCollection}
             rating={image.rating}
             starClassName="text-[3.25rem]"
-            tone={infoUi.tone}
+            tone="dark"
             onChange={onSetRating}
           />
         </div>

@@ -1,6 +1,3 @@
-import type { ImageColor } from '../../../types/domain';
-import { getImageTextColor } from './imageTone';
-
 type FocusTileProps = {
   focus: {
     saying: {
@@ -8,7 +5,6 @@ type FocusTileProps = {
       fontSize: number;
     };
     image: {
-      color: ImageColor;
       url: string;
     };
   };
@@ -38,7 +34,7 @@ export function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
           isMain ? '' : 'px-2'
         }`}
         style={{
-          color: getImageTextColor(focus.image.color),
+          color: '#0e0601',
           fontSize: isMain
             ? `clamp(3.3rem, ${focus.saying.fontSize / 9}vw, ${focus.saying.fontSize * 2}px)`
             : `clamp(1.425rem, ${focus.saying.fontSize / 18.67}vw, ${Math.max(30, focus.saying.fontSize * 0.72)}px)`,

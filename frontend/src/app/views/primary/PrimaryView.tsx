@@ -62,7 +62,7 @@ export function PrimaryView({
               <Button
                 align="left"
                 key={`${focus.saying.id}-${focus.image.id}`}
-                className="overflow-hidden rounded-[20px] bg-[#201a18] shadow-[0_18px_48px_rgba(32,26,24,0.22)] hover:shadow-[0_22px_56px_rgba(32,26,24,0.28)]"
+                className="overflow-hidden rounded-[20px]"
                 onClick={() => onSelectFocus(nextIndex)}
                 variant="surface"
               >
