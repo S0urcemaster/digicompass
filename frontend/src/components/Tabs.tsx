@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
 import { Button } from './Button';
 
+type TabsVariant = 'nav' | 'default';
+
 type TabItem<T extends string> = {
   disabled?: boolean;
   label: string;
@@ -13,9 +15,10 @@ type TabsProps<T extends string> = {
   items: TabItem<T>[];
   onChange?: (value: T) => void;
   style?: CSSProperties;
+  variant?: TabsVariant;
 };
 
-export function Tabs<T extends string>({ activeValue, className, items, onChange, style }: TabsProps<T>) {
+export function Tabs<T extends string>({ activeValue, className, items, onChange, style, variant = 'default' }: TabsProps<T>) {
   return (
     <div className={className} style={style}>
       {items.map((item) => (
@@ -26,7 +29,7 @@ export function Tabs<T extends string>({ activeValue, className, items, onChange
           fullWidth
           onClick={() => onChange?.(item.value)}
           shape="pill"
-          variant="tab"
+          variant={variant === 'nav' ? 'nav-tab' : 'tab'}
         >
           {item.label}
         </Button>

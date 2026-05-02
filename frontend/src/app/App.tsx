@@ -419,6 +419,7 @@ export function App() {
             className="grid grid-cols-1 gap-2 sm:grid-cols-3"
             items={VIEW_TABS}
             onChange={setActiveView}
+            variant="nav"
           />
       </header>
 

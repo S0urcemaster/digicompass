@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 type ButtonVariant =
+  | 'nav-tab'
   | 'tab'
   | 'star'
   | 'overlay-action'
@@ -45,6 +46,18 @@ const getVariantClassName = ({
   tone,
   variant,
 }: Pick<ButtonProps, 'active' | 'disabled' | 'selected' | 'tone' | 'variant'>) => {
+  if (variant === 'nav-tab') {
+    if (disabled) {
+      return 'bg-white/70 text-muted ring-amber-950/10';
+    }
+
+    if (active) {
+      return 'bg-ink text-white ring-ink';
+    }
+
+    return 'bg-white/80 text-muted ring-amber-950/10 hover:bg-white hover:text-ink';
+  }
+
   if (variant === 'tab') {
     if (disabled) {
       return 'bg-white/70 text-muted ring-amber-950/10';
@@ -113,6 +126,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
+    variant === 'nav-tab' && 'px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
     variant === 'tab' && 'px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
     variant === 'star' && 'leading-none transition',
     variant === 'overlay-action' && 'flex items-center justify-center border font-semibold transition',
