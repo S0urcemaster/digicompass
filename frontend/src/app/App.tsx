@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Button } from '../components/Button';
 import { Tabs } from '../components/Tabs';
 import { IMAGES } from '../data/images';
 import { preloadImages } from '../lib/imageCache';
@@ -151,28 +152,19 @@ function StarRating({
         const active = index < filledStars;
 
         return (
-          <button
+          <Button
+            active={active}
+            align="center"
             key={starValue}
             aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
-            className={`${buttonClassName ?? ''} ${starClassName ?? 'text-2xl'} leading-none transition ${
-              disabled
-                ? tone === 'light'
-                  ? 'cursor-not-allowed text-[#1f1712]/28'
-                  : 'cursor-not-allowed text-white/35'
-                : active
-                  ? tone === 'light'
-                    ? 'text-[#8b4d16] hover:scale-105'
-                    : 'text-[#ffd56a] hover:scale-105'
-                  : tone === 'light'
-                    ? 'text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]'
-                    : 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
-            }`}
+            className={`${buttonClassName ?? ''} ${starClassName ?? 'text-2xl'}`}
             disabled={disabled}
             onClick={() => onChange?.(starValue)}
-            type="button"
+            tone={tone}
+            variant="star"
           >
             ★
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -259,23 +251,25 @@ function CollectionImagePanel({
       ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
-      <button
+      <Button
         aria-label={isInCollection ? 'Bild aus der Sammlung entfernen' : 'Bild zur Sammlung hinzufügen'}
         aria-pressed={isInCollection}
-        className={`absolute left-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border text-[1.875rem] font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${
-          actionUi.actionButton
-        }`}
+        className="absolute left-6 top-6 z-10 h-[5.25rem] w-[5.25rem] text-[1.875rem]"
         onClick={onToggleCollection}
-        type="button"
+        shape="round"
+        tone={actionUi.tone}
+        variant="overlay-action"
       >
         {isInCollection ? '✓' : '+'}
-      </button>
+      </Button>
 
-      <button
+      <Button
         aria-label="Vergrößertes Bild öffnen"
-        className={`absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${actionUi.actionButton}`}
+        className="absolute right-6 top-6 z-10 h-[5.25rem] w-[5.25rem]"
         onClick={onOpenModal}
-        type="button"
+        shape="round"
+        tone={actionUi.tone}
+        variant="overlay-action"
       >
         <svg
           aria-hidden="true"
@@ -287,7 +281,7 @@ function CollectionImagePanel({
           <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
           <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
         </svg>
-      </button>
+      </Button>
 
       <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${infoUi.overlay}`}>
         <div className="flex-1" />
@@ -461,14 +455,15 @@ export function App() {
                     const nextIndex = currentMindset.foci.indexOf(focus);
 
                     return (
-                      <button
+                      <Button
+                        align="left"
                         key={`${focus.saying.id}-${focus.image.id}`}
-                        className="overflow-hidden rounded-[20px] bg-[#201a18] text-left shadow-[0_18px_48px_rgba(32,26,24,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_56px_rgba(32,26,24,0.28)]"
+                        className="overflow-hidden rounded-[20px] bg-[#201a18] shadow-[0_18px_48px_rgba(32,26,24,0.22)] hover:shadow-[0_22px_56px_rgba(32,26,24,0.28)]"
                         onClick={() => selectFocus(nextIndex)}
-                        type="button"
+                        variant="surface"
                       >
                         <FocusTile focus={focus} />
-                      </button>
+                      </Button>
                     );
                   })}
                 </section>
@@ -518,29 +513,33 @@ export function App() {
                   <div>
                     {filteredCollectionImages.length > 0 ? (
                       <div className="flex items-center gap-3">
-                        <button
+                        <Button
                           aria-label="Vorherige Bildseite"
-                          className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                          className="flex-1"
                           disabled={safeCollectionImagePage === 0}
+                          fullWidth
                           onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
-                          type="button"
+                          shape="pill"
+                          variant="pager"
                         >
                           ←
-                        </button>
+                        </Button>
                         <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
                           {safeCollectionImagePage + 1} / {collectionImagePageCount}
                         </div>
-                        <button
+                        <Button
                           aria-label="Nächste Bildseite"
-                          className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                          className="flex-1"
                           disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
+                          fullWidth
                           onClick={() =>
                             setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))
                           }
-                          type="button"
+                          shape="pill"
+                          variant="pager"
                         >
                           →
-                        </button>
+                        </Button>
                       </div>
                     ) : null}
                   </div>
@@ -568,15 +567,13 @@ export function App() {
                             const infoUi = getCollectionInfoUiClasses(image.color);
 
                             return (
-                              <button
+                              <Button
+                                align="left"
                                 key={image.id}
-                                className={`group relative overflow-hidden rounded-[18px] text-left transition ${
-                                  isSelected
-                                    ? 'ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]'
-                                    : 'ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]'
-                                }`}
+                                className="group relative overflow-hidden rounded-[18px]"
                                 onClick={() => setSelectedCollectionImageId(image.id)}
-                                type="button"
+                                selected={isSelected}
+                                variant="surface"
                               >
                                 <img
                                   alt={image.categories.map((category) => category.text).join(', ')}
@@ -602,7 +599,7 @@ export function App() {
                                     Hinzugefügt
                                   </div>
                                 ) : null}
-                              </button>
+                              </Button>
                             );
                           })}
                         </div>
@@ -622,31 +619,31 @@ export function App() {
 
               <form className="mt-5">
                 <label className="inline-flex items-center gap-3 rounded-full border border-amber-950/10 bg-white/80 px-4 py-3 text-sm text-ink">
-                  <button
+                  <Button
+                    active={showCollectionImageIds}
                     aria-pressed={showCollectionImageIds}
-                    className={`relative h-7 w-12 rounded-full transition ${
-                      showCollectionImageIds ? 'bg-ink' : 'bg-[#d8c8b2]'
-                    }`}
+                    className="relative h-7 w-12"
                     onClick={() => setShowCollectionImageIds((value) => !value)}
-                    type="button"
+                    shape="pill"
+                    variant="toggle"
                   >
                     <span
                       className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition ${
                         showCollectionImageIds ? 'left-6' : 'left-1'
                       }`}
                     />
-                  </button>
+                  </Button>
                   <span>Image-ID in der Kartenmitte anzeigen</span>
                 </label>
               </form>
             </section>
 
             {zoomedImage ? (
-              <button
+              <Button
                 aria-label="Vergrößertes Bild schließen"
-                className="fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/84 px-4 py-6"
+                className="fixed inset-0 z-50 px-4 py-6"
                 onClick={() => setZoomedImageId(null)}
-                type="button"
+                variant="scrim"
               >
                 <img
                   alt={zoomedImage.categories.map((category) => category.text).join(', ')}
@@ -655,7 +652,7 @@ export function App() {
                   loading="eager"
                   src={zoomedImage.url}
                 />
-              </button>
+              </Button>
             ) : null}
         </section>
       ) : (
