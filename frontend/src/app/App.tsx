@@ -39,7 +39,7 @@ const getImageTextColor = (imageColor: ImageColor) => {
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 
 const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
-const COLLECTION_IMAGE_PAGE_SIZE = 12;
+const COLLECTION_IMAGE_PAGE_SIZE = 9;
 
 type StarRatingProps = {
   className?: string;
@@ -441,7 +441,7 @@ export function App() {
               </button>
             </div>
 
-            <section className="rounded-[26px] bg-[#f6efe2] p-4 sm:p-5">
+            <section>
               <div className="flex flex-col gap-3 border-b border-amber-950/10 pb-4">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Sammlung</p>
@@ -477,7 +477,7 @@ export function App() {
                     }
                   />
 
-                  <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 min-[900px]:h-full">
+                  <section className="flex min-h-0 flex-col min-[900px]:h-full">
                     <div className="mb-3 space-y-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Ausgangsbilder</p>
