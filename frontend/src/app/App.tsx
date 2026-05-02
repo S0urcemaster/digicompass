@@ -308,14 +308,14 @@ export function App() {
             </label>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {Object.entries(VIEW_LABELS).map(([view, label]) => {
               const selected = activeView === view;
 
               return (
                 <button
                   key={view}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+                  className={`w-full rounded-full px-4 py-2 text-sm font-medium transition ${
                     selected
                       ? 'bg-ink text-white shadow-[0_10px_25px_rgba(30,31,28,0.18)]'
                       : 'bg-white/80 text-muted ring-1 ring-amber-950/10 hover:bg-white hover:text-ink'
@@ -411,29 +411,29 @@ export function App() {
         )
       ) : activeView === 'collection' ? (
         <section className="mt-6 space-y-5">
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               <button
-                className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-[0_12px_28px_rgba(32,26,24,0.18)]"
+                className="w-full rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-[0_12px_28px_rgba(32,26,24,0.18)]"
                 type="button"
               >
                 Bilder
               </button>
               <button
-                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
                 disabled
                 type="button"
               >
                 Sprüche
               </button>
               <button
-                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
                 disabled
                 type="button"
               >
                 Foki
               </button>
               <button
-                className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
                 disabled
                 type="button"
               >
