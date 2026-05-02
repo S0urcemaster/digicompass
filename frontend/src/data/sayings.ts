@@ -329,4 +329,5 @@ export const SAYINGS: Saying[] = [
   { id: 325, text: 'Nimm den Schlüssel zur nächsten Tür und lasse diesen Raum hinter dir', fontSize: 38, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 326, text: 'Wenn du nicht musst : warte bis zum Schluss', fontSize: 44, categories: [CATEGORIES.handeln, CATEGORIES.geduld], rating: 0.5 },
   { id: 327, text: 'Talent bedeutet Zeit / die andere nicht haben', fontSize: 44, categories: [CATEGORIES.zeit, CATEGORIES.identität, CATEGORIES.schicksal], rating: 0.5 },
+  { id: 328, text: 'Manche Rollen spielt man lieber als andere', fontSize: 50, categories: [CATEGORIES.identitaet, CATEGORIES.schicksal, CATEGORIES.liebe], rating: 0.5 },
 ];
