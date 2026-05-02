@@ -442,32 +442,51 @@ export function App() {
             </div>
 
             <section>
-              <div className="flex flex-col gap-3 border-b border-amber-950/10 pb-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Sammlung</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-ink">Bilder</h2>
-                </div>
-
-                <label className="block max-w-md" htmlFor="collection-image-filter">
-                  <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-muted">
-                    Nach Kategorie filtern
-                  </span>
-                  <input
-                    id="collection-image-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
-                    value={collectionImageFilter}
-                    onChange={(event) => setCollectionImageFilter(event.target.value)}
-                  />
-                </label>
-              </div>
-
               {selectedCollectionImage && selectedImageDetails ? (
-                <div className="mt-5 grid gap-5 min-[900px]:h-[min(78vh,56rem)] min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
+                <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
+                  <label className="block" htmlFor="collection-image-filter">
+                    <input
+                      id="collection-image-filter"
+                      className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                      placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                      value={collectionImageFilter}
+                      onChange={(event) => setCollectionImageFilter(event.target.value)}
+                    />
+                  </label>
+
+                  <div>
+                    {filteredCollectionImages.length > 0 ? (
+                      <div className="flex items-center gap-3">
+                        <button
+                          aria-label="Vorherige Bildseite"
+                          className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                          disabled={safeCollectionImagePage === 0}
+                          onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
+                          type="button"
+                        >
+                          ← Zurück
+                        </button>
+                        <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                          {safeCollectionImagePage + 1} / {collectionImagePageCount}
+                        </div>
+                        <button
+                          aria-label="Nächste Bildseite"
+                          className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
+                          disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
+                          onClick={() =>
+                            setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))
+                          }
+                          type="button"
+                        >
+                          Weiter →
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+
                   <CollectionImagePanel
                     image={selectedImageDetails}
                     isInCollection={Boolean(collectedImage)}
-                    panelClassName="min-[900px]:h-full"
                     onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
                     onSetRating={(rating) => setCollectionImageRating(selectedCollectionImage.id, rating)}
                     onToggleCollection={() =>
@@ -477,44 +496,7 @@ export function App() {
                     }
                   />
 
-                  <section className="flex min-h-0 flex-col min-[900px]:h-full">
-                    <div className="mb-3 space-y-3">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Ausgangsbilder</p>
-                        <p className="mt-1 text-sm text-muted">
-                          {filteredCollectionImages.length} angezeigt, {data.collection.images.length} in deiner Sammlung
-                        </p>
-                      </div>
-
-                      {filteredCollectionImages.length > 0 ? (
-                        <div className="flex items-center gap-3">
-                          <button
-                            aria-label="Vorherige Bildseite"
-                            className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
-                            disabled={safeCollectionImagePage === 0}
-                            onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
-                            type="button"
-                          >
-                            ← Zurück
-                          </button>
-                          <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
-                            {safeCollectionImagePage + 1} / {collectionImagePageCount}
-                          </div>
-                          <button
-                            aria-label="Nächste Bildseite"
-                            className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
-                            disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
-                            onClick={() =>
-                              setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))
-                            }
-                            type="button"
-                          >
-                            Weiter →
-                          </button>
-                        </div>
-                      ) : null}
-                    </div>
-
+                  <section className="flex min-h-0 flex-col">
                     {filteredCollectionImages.length > 0 ? (
                       <div className="pr-1">
                         <div className="grid grid-cols-3 gap-3">
