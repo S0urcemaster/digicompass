@@ -10,6 +10,21 @@ const VIEW_LABELS = {
   collection: 'Sammlung',
 } as const;
 
+const TAB_BUTTON_CLASS =
+  'w-full rounded-full px-4 py-2 text-sm font-medium ring-1 transition disabled:cursor-not-allowed disabled:opacity-100';
+
+const getTabButtonClassName = (active: boolean, disabled = false) => {
+  if (disabled) {
+    return `${TAB_BUTTON_CLASS} bg-white/70 text-muted ring-amber-950/10`;
+  }
+
+  if (active) {
+    return `${TAB_BUTTON_CLASS} bg-ink text-white ring-ink shadow-[0_10px_24px_rgba(32,26,24,0.18)]`;
+  }
+
+  return `${TAB_BUTTON_CLASS} bg-white/80 text-muted ring-amber-950/10 hover:bg-white hover:text-ink`;
+};
+
 type FocusTileProps = {
   focus: {
     saying: {
@@ -401,16 +416,10 @@ export function App() {
 
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
             {Object.entries(VIEW_LABELS).map(([view, label]) => {
-              const selected = activeView === view;
-
               return (
                 <button
                   key={view}
-                  className={`w-full rounded-full px-4 py-2 text-sm font-medium transition ${
-                    selected
-                      ? 'bg-ink text-white shadow-[0_10px_25px_rgba(30,31,28,0.18)]'
-                      : 'bg-white/80 text-muted ring-1 ring-amber-950/10 hover:bg-white hover:text-ink'
-                  }`}
+                  className={getTabButtonClassName(activeView === view)}
                   onClick={() => setActiveView(view as keyof typeof VIEW_LABELS)}
                   type="button"
                 >
@@ -435,18 +444,15 @@ export function App() {
                   </div>
                 </div>
 
-                <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+                <div
+                  className="grid gap-2"
+                  style={{ gridTemplateColumns: `repeat(${Math.max(data.mindsets.length, 1)}, minmax(0, 1fr))` }}
+                >
                   {data.mindsets.map((mindset, index) => {
-                    const selected = index === selectedMindsetIndex;
-
                     return (
                       <button
                         key={`${mindset.name}-${index}`}
-                        className={`min-w-fit rounded-full px-4 py-2 text-sm transition ${
-                          selected
-                            ? 'bg-[#b85042] text-white shadow-[0_14px_28px_rgba(184,80,66,0.28)]'
-                            : 'bg-[#efe2cc] text-ink hover:bg-[#e8d5b6]'
-                        }`}
+                        className={getTabButtonClassName(selectedMindsetIndex === index)}
                         onClick={() => selectMindset(index)}
                         type="button"
                       >
@@ -504,27 +510,27 @@ export function App() {
         <section className="mt-6 space-y-5">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               <button
-                className="w-full rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-[0_12px_28px_rgba(32,26,24,0.18)]"
+                className={getTabButtonClassName(true)}
                 type="button"
               >
                 Bilder
               </button>
               <button
-                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className={getTabButtonClassName(false, true)}
                 disabled
                 type="button"
               >
                 Sprüche
               </button>
               <button
-                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className={getTabButtonClassName(false, true)}
                 disabled
                 type="button"
               >
                 Foki
               </button>
               <button
-                className="w-full rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
+                className={getTabButtonClassName(false, true)}
                 disabled
                 type="button"
               >
