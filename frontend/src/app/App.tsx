@@ -42,6 +42,7 @@ const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating))
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
 
 type StarRatingProps = {
+  buttonClassName?: string;
   className?: string;
   disabled?: boolean;
   rating: Rating;
@@ -116,6 +117,7 @@ const getCollectionInfoUiClasses = (imageColor: ImageColor): {
 };
 
 function StarRating({
+  buttonClassName,
   className,
   disabled = false,
   rating,
@@ -135,7 +137,7 @@ function StarRating({
           <button
             key={starValue}
             aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
-            className={`${starClassName ?? 'text-2xl'} leading-none transition ${
+            className={`${buttonClassName ?? ''} ${starClassName ?? 'text-2xl'} leading-none transition ${
               disabled
                 ? tone === 'light'
                   ? 'cursor-not-allowed text-[#1f1712]/28'
@@ -279,6 +281,7 @@ function CollectionImagePanel({
           </p>
           <StarRating
             className="w-full justify-between px-2"
+            buttonClassName="flex-1 text-center"
             disabled={!isInCollection}
             rating={image.rating}
             starClassName="text-[3.25rem]"
