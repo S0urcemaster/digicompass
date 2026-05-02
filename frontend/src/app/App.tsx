@@ -46,9 +46,44 @@ type StarRatingProps = {
   disabled?: boolean;
   rating: Rating;
   onChange?: (rating: Rating) => void;
+  tone?: 'light' | 'dark';
 };
 
-function StarRating({ className, disabled = false, rating, onChange }: StarRatingProps) {
+const getCollectionUiTone = (imageColor: ImageColor): 'light' | 'dark' => {
+  if (imageColor === 'hell') {
+    return 'dark';
+  }
+
+  return 'light';
+};
+
+const getCollectionUiClasses = (imageColor: ImageColor) => {
+  const tone = getCollectionUiTone(imageColor);
+
+  if (tone === 'dark') {
+    return {
+      actionButton: 'border-[#1f1712]/78 bg-[#1f1712]/88 text-[#f6efe2] backdrop-blur hover:bg-[#17110d]',
+      overlay: 'from-black/84 via-black/52 to-transparent',
+      metaText: 'text-white/72',
+      titleText: 'text-white',
+      badge: 'bg-[#1f1712]/88 text-[#f6efe2]',
+      tileLabel: 'bg-[#1f1712]/82 text-white',
+      tone,
+    };
+  }
+
+  return {
+    actionButton: 'border-white/78 bg-[#fff7ed]/90 text-[#1f1712] backdrop-blur hover:bg-[#fffaf4]',
+    overlay: 'from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent',
+    metaText: 'text-[#5b4330]/78',
+    titleText: 'text-[#1f1712]',
+    badge: 'bg-[#fff7ed]/92 text-[#1f1712]',
+    tileLabel: 'bg-[#fff7ed]/92 text-[#1f1712]',
+    tone,
+  };
+};
+
+function StarRating({ className, disabled = false, rating, onChange, tone = 'dark' }: StarRatingProps) {
   const filledStars = Math.round(clampRating(rating) * 5);
 
   return (
@@ -63,10 +98,16 @@ function StarRating({ className, disabled = false, rating, onChange }: StarRatin
             aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
             className={`text-2xl leading-none transition ${
               disabled
-                ? 'cursor-not-allowed text-white/35'
+                ? tone === 'light'
+                  ? 'cursor-not-allowed text-[#1f1712]/28'
+                  : 'cursor-not-allowed text-white/35'
                 : active
-                  ? 'text-[#ffd56a] hover:scale-105'
-                  : 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
+                  ? tone === 'light'
+                    ? 'text-[#8b4d16] hover:scale-105'
+                    : 'text-[#ffd56a] hover:scale-105'
+                  : tone === 'light'
+                    ? 'text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]'
+                    : 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
             }`}
             disabled={disabled}
             onClick={() => onChange?.(starValue)}
@@ -124,6 +165,7 @@ type CollectionImagePanelProps = {
   onToggleCollection: () => void;
   onOpenModal: () => void;
   onSetRating: (rating: Rating) => void;
+  showImageId?: boolean;
 };
 
 function CollectionImagePanel({
@@ -133,7 +175,10 @@ function CollectionImagePanel({
   onToggleCollection,
   onOpenModal,
   onSetRating,
+  showImageId = false,
 }: CollectionImagePanelProps) {
+  const ui = getCollectionUiClasses(image.color);
+
   return (
     <article
       className={`relative overflow-hidden rounded-[28px] bg-[#201a18] shadow-[0_30px_90px_rgba(32,26,24,0.28)] ${panelClassName ?? ''}`}
@@ -146,15 +191,20 @@ function CollectionImagePanel({
         loading="eager"
         src={image.url}
       />
+      {showImageId ? (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+          <div className={`rounded-full px-6 py-3 text-5xl font-semibold shadow-[0_12px_28px_rgba(0,0,0,0.18)] ${ui.badge}`}>
+            {image.id}
+          </div>
+        </div>
+      ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
       <button
         aria-label={isInCollection ? 'Bild aus der Sammlung entfernen' : 'Bild zur Sammlung hinzufügen'}
         aria-pressed={isInCollection}
         className={`absolute left-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border text-[1.875rem] font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${
-          isInCollection
-            ? 'border-[#d48a1f] bg-[#d48a1f] text-white'
-            : 'border-white/75 bg-white/88 text-ink backdrop-blur'
+          ui.actionButton
         }`}
         onClick={onToggleCollection}
         type="button"
@@ -164,7 +214,7 @@ function CollectionImagePanel({
 
       <button
         aria-label="Vergrößertes Bild öffnen"
-        className="absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border border-white/75 bg-white/88 text-ink shadow-[0_16px_30px_rgba(0,0,0,0.22)] backdrop-blur transition hover:bg-white"
+        className={`absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${ui.actionButton}`}
         onClick={onOpenModal}
         type="button"
       >
@@ -180,22 +230,23 @@ function CollectionImagePanel({
         </svg>
       </button>
 
-      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t from-black/82 via-black/48 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
+      <div className={`absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t px-6 pb-6 pt-20 sm:px-7 sm:pb-7 ${ui.overlay}`}>
         <div className="pointer-events-none">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70">Kategorie</p>
-          <p className="mt-3 text-[1.65rem] font-semibold leading-tight text-white">
+          <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${ui.metaText}`}>Kategorie</p>
+          <p className={`mt-3 text-[1.65rem] font-semibold leading-tight ${ui.titleText}`}>
             {image.categories.map((category) => category.text).join(' / ')}
           </p>
         </div>
 
         <div className="z-10 text-right">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
+          <p className={`mb-3 text-sm font-semibold uppercase tracking-[0.22em] ${ui.metaText}`}>
             {isInCollection ? `Bewertung ${image.rating.toFixed(2)}` : 'Zum Bewerten hinzufügen'}
           </p>
           <StarRating
             className="origin-right scale-150 justify-end"
             disabled={!isInCollection}
             rating={image.rating}
+            tone={ui.tone}
             onChange={onSetRating}
           />
         </div>
@@ -222,6 +273,7 @@ export function App() {
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
+  const [showCollectionImageIds, setShowCollectionImageIds] = useState(false);
   const currentMindset = data.mindsets[selectedMindsetIndex];
   const currentFocus = currentMindset?.foci[selectedFocusIndex] ?? currentMindset?.foci[0];
   const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? 0;
@@ -489,6 +541,7 @@ export function App() {
                     isInCollection={Boolean(collectedImage)}
                     onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
                     onSetRating={(rating) => setCollectionImageRating(selectedCollectionImage.id, rating)}
+                    showImageId={showCollectionImageIds}
                     onToggleCollection={() =>
                       collectedImage
                         ? removeCollectionImage(selectedCollectionImage.id)
@@ -503,6 +556,7 @@ export function App() {
                           {pagedCollectionImages.map((image) => {
                             const isSelected = image.id === selectedCollectionImage.id;
                             const isCollected = data.collection.images.some((entry) => entry.id === image.id);
+                            const ui = getCollectionUiClasses(image.color);
 
                             return (
                               <button
@@ -522,13 +576,20 @@ export function App() {
                                   loading="lazy"
                                   src={getPreviewImageUrl(image.url)}
                                 />
-                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/72 to-transparent px-2 pb-2 pt-8">
-                                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/92">
+                                {showCollectionImageIds ? (
+                                  <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                                    <div className={`rounded-full px-4 py-2 text-3xl font-semibold shadow-[0_10px_22px_rgba(0,0,0,0.16)] ${ui.badge}`}>
+                                      {image.id}
+                                    </div>
+                                  </div>
+                                ) : null}
+                                <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t px-2 pb-2 pt-8 ${ui.overlay}`}>
+                                  <p className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${ui.tileLabel}`}>
                                     {image.categories[0]?.text ?? 'Unsortiert'}
                                   </p>
                                 </div>
                                 {isCollected ? (
-                                  <div className="absolute right-2 top-2 rounded-full bg-[#d48a1f] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                                  <div className={`absolute right-2 top-2 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ${ui.badge}`}>
                                     Hinzugefügt
                                   </div>
                                 ) : null}
@@ -549,6 +610,26 @@ export function App() {
                   <p className="text-sm text-muted">Für diesen Filter sind keine Bilder verfügbar.</p>
                 </div>
               )}
+
+              <form className="mt-5">
+                <label className="inline-flex items-center gap-3 rounded-full border border-amber-950/10 bg-white/80 px-4 py-3 text-sm text-ink">
+                  <button
+                    aria-pressed={showCollectionImageIds}
+                    className={`relative h-7 w-12 rounded-full transition ${
+                      showCollectionImageIds ? 'bg-ink' : 'bg-[#d8c8b2]'
+                    }`}
+                    onClick={() => setShowCollectionImageIds((value) => !value)}
+                    type="button"
+                  >
+                    <span
+                      className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition ${
+                        showCollectionImageIds ? 'left-6' : 'left-1'
+                      }`}
+                    />
+                  </button>
+                  <span>Image-ID in der Kartenmitte anzeigen</span>
+                </label>
+              </form>
             </section>
 
             {zoomedImage ? (
