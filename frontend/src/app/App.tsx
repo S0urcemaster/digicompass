@@ -5,9 +5,9 @@ import { useCompassStore } from '../store/compassStore';
 import type { CompassImage, ImageColor, Rating } from '../types/domain';
 
 const VIEW_LABELS = {
-  primary: 'Primary',
-  'focus-editor': 'Focus Editor',
-  collection: 'Collection',
+  primary: 'Start',
+  'focus-editor': 'Fokus-Editor',
+  collection: 'Sammlung',
 } as const;
 
 type FocusTileProps = {
@@ -60,7 +60,7 @@ function StarRating({ className, disabled = false, rating, onChange }: StarRatin
         return (
           <button
             key={starValue}
-            aria-label={`Set rating to ${index + 1} stars`}
+            aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
             className={`text-2xl leading-none transition ${
               disabled
                 ? 'cursor-not-allowed text-white/35'
@@ -149,7 +149,7 @@ function CollectionImagePanel({
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
       <button
-        aria-label={isInCollection ? 'Remove image from collection' : 'Add image to collection'}
+        aria-label={isInCollection ? 'Bild aus der Sammlung entfernen' : 'Bild zur Sammlung hinzufügen'}
         aria-pressed={isInCollection}
         className={`absolute left-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border text-[1.875rem] font-semibold shadow-[0_16px_30px_rgba(0,0,0,0.22)] transition ${
           isInCollection
@@ -163,7 +163,7 @@ function CollectionImagePanel({
       </button>
 
       <button
-        aria-label="Open enlarged image"
+        aria-label="Vergrößertes Bild öffnen"
         className="absolute right-6 top-6 z-10 flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-full border border-white/75 bg-white/88 text-ink shadow-[0_16px_30px_rgba(0,0,0,0.22)] backdrop-blur transition hover:bg-white"
         onClick={onOpenModal}
         type="button"
@@ -182,7 +182,7 @@ function CollectionImagePanel({
 
       <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t from-black/82 via-black/48 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
         <div className="pointer-events-none">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70">Category</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white/70">Kategorie</p>
           <p className="mt-3 text-[1.65rem] font-semibold leading-tight text-white">
             {image.categories.map((category) => category.text).join(' / ')}
           </p>
@@ -190,7 +190,7 @@ function CollectionImagePanel({
 
         <div className="z-10 text-right">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-white/70">
-            {isInCollection ? `Rating ${image.rating.toFixed(2)}` : 'Add to rate'}
+            {isInCollection ? `Bewertung ${image.rating.toFixed(2)}` : 'Zum Bewerten hinzufügen'}
           </p>
           <StarRating
             className="origin-right scale-150 justify-end"
@@ -287,19 +287,18 @@ export function App() {
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
-      <section className="rounded-[28px] border border-white/60 bg-panel/95 p-4 shadow-[0_20px_60px_rgba(56,45,24,0.12)] backdrop-blur sm:p-6">
-        <header className="flex flex-col gap-5 border-b border-amber-950/10 pb-5">
+      <header className="flex flex-col gap-5 border-b border-amber-950/10 pb-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Digi Compass</p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Mindsets for real situations</h1>
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Mindsets für reale Situationen</h1>
               <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-                Pick a mindset, focus on one visual saying, and keep the rest of the set one tap away.
+                Wähle ein Mindset, fokussiere dich auf einen visuellen Spruch und halte den Rest des Sets direkt griffbereit.
               </p>
             </div>
 
             <label className="block sm:min-w-[220px]" htmlFor="username">
-              <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-muted">Username</span>
+              <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-muted">Benutzername</span>
               <input
                 id="username"
                 className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
@@ -329,19 +328,19 @@ export function App() {
               );
             })}
           </div>
-        </header>
+      </header>
 
-        {activeView === 'primary' ? (
-          currentMindset && currentFocus ? (
-            <section className="mt-6 space-y-4 sm:space-y-6">
+      {activeView === 'primary' ? (
+        currentMindset && currentFocus ? (
+          <section className="mt-6 space-y-4 sm:space-y-6">
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Current mindset</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Aktuelles Mindset</p>
                     <p className="mt-1 text-2xl font-semibold text-ink">{currentMindset.name}</p>
                   </div>
                   <div className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-                    Rating {currentMindset.rating.toFixed(2)}
+                    Bewertung {currentMindset.rating.toFixed(2)}
                   </div>
                 </div>
 
@@ -392,46 +391,46 @@ export function App() {
 
               <section className="grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[20px] bg-[#f4e8d5] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Focus rating</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Fokus-Bewertung</p>
                   <p className="mt-2 text-2xl font-semibold text-ink">{currentFocus.rating.toFixed(2)}</p>
                 </div>
                 <div className="rounded-[20px] bg-[#e8efe8] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Categories</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Kategorien</p>
                   <p className="mt-2 text-sm leading-6 text-ink">
                     {currentFocus.saying.categories.map((category) => category.text).join(' / ')}
                   </p>
                 </div>
                 <div className="rounded-[20px] bg-[#e4ebf1] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Notes</p>
-                  <p className="mt-2 text-sm leading-6 text-ink">{currentFocus.notes || 'No notes yet.'}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Notizen</p>
+                  <p className="mt-2 text-sm leading-6 text-ink">{currentFocus.notes || 'Noch keine Notizen.'}</p>
                 </div>
               </section>
-            </section>
-          ) : (
-            <p className="mt-6 text-sm text-muted">No mindset data available.</p>
-          )
-        ) : activeView === 'collection' ? (
-          <section className="mt-6 space-y-5">
+          </section>
+        ) : (
+          <p className="mt-6 text-sm text-muted">Keine Mindset-Daten verfügbar.</p>
+        )
+      ) : activeView === 'collection' ? (
+        <section className="mt-6 space-y-5">
             <div className="flex flex-wrap gap-2">
               <button
                 className="rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-[0_12px_28px_rgba(32,26,24,0.18)]"
                 type="button"
               >
-                Images
+                Bilder
               </button>
               <button
                 className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
                 disabled
                 type="button"
               >
-                Sayings
+                Sprüche
               </button>
               <button
                 className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
                 disabled
                 type="button"
               >
-                Foci
+                Foki
               </button>
               <button
                 className="rounded-full bg-white/80 px-4 py-2 text-sm font-medium text-muted ring-1 ring-amber-950/10"
@@ -445,18 +444,18 @@ export function App() {
             <section className="rounded-[26px] bg-[#f6efe2] p-4 sm:p-5">
               <div className="flex flex-col gap-3 border-b border-amber-950/10 pb-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Collection</p>
-                  <h2 className="mt-2 text-2xl font-semibold text-ink">Images</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Sammlung</p>
+                  <h2 className="mt-2 text-2xl font-semibold text-ink">Bilder</h2>
                 </div>
 
                 <label className="block max-w-md" htmlFor="collection-image-filter">
                   <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.22em] text-muted">
-                    Filter by category
+                    Nach Kategorie filtern
                   </span>
                   <input
                     id="collection-image-filter"
                     className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Type a category like Freiheit or Erkenntnis"
+                    placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
                     value={collectionImageFilter}
                     onChange={(event) => setCollectionImageFilter(event.target.value)}
                   />
@@ -481,28 +480,28 @@ export function App() {
                   <section className="flex min-h-0 flex-col rounded-[24px] bg-white/70 p-3 shadow-[inset_0_0_0_1px_rgba(32,26,24,0.06)] sm:p-4 min-[900px]:h-full">
                     <div className="mb-3 space-y-3">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Factory images</p>
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted">Ausgangsbilder</p>
                         <p className="mt-1 text-sm text-muted">
-                          {filteredCollectionImages.length} shown, {data.collection.images.length} in your collection
+                          {filteredCollectionImages.length} angezeigt, {data.collection.images.length} in deiner Sammlung
                         </p>
                       </div>
 
                       {filteredCollectionImages.length > 0 ? (
                         <div className="flex items-center gap-3">
                           <button
-                            aria-label="Previous image page"
+                            aria-label="Vorherige Bildseite"
                             className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
                             disabled={safeCollectionImagePage === 0}
                             onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
                             type="button"
                           >
-                            ← Prev
+                            ← Zurück
                           </button>
                           <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
                             {safeCollectionImagePage + 1} / {collectionImagePageCount}
                           </div>
                           <button
-                            aria-label="Next image page"
+                            aria-label="Nächste Bildseite"
                             className="min-h-[3.25rem] flex-1 rounded-[999px] bg-[#efe2cc] px-5 py-3 text-lg font-semibold text-ink transition hover:bg-[#e8d5b6] disabled:cursor-not-allowed disabled:opacity-45"
                             disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
                             onClick={() =>
@@ -510,7 +509,7 @@ export function App() {
                             }
                             type="button"
                           >
-                            Next →
+                            Weiter →
                           </button>
                         </div>
                       ) : null}
@@ -543,12 +542,12 @@ export function App() {
                                 />
                                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/72 to-transparent px-2 pb-2 pt-8">
                                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/92">
-                                    {image.categories[0]?.text ?? 'Unsorted'}
+                                    {image.categories[0]?.text ?? 'Unsortiert'}
                                   </p>
                                 </div>
                                 {isCollected ? (
                                   <div className="absolute right-2 top-2 rounded-full bg-[#d48a1f] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
-                                    Added
+                                    Hinzugefügt
                                   </div>
                                 ) : null}
                               </button>
@@ -558,21 +557,21 @@ export function App() {
                       </div>
                     ) : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">No images match this category filter.</p>
+                        <p className="text-sm text-muted">Keine Bilder passen zu diesem Kategorienfilter.</p>
                       </div>
                     )}
                   </section>
                 </div>
               ) : (
                 <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                  <p className="text-sm text-muted">No images are available for this filter.</p>
+                  <p className="text-sm text-muted">Für diesen Filter sind keine Bilder verfügbar.</p>
                 </div>
               )}
             </section>
 
             {zoomedImage ? (
               <button
-                aria-label="Close enlarged image"
+                aria-label="Vergrößertes Bild schließen"
                 className="fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/84 px-4 py-6"
                 onClick={() => setZoomedImageId(null)}
                 type="button"
@@ -586,18 +585,17 @@ export function App() {
                 />
               </button>
             ) : null}
-          </section>
-        ) : (
-          <section className="mt-6 rounded-[24px] border border-dashed border-amber-950/15 bg-[#fbf6ec] p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">{VIEW_LABELS[activeView]}</p>
-            <h2 className="mt-2 text-2xl font-semibold text-ink">Prepared in store, not designed yet</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-              Focus Editor remains the next screen after collection images. Its state exists, but its UI is still
-              intentionally pending.
-            </p>
-          </section>
-        )}
-      </section>
+        </section>
+      ) : (
+        <section className="mt-6 rounded-[24px] border border-dashed border-amber-950/15 bg-[#fbf6ec] p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">{VIEW_LABELS[activeView]}</p>
+          <h2 className="mt-2 text-2xl font-semibold text-ink">Im Store vorbereitet, aber noch nicht gestaltet</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
+            Der Fokus-Editor ist der nächste Screen nach den Sammlungsbildern. Sein Zustand existiert bereits, aber
+            seine UI ist bewusst noch ausstehend.
+          </p>
+        </section>
+      )}
     </main>
   );
 }

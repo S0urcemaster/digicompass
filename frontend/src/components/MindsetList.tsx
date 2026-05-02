@@ -8,7 +8,7 @@ interface MindsetListProps {
 
 export function MindsetList({ mindsets, selectedIndex, onSelect }: MindsetListProps) {
   if (mindsets.length === 0) {
-    return <p className="text-sm text-muted">No mindsets yet.</p>;
+    return <p className="text-sm text-muted">Noch keine Mindsets.</p>;
   }
 
   return (
@@ -25,7 +25,7 @@ export function MindsetList({ mindsets, selectedIndex, onSelect }: MindsetListPr
             type="button"
           >
             <p className="font-medium">{mindset.name}</p>
-            <p className="text-xs text-muted">{mindset.foci.length} foci</p>
+            <p className="text-xs text-muted">{mindset.foci.length} Foki</p>
           </button>
         </li>
       ))}
