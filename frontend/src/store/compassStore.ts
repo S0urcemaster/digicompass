@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CompassImage, DigiCompass, Focus, Mindset, Rating } from '../types/domain';
+import type { Category, Collection, CompassImage, DigiCompass, Focus, Mindset, Rating, Saying } from '../types/domain';
 import factoryState from './factoryState';
 
 export type CompassView = 'primary' | 'focus-editor' | 'collection';
@@ -27,7 +27,6 @@ interface CompassState {
   setCollectionImageRating: (imageId: number, rating: Rating) => void;
 }
 
-const initialState: DigiCompass = factoryState;
 const resetFactoryStoreOnReloadInDev = import.meta.env.DEV;
 
 const clampIndex = (index: number, length: number) => {
@@ -38,10 +37,56 @@ const clampIndex = (index: number, length: number) => {
   return Math.max(0, Math.min(index, length - 1));
 };
 
+const cloneCategory = (category: Category): Category => ({
+  ...category,
+});
+
+const cloneSaying = (saying: Saying): Saying => ({
+  ...saying,
+  categories: saying.categories.map(cloneCategory),
+});
+
 const cloneImage = (image: CompassImage): CompassImage => ({
   ...image,
-  categories: [...image.categories],
+  categories: image.categories.map(cloneCategory),
 });
+
+const cloneFocus = (focus: Focus): Focus => ({
+  ...focus,
+  saying: cloneSaying(focus.saying),
+  image: cloneImage(focus.image),
+});
+
+const cloneMindset = (mindset: Mindset): Mindset => ({
+  ...mindset,
+  foci: mindset.foci.map(cloneFocus),
+});
+
+const cloneCollection = (collection: Collection): Collection => ({
+  sayings: collection.sayings.map(cloneSaying),
+  images: collection.images.map(cloneImage),
+  foci: collection.foci.map(cloneFocus),
+  mindsets: collection.mindsets.map(cloneMindset),
+});
+
+const cloneDigiCompass = (data: DigiCompass): DigiCompass => ({
+  username: data.username,
+  mindsets: data.mindsets.map(cloneMindset),
+  collection: cloneCollection(data.collection),
+});
+
+const initialState = cloneDigiCompass(factoryState);
+
+const syncMindsets = (data: DigiCompass, mindsets: Mindset[]): DigiCompass => ({
+  ...data,
+  mindsets,
+  collection: {
+    ...data.collection,
+    mindsets: mindsets.map(cloneMindset),
+  },
+});
+
+const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
 
 export const useCompassStore = create<CompassState>()(
   persist(
@@ -71,9 +116,13 @@ export const useCompassStore = create<CompassState>()(
           };
         }),
       addMindset: (mindset) =>
-        set((state) => ({
-          data: { ...state.data, mindsets: [...state.data.mindsets, mindset] },
-        })),
+        set((state) => {
+          const mindsets = [...state.data.mindsets, cloneMindset(mindset)];
+
+          return {
+            data: syncMindsets(state.data, mindsets),
+          };
+        }),
       removeMindset: (index) =>
         set((state) => {
           const mindsets = state.data.mindsets.filter((_, mindsetIndex) => mindsetIndex !== index);
@@ -81,55 +130,70 @@ export const useCompassStore = create<CompassState>()(
           const selectedMindset = mindsets[selectedMindsetIndex];
 
           return {
-            data: { ...state.data, mindsets },
+            data: syncMindsets(state.data, mindsets),
             selectedMindsetIndex,
             selectedFocusIndex: clampIndex(state.selectedFocusIndex, selectedMindset?.foci.length ?? 0),
           };
         }),
       updateMindset: (index, patch) =>
-        set((state) => ({
-          data: {
-            ...state.data,
-            mindsets: state.data.mindsets.map((mindset, mindsetIndex) =>
-              mindsetIndex === index ? { ...mindset, ...patch } : mindset
-            ),
-          },
-        })),
+        set((state) => {
+          const mindsets = state.data.mindsets.map((mindset, mindsetIndex) =>
+            mindsetIndex === index ? { ...mindset, ...patch } : mindset
+          );
+
+          return {
+            data: syncMindsets(state.data, mindsets),
+          };
+        }),
       setMindsetName: (index, name) =>
-        set((state) => ({
-          data: {
-            ...state.data,
-            mindsets: state.data.mindsets.map((mindset, mindsetIndex) =>
-              mindsetIndex === index ? { ...mindset, name } : mindset
-            ),
-          },
-        })),
+        set((state) => {
+          const mindsets = state.data.mindsets.map((mindset, mindsetIndex) =>
+            mindsetIndex === index ? { ...mindset, name } : mindset
+          );
+
+          return {
+            data: syncMindsets(state.data, mindsets),
+          };
+        }),
       setMindsetRating: (index, rating) =>
-        set((state) => ({
-          data: {
-            ...state.data,
-            mindsets: state.data.mindsets.map((mindset, mindsetIndex) =>
-              mindsetIndex === index ? { ...mindset, rating } : mindset
-            ),
-          },
-        })),
+        set((state) => {
+          const mindsets = state.data.mindsets.map((mindset, mindsetIndex) =>
+            mindsetIndex === index ? { ...mindset, rating } : mindset
+          );
+
+          return {
+            data: syncMindsets(state.data, mindsets),
+          };
+        }),
       addFocus: (mindsetIndex, focus) =>
-        set((state) => ({
-          data: {
-            ...state.data,
-            mindsets: state.data.mindsets.map((mindset, index) =>
-              index === mindsetIndex ? { ...mindset, foci: [...mindset.foci, focus] } : mindset
-            ),
-          },
-          selectedMindsetIndex:
-            mindsetIndex >= 0 && mindsetIndex < state.data.mindsets.length
-              ? mindsetIndex
-              : state.selectedMindsetIndex,
-          selectedFocusIndex:
-            mindsetIndex === state.selectedMindsetIndex
-              ? state.data.mindsets[mindsetIndex]?.foci.length ?? state.selectedFocusIndex
-              : state.selectedFocusIndex,
-        })),
+        set((state) => {
+          const nextFocus = cloneFocus(focus);
+          const focusKey = getFocusKey(nextFocus);
+          const mindsets = state.data.mindsets.map((mindset, index) =>
+            index === mindsetIndex ? { ...mindset, foci: [...mindset.foci, nextFocus] } : mindset
+          );
+          const collectionFoci = state.data.collection.foci.some((entry) => getFocusKey(entry) === focusKey)
+            ? state.data.collection.foci
+            : [...state.data.collection.foci, cloneFocus(nextFocus)];
+
+          return {
+            data: {
+              ...syncMindsets(state.data, mindsets),
+              collection: {
+                ...syncMindsets(state.data, mindsets).collection,
+                foci: collectionFoci,
+              },
+            },
+            selectedMindsetIndex:
+              mindsetIndex >= 0 && mindsetIndex < state.data.mindsets.length
+                ? mindsetIndex
+                : state.selectedMindsetIndex,
+            selectedFocusIndex:
+              mindsetIndex === state.selectedMindsetIndex
+                ? state.data.mindsets[mindsetIndex]?.foci.length ?? state.selectedFocusIndex
+                : state.selectedFocusIndex,
+          };
+        }),
       removeFocus: (mindsetIndex, focusIndex) =>
         set((state) => {
           const mindsets = state.data.mindsets.map((mindset, index) =>
@@ -140,26 +204,42 @@ export const useCompassStore = create<CompassState>()(
           const selectedMindset = mindsets[state.selectedMindsetIndex];
 
           return {
-            data: { ...state.data, mindsets },
+            data: syncMindsets(state.data, mindsets),
             selectedFocusIndex: clampIndex(state.selectedFocusIndex, selectedMindset?.foci.length ?? 0),
           };
         }),
       updateFocus: (mindsetIndex, focusIndex, patch) =>
-        set((state) => ({
-          data: {
-            ...state.data,
-            mindsets: state.data.mindsets.map((mindset, index) =>
-              index === mindsetIndex
-                ? {
-                    ...mindset,
-                    foci: mindset.foci.map((focus, currentFocusIndex) =>
-                      currentFocusIndex === focusIndex ? { ...focus, ...patch } : focus
-                    ),
-                  }
-                : mindset
-            ),
-          },
-        })),
+        set((state) => {
+          const targetFocus = state.data.mindsets[mindsetIndex]?.foci[focusIndex];
+
+          if (!targetFocus) {
+            return state;
+          }
+
+          const targetFocusKey = getFocusKey(targetFocus);
+          const mindsets = state.data.mindsets.map((mindset, index) =>
+            index === mindsetIndex
+              ? {
+                  ...mindset,
+                  foci: mindset.foci.map((focus, currentFocusIndex) =>
+                    currentFocusIndex === focusIndex ? { ...focus, ...patch } : focus
+                  ),
+                }
+              : mindset
+          );
+
+          return {
+            data: {
+              ...syncMindsets(state.data, mindsets),
+              collection: {
+                ...syncMindsets(state.data, mindsets).collection,
+                foci: state.data.collection.foci.map((focus) =>
+                  getFocusKey(focus) === targetFocusKey ? { ...focus, ...patch } : focus
+                ),
+              },
+            },
+          };
+        }),
       addCollectionImage: (image) =>
         set((state) => {
           if (state.data.collection.images.some((entry) => entry.id === image.id)) {
@@ -179,18 +259,18 @@ export const useCompassStore = create<CompassState>()(
       removeCollectionImage: (imageId) =>
         set((state) => {
           const foci = state.data.collection.foci.filter((focus) => focus.image.id !== imageId);
-          const validFocusKeys = new Set(foci.map((focus) => `${focus.saying.id}:${focus.image.id}`));
+          const validFocusKeys = new Set(foci.map(getFocusKey));
+          const mindsets = state.data.mindsets.filter((mindset) =>
+            mindset.foci.every((focus) => validFocusKeys.has(getFocusKey(focus)))
+          );
 
           return {
             data: {
-              ...state.data,
+              ...syncMindsets(state.data, mindsets),
               collection: {
-                ...state.data.collection,
+                ...syncMindsets(state.data, mindsets).collection,
                 images: state.data.collection.images.filter((image) => image.id !== imageId),
                 foci,
-                mindsets: state.data.collection.mindsets.filter((mindset) =>
-                  mindset.foci.every((focus) => validFocusKeys.has(`${focus.saying.id}:${focus.image.id}`))
-                ),
               },
             },
           };
