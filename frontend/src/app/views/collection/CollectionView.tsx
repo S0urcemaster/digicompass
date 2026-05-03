@@ -35,6 +35,8 @@ const getSayingFontSize = (fontSize: number, expanded = false) =>
     ? `clamp(2rem, ${fontSize / 12}vw, ${fontSize * 1.08}px)`
     : `clamp(1.35rem, ${fontSize / 16.2}vw, ${Math.max(29, fontSize * 0.7)}px)`;
 
+const getFocusPreviewFontSize = (fontSize: number) => `${fontSize * 1.25}px`;
+
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
 
@@ -148,6 +150,7 @@ export function CollectionView({
   const previewFocusKey = previewFocus ? getFocusKey(previewFocus) : null;
   const storedPreviewFocus =
     previewFocusKey === null ? null : collectionFoci.find((focus) => getFocusKey(focus) === previewFocusKey) ?? null;
+  const previewOverlayTone = previewFocus ? getImageOverlayTone(previewFocus.image.color) : null;
 
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
@@ -640,13 +643,21 @@ export function CollectionView({
                       storedPreviewFocus ? (rating) => handleSetFocusRating(storedPreviewFocus, rating) : undefined
                     }
                     topContent={
-                      <div className="max-w-[26rem] rounded-[24px] bg-black/32 px-5 py-4 text-left text-white shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px]">
-                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/80">
+                      <div
+                        className={`max-w-[26rem] rounded-[24px] px-5 py-4 text-left shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px] ${
+                          previewOverlayTone === 'light' ? 'bg-[#1f1712]/72 text-[#fff7ed]' : 'bg-[#fff7ed]/78 text-[#1f1712]'
+                        }`}
+                      >
+                        <p
+                          className={`text-[0.68rem] font-semibold uppercase tracking-[0.18em] ${
+                            previewOverlayTone === 'light' ? 'text-[#fff7ed]/80' : 'text-[#1f1712]/72'
+                          }`}
+                        >
                           {previewFocus.image.categories[0]?.text ?? 'Unsortiert'}
                         </p>
                         <p
-                          className="mt-3 font-semibold tracking-[-0.04em] text-white"
-                          style={{ fontSize: getSayingFontSize(previewFocus.saying.fontSize), lineHeight: 1.08 }}
+                          className="mt-3 font-semibold tracking-[-0.04em]"
+                          style={{ fontSize: getFocusPreviewFontSize(previewFocus.saying.fontSize), lineHeight: 1.08 }}
                         >
                           {previewFocus.saying.text}
                         </p>
