@@ -23,6 +23,7 @@ export function App() {
     data,
     selectedFocusIndex,
     selectedMindsetIndex,
+    setCollectionFocusRating,
     setCollectionImageRating,
     setCollectionSayingRating,
     setActiveView,
@@ -82,8 +83,10 @@ export function App() {
         <CollectionView
           addCollectionImage={addCollectionImage}
           addCollectionSaying={addCollectionSaying}
+          collectionFoci={data.collection.foci}
           collectionImages={data.collection.images}
           collectionSayings={data.collection.sayings}
+          setCollectionFocusRating={setCollectionFocusRating}
           setCollectionImageRating={setCollectionImageRating}
           setCollectionSayingRating={setCollectionSayingRating}
         />

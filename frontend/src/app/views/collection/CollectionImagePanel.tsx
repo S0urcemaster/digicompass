@@ -1,4 +1,5 @@
 import { Button } from '../../../components/Button';
+import type { ReactNode } from 'react';
 import type { CompassImage, Rating } from '../../../types/domain';
 import { StarRating } from '../shared/StarRating';
 import {
@@ -15,6 +16,7 @@ type CollectionImagePanelProps = {
   onOpenModal: () => void;
   onSetRating: (rating: Rating) => void;
   showImageId?: boolean;
+  topContent?: ReactNode;
 };
 
 export function CollectionImagePanel({
@@ -23,6 +25,7 @@ export function CollectionImagePanel({
   onOpenModal,
   onSetRating,
   showImageId = false,
+  topContent,
 }: CollectionImagePanelProps) {
   const overlayTone = getImageOverlayTone(image.color);
 
@@ -48,11 +51,13 @@ export function CollectionImagePanel({
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
       <div className="absolute left-6 top-6 z-10">
-        <p
-          className={`inline-flex rounded-full px-3 py-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
-        >
-          {image.categories[0]?.text ?? 'Unsortiert'}
-        </p>
+        {topContent ?? (
+          <p
+            className={`inline-flex rounded-full px-3 py-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
+          >
+            {image.categories[0]?.text ?? 'Unsortiert'}
+          </p>
+        )}
       </div>
 
       <Button

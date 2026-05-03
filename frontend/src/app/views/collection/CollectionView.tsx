@@ -4,7 +4,7 @@ import { Tabs } from '../../../components/Tabs';
 import { IMAGES } from '../../../data/images';
 import { SAYINGS } from '../../../data/sayings';
 import { preloadImages } from '../../../lib/imageCache';
-import type { CompassImage, Saying } from '../../../types/domain';
+import type { CompassImage, Focus, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
 import { StarRating } from '../shared/StarRating';
 import {
@@ -18,14 +18,16 @@ import {
 const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
   { label: 'Sprüche', value: 'sayings' },
-  { disabled: true, label: 'Foki', value: 'foci' },
+  { label: 'Foki', value: 'foci' },
   { disabled: true, label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
+const COLLECTION_FOCUS_PAGE_SIZE = 9;
 const COLLECTION_SAYING_PAGE_SIZE = 5;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
+const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
 
 const getSayingFontSize = (fontSize: number, expanded = false) =>
   expanded
@@ -35,25 +37,32 @@ const getSayingFontSize = (fontSize: number, expanded = false) =>
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 
 type CollectionViewProps = {
+  collectionFoci: Focus[];
   collectionImages: CompassImage[];
   collectionSayings: Saying[];
   addCollectionImage: (image: CompassImage) => void;
   addCollectionSaying: (saying: Saying) => void;
+  setCollectionFocusRating: (focusKey: string, rating: number) => void;
   setCollectionImageRating: (imageId: number, rating: number) => void;
   setCollectionSayingRating: (sayingId: number, rating: number) => void;
 };
 
 export function CollectionView({
+  collectionFoci,
   collectionImages,
   collectionSayings,
   addCollectionImage,
   addCollectionSaying,
+  setCollectionFocusRating,
   setCollectionImageRating,
   setCollectionSayingRating,
 }: CollectionViewProps) {
-  const [activeTab, setActiveTab] = useState<CollectionTabValue>('sayings');
+  const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
+  const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
+  const [collectionFocusPage, setCollectionFocusPage] = useState(0);
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
   const [collectionImagePage, setCollectionImagePage] = useState(0);
+  const [selectedCollectionFocusKey, setSelectedCollectionFocusKey] = useState<string | null>(null);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
@@ -62,8 +71,24 @@ export function CollectionView({
   const [selectedCollectionSayingId, setSelectedCollectionSayingId] = useState<number | null>(SAYINGS[0]?.id ?? null);
   const [showCollectionSayingIds, setShowCollectionSayingIds] = useState(true);
 
+  const normalizedFocusFilter = collectionFocusFilter.trim().toLowerCase();
   const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
   const normalizedSayingFilter = collectionSayingFilter.trim().toLowerCase();
+
+  const filteredCollectionFoci = collectionFoci.filter((focus) =>
+    normalizedFocusFilter.length === 0
+      ? true
+      : focus.image.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusFilter)) ||
+          focus.saying.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusFilter))
+  );
+  const collectionFocusPageCount = Math.max(1, Math.ceil(filteredCollectionFoci.length / COLLECTION_FOCUS_PAGE_SIZE));
+  const safeCollectionFocusPage = Math.min(collectionFocusPage, collectionFocusPageCount - 1);
+  const pagedCollectionFoci = filteredCollectionFoci.slice(
+    safeCollectionFocusPage * COLLECTION_FOCUS_PAGE_SIZE,
+    (safeCollectionFocusPage + 1) * COLLECTION_FOCUS_PAGE_SIZE
+  );
+  const selectedCollectionFocus =
+    filteredCollectionFoci.find((focus) => getFocusKey(focus) === selectedCollectionFocusKey) ?? filteredCollectionFoci[0] ?? null;
 
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
@@ -120,9 +145,38 @@ export function CollectionView({
     setCollectionSayingRating(saying.id, rating);
   };
 
+  const handleSetFocusRating = (focus: Focus, rating: number) => {
+    setCollectionFocusRating(getFocusKey(focus), rating);
+  };
+
   useEffect(() => {
     void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
   }, []);
+
+  useEffect(() => {
+    if (collectionFocusPage !== safeCollectionFocusPage) {
+      setCollectionFocusPage(safeCollectionFocusPage);
+    }
+  }, [collectionFocusPage, safeCollectionFocusPage]);
+
+  useEffect(() => {
+    setCollectionFocusPage(0);
+  }, [normalizedFocusFilter]);
+
+  useEffect(() => {
+    if (selectedCollectionFocusKey === null && filteredCollectionFoci[0]) {
+      setSelectedCollectionFocusKey(getFocusKey(filteredCollectionFoci[0]));
+      return;
+    }
+
+    if (
+      selectedCollectionFocusKey !== null &&
+      filteredCollectionFoci.length > 0 &&
+      !filteredCollectionFoci.some((focus) => getFocusKey(focus) === selectedCollectionFocusKey)
+    ) {
+      setSelectedCollectionFocusKey(getFocusKey(filteredCollectionFoci[0]));
+    }
+  }, [filteredCollectionFoci, selectedCollectionFocusKey]);
 
   useEffect(() => {
     if (!selectedCollectionImage) {
@@ -423,38 +477,171 @@ export function CollectionView({
               <p className="text-sm text-muted">Für diesen Filter sind keine Sprüche verfügbar.</p>
             </div>
           )
+        ) : activeTab === 'foci' ? (
+          selectedCollectionFocus ? (
+            <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
+              <label className="block" htmlFor="collection-focus-filter">
+                <input
+                  id="collection-focus-filter"
+                  className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                  placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                  value={collectionFocusFilter}
+                  onChange={(event) => setCollectionFocusFilter(event.target.value)}
+                />
+              </label>
+
+              <div>
+                {filteredCollectionFoci.length > 0 ? (
+                  <div className="flex items-center gap-3">
+                    <Button
+                      aria-label="Vorherige Fokusseite"
+                      className="flex-1"
+                      disabled={safeCollectionFocusPage === 0}
+                      fullWidth
+                      onClick={() => setCollectionFocusPage((page) => Math.max(0, page - 1))}
+                      shape="pill"
+                      variant="pager"
+                    >
+                      ←
+                    </Button>
+                    <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                      {safeCollectionFocusPage + 1} / {collectionFocusPageCount}
+                    </div>
+                    <Button
+                      aria-label="Nächste Fokusseite"
+                      className="flex-1"
+                      disabled={safeCollectionFocusPage >= collectionFocusPageCount - 1}
+                      fullWidth
+                      onClick={() => setCollectionFocusPage((page) => Math.min(collectionFocusPageCount - 1, page + 1))}
+                      shape="pill"
+                      variant="pager"
+                    >
+                      →
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+
+              <CollectionImagePanel
+                image={{ ...selectedCollectionFocus.image, rating: selectedCollectionFocus.rating }}
+                onOpenModal={() => setZoomedImageId(selectedCollectionFocus.image.id)}
+                onSetRating={(rating) => handleSetFocusRating(selectedCollectionFocus, rating)}
+                topContent={
+                  <div className="max-w-[26rem] rounded-[24px] bg-black/32 px-5 py-4 text-left text-white shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px]">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/80">
+                      {selectedCollectionFocus.image.categories[0]?.text ?? 'Unsortiert'}
+                    </p>
+                    <p
+                      className="mt-3 font-semibold tracking-[-0.04em] text-white"
+                      style={{ fontSize: getSayingFontSize(selectedCollectionFocus.saying.fontSize), lineHeight: 1.08 }}
+                    >
+                      {selectedCollectionFocus.saying.text}
+                    </p>
+                  </div>
+                }
+              />
+
+              <section className="flex min-h-0 flex-col">
+                {filteredCollectionFoci.length > 0 ? (
+                  <div className="pr-1">
+                    <div className="grid grid-cols-3 gap-3">
+                      {pagedCollectionFoci.map((focus) => {
+                        const focusKey = getFocusKey(focus);
+                        const isSelected = focusKey === getFocusKey(selectedCollectionFocus);
+                        const overlayTone = getImageOverlayTone(focus.image.color);
+
+                        return (
+                          <Button
+                            align="left"
+                            key={focusKey}
+                            className="group relative overflow-hidden rounded-[18px]"
+                            onClick={() => setSelectedCollectionFocusKey(focusKey)}
+                            selected={isSelected}
+                            variant="surface"
+                          >
+                            <img
+                              alt={focus.image.categories.map((category) => category.text).join(', ')}
+                              className="aspect-[733/1024] w-full object-cover"
+                              decoding="async"
+                              loading="lazy"
+                              src={getPreviewImageUrl(focus.image.url)}
+                            />
+                            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-2">
+                              <div className="rounded-[14px] bg-black/32 px-3 py-2 text-left text-white shadow-[0_12px_30px_rgba(0,0,0,0.2)] backdrop-blur-[3px]">
+                                <p className="line-clamp-4 text-sm font-semibold leading-[1.05] tracking-[-0.04em]">
+                                  {focus.saying.text}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="absolute left-2 top-2 pt-[5.8rem]">
+                              <p
+                                className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
+                              >
+                                {focus.image.categories[0]?.text ?? 'Unsortiert'}
+                              </p>
+                            </div>
+                            <div
+                              className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
+                            >
+                              <StarRating
+                                className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
+                                disabled
+                                rating={focus.rating}
+                                starClassName="text-[0.9rem]"
+                                tone={overlayTone}
+                              />
+                            </div>
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                    <p className="text-sm text-muted">Keine Foki passen zu diesem Kategorienfilter.</p>
+                  </div>
+                )}
+              </section>
+            </div>
+          ) : (
+            <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+              <p className="text-sm text-muted">In deiner Sammlung sind noch keine Foki verfügbar.</p>
+            </div>
+          )
         ) : (
           <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
             <p className="text-sm text-muted">Dieser Bereich ist noch nicht umgesetzt.</p>
           </div>
         )}
 
-        <form className="mt-5">
-          <label className="inline-flex items-center gap-3 rounded-full border border-amber-950/10 bg-white/80 px-4 py-3 text-sm text-ink">
-            <Button
-              active={activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds}
-              aria-pressed={activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds}
-              className="relative h-7 w-12"
-              onClick={() =>
-                activeTab === 'images'
-                  ? setShowCollectionImageIds((value) => !value)
-                  : setShowCollectionSayingIds((value) => !value)
-              }
-              shape="pill"
-              variant="toggle"
-            >
-              <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition ${
-                  (activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds) ? 'left-6' : 'left-1'
-                }`}
-              />
-            </Button>
-            <span>{activeTab === 'images' ? 'Image-ID in der Kartenmitte anzeigen' : 'Spruch-ID anzeigen'}</span>
-          </label>
-        </form>
+        {activeTab === 'images' || activeTab === 'sayings' ? (
+          <form className="mt-5">
+            <label className="inline-flex items-center gap-3 rounded-full border border-amber-950/10 bg-white/80 px-4 py-3 text-sm text-ink">
+              <Button
+                active={activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds}
+                aria-pressed={activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds}
+                className="relative h-7 w-12"
+                onClick={() =>
+                  activeTab === 'images'
+                    ? setShowCollectionImageIds((value) => !value)
+                    : setShowCollectionSayingIds((value) => !value)
+                }
+                shape="pill"
+                variant="toggle"
+              >
+                <span
+                  className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition ${
+                    (activeTab === 'images' ? showCollectionImageIds : showCollectionSayingIds) ? 'left-6' : 'left-1'
+                  }`}
+                />
+              </Button>
+              <span>{activeTab === 'images' ? 'Image-ID in der Kartenmitte anzeigen' : 'Spruch-ID anzeigen'}</span>
+            </label>
+          </form>
+        ) : null}
       </section>
 
-      {zoomedImage && activeTab === 'images' ? (
+      {zoomedImage && (activeTab === 'images' || activeTab === 'foci') ? (
         <Button
           aria-label="Vergrößerte Bildansicht schließen"
           className="fixed inset-0 z-50 p-4 sm:p-8"

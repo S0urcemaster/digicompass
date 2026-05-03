@@ -27,6 +27,7 @@ interface CompassState {
   setCollectionImageRating: (imageId: number, rating: Rating) => void;
   addCollectionSaying: (saying: Saying) => void;
   setCollectionSayingRating: (sayingId: number, rating: Rating) => void;
+  setCollectionFocusRating: (focusKey: string, rating: Rating) => void;
 }
 
 const resetFactoryStoreOnReloadInDev = import.meta.env.DEV;
@@ -317,6 +318,25 @@ export const useCompassStore = create<CompassState>()(
             },
           },
         })),
+      setCollectionFocusRating: (focusKey, rating) =>
+        set((state) => {
+          const mindsets = state.data.mindsets.map((mindset) => ({
+            ...mindset,
+            foci: mindset.foci.map((focus) => (getFocusKey(focus) === focusKey ? { ...focus, rating } : focus)),
+          }));
+
+          return {
+            data: {
+              ...syncMindsets(state.data, mindsets),
+              collection: {
+                ...syncMindsets(state.data, mindsets).collection,
+                foci: state.data.collection.foci.map((focus) =>
+                  getFocusKey(focus) === focusKey ? { ...focus, rating } : focus
+                ),
+              },
+            },
+          };
+        }),
     }),
     {
       name: 'compass-store',
