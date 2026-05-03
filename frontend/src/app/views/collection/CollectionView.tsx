@@ -29,7 +29,7 @@ const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/pre
 const getSayingFontSize = (fontSize: number, expanded = false) =>
   expanded
     ? `clamp(2rem, ${fontSize / 12}vw, ${fontSize * 1.08}px)`
-    : `clamp(1rem, ${fontSize / 22}vw, ${Math.max(22, fontSize * 0.52)}px)`;
+    : `clamp(1.5rem, ${fontSize / 14.67}vw, ${Math.max(33, fontSize * 0.78)}px)`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 
@@ -50,7 +50,7 @@ export function CollectionView({
   setCollectionImageRating,
   setCollectionSayingRating,
 }: CollectionViewProps) {
-  const [activeTab, setActiveTab] = useState<CollectionTabValue>('images');
+  const [activeTab, setActiveTab] = useState<CollectionTabValue>('sayings');
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
@@ -94,8 +94,6 @@ export function CollectionView({
     safeCollectionSayingPage * COLLECTION_PAGE_SIZE,
     (safeCollectionSayingPage + 1) * COLLECTION_PAGE_SIZE
   );
-  const selectedCollectionSaying =
-    filteredCollectionSayings.find((saying) => saying.id === selectedCollectionSayingId) ?? filteredCollectionSayings[0] ?? null;
 
   const handleSetSelectedImageRating = (rating: number) => {
     if (!selectedCollectionImage) {
@@ -318,17 +316,17 @@ export function CollectionView({
         ) : activeTab === 'sayings' ? (
           filteredCollectionSayings.length > 0 ? (
             <div className="space-y-4">
-              <label className="block" htmlFor="collection-saying-filter">
-                <input
-                  id="collection-saying-filter"
-                  className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                  placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
-                  value={collectionSayingFilter}
-                  onChange={(event) => setCollectionSayingFilter(event.target.value)}
-                />
-              </label>
+              <div className="grid grid-cols-2 gap-3 items-center">
+                <label className="block" htmlFor="collection-saying-filter">
+                  <input
+                    id="collection-saying-filter"
+                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                    value={collectionSayingFilter}
+                    onChange={(event) => setCollectionSayingFilter(event.target.value)}
+                  />
+                </label>
 
-              <div className="min-[900px]:max-w-[28rem]">
                 {filteredCollectionSayings.length > 0 ? (
                   <div className="flex items-center gap-3">
                     <Button
@@ -364,18 +362,13 @@ export function CollectionView({
                 <div className="pr-1">
                   <div className="grid grid-cols-1 gap-3">
                     {pagedCollectionSayings.map((saying) => {
-                      const isSelected = saying.id === selectedCollectionSaying?.id;
                       const collectedListSaying = collectionSayingById.get(saying.id) ?? null;
                       const previewRating = collectedListSaying?.rating ?? 0;
 
                       return (
                         <article
                           key={saying.id}
-                          className={`relative min-h-[7.75rem] overflow-hidden rounded-[18px] border bg-[linear-gradient(145deg,#fff8ef_0%,#f8eddd_46%,#edd8b8_100%)] transition ${
-                            isSelected
-                              ? 'border-accent ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]'
-                              : 'border-amber-950/10 shadow-[0_14px_30px_rgba(32,26,24,0.08)]'
-                          }`}
+                          className="relative overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition"
                         >
                           <button
                             className="absolute inset-0 z-0"
@@ -383,33 +376,35 @@ export function CollectionView({
                             onClick={() => setSelectedCollectionSayingId(saying.id)}
                             type="button"
                           />
-                          <div className="relative z-10 flex h-full items-center gap-4 px-4 py-3">
+                          <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
                             <div className="flex min-w-0 flex-1 flex-col gap-2">
-                              <div className="flex items-start justify-between gap-2">
-                                <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-                                  {saying.categories[0]?.text ?? 'Unsortiert'}
-                                </p>
+                              <div className="flex flex-wrap items-start gap-2">
                                 {showCollectionSayingIds ? (
-                                  <div className="shrink-0 rounded-full border border-[#fff7ed]/16 bg-[#fff7ed]/92 px-2.5 py-1 text-sm font-semibold text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.1)]">
+                                  <div className="shrink-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-sm font-semibold text-[#1f1712]">
                                     {saying.id}
                                   </div>
                                 ) : null}
+                                <p className="inline-flex border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
+                                  {saying.categories.length > 0
+                                    ? saying.categories.map((category) => category.text).join('   ')
+                                    : 'Unsortiert'}
+                                </p>
+                                <StarRating
+                                  className="relative z-10 ml-auto justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
+                                  rating={previewRating}
+                                  buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
+                                  starClassName="text-[2.3rem] leading-none"
+                                  tone="dark"
+                                  onChange={(rating) => handleSetSayingRating(saying, rating)}
+                                />
                               </div>
                               <p
-                                className="line-clamp-2 pr-3 font-semibold tracking-[-0.04em] text-[#1f1712]"
-                                style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.08 }}
+                                className="w-full font-semibold tracking-[-0.04em] text-[#1f1712]"
+                                style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.1 }}
                               >
                                 {saying.text}
                               </p>
                             </div>
-                            <StarRating
-                              className="relative z-10 justify-center gap-0.5 rounded-full bg-[#fff7ed]/92 px-2 py-1.5 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.08)]"
-                              rating={previewRating}
-                              buttonClassName="min-w-[1.5rem]"
-                              starClassName="text-[1.1rem]"
-                              tone="dark"
-                              onChange={(rating) => handleSetSayingRating(saying, rating)}
-                            />
                           </div>
                         </article>
                       );

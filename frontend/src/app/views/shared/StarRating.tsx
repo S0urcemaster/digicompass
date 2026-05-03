@@ -37,13 +37,15 @@ export function StarRating({
             align="center"
             key={starValue}
             aria-label={clearsRating ? 'Bewertung zurücksetzen' : `Bewertung auf ${index + 1} Sterne setzen`}
-            className={`${buttonClassName ?? ''} ${starClassName ?? 'text-2xl'}`}
+            className={buttonClassName ?? ''}
             disabled={disabled}
             onClick={() => onChange?.(clearsRating ? 0 : starValue)}
             tone={tone}
             variant="star"
           >
-            ★
+            <span aria-hidden="true" className={`inline-flex items-center justify-center ${starClassName ?? 'text-2xl'}`}>
+              ★
+            </span>
           </Button>
         );
       })}
