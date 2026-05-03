@@ -854,9 +854,13 @@ export function CollectionView({
                         return (
                           <article
                             key={saying.id}
-                            className={`relative overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition ${
+                            className={`relative cursor-pointer overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition ${
                               isSelected ? 'ring-2 ring-accent/40' : ''
                             }`}
+                            onClick={() => {
+                              setSelectedFocusEditorSayingId(saying.id);
+                              setFocusPreviewSource('editor');
+                            }}
                           >
                             <button
                               className="absolute inset-0 z-0"

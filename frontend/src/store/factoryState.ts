@@ -79,7 +79,10 @@ const collectionFocusSpecs: Array<[number, number, number, string]> = [
 ];
 
 const collectionSayings = collectionSayingIndexes.map(getSayingByIndex);
-const collectionImages = collectionImageIds.map(getImageById);
+const collectionImages = collectionImageIds.map((imageId) => ({
+  ...getImageById(imageId),
+  rating: 0.5,
+}));
 const collectionFoci = collectionFocusSpecs.map(([sayingIndex, imageId, rating, notes]) =>
   createFocus(sayingIndex, imageId, rating, notes)
 );
