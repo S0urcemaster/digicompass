@@ -20,14 +20,12 @@ const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/pre
 type CollectionViewProps = {
   collectionImages: CompassImage[];
   addCollectionImage: (image: CompassImage) => void;
-  removeCollectionImage: (imageId: number) => void;
   setCollectionImageRating: (imageId: number, rating: number) => void;
 };
 
 export function CollectionView({
   collectionImages,
   addCollectionImage,
-  removeCollectionImage,
   setCollectionImageRating,
 }: CollectionViewProps) {
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
@@ -54,6 +52,19 @@ export function CollectionView({
     : null;
   const selectedImageDetails = collectedImage ?? selectedCollectionImage;
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
+
+  const handleSetSelectedImageRating = (rating: number) => {
+    if (!selectedCollectionImage) {
+      return;
+    }
+
+    if (!collectedImage) {
+      addCollectionImage({ ...selectedCollectionImage, rating });
+      return;
+    }
+
+    setCollectionImageRating(selectedCollectionImage.id, rating);
+  };
 
   useEffect(() => {
     void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
@@ -143,13 +154,9 @@ export function CollectionView({
 
             <CollectionImagePanel
               image={selectedImageDetails}
-              isInCollection={Boolean(collectedImage)}
               onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
-              onSetRating={(rating) => setCollectionImageRating(selectedCollectionImage.id, rating)}
+              onSetRating={handleSetSelectedImageRating}
               showImageId={showCollectionImageIds}
-              onToggleCollection={() =>
-                collectedImage ? removeCollectionImage(selectedCollectionImage.id) : addCollectionImage(selectedCollectionImage)
-              }
             />
 
             <section className="flex min-h-0 flex-col">
@@ -183,8 +190,8 @@ export function CollectionView({
                               </div>
                             </div>
                           ) : null}
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-2 pb-2 pt-8">
-                            <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712]">
+                          <div className="absolute left-2 top-2">
+                            <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_6px_18px_rgba(0,0,0,0.16)]">
                               {image.categories[0]?.text ?? 'Unsortiert'}
                             </p>
                           </div>

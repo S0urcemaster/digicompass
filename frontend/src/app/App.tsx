@@ -20,7 +20,6 @@ export function App() {
     activeView,
     addCollectionImage,
     data,
-    removeCollectionImage,
     selectedFocusIndex,
     selectedMindsetIndex,
     setCollectionImageRating,
@@ -81,7 +80,6 @@ export function App() {
         <CollectionView
           addCollectionImage={addCollectionImage}
           collectionImages={data.collection.images}
-          removeCollectionImage={removeCollectionImage}
           setCollectionImageRating={setCollectionImageRating}
         />
       ) : (

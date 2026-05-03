@@ -1,6 +1,9 @@
 type FocusTileProps = {
   focus: {
     saying: {
+      categories: Array<{
+        text: string;
+      }>;
       text: string;
       fontSize: number;
     };
@@ -13,6 +16,7 @@ type FocusTileProps = {
 
 export function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
   const isMain = variant === 'main';
+  const previewCategory = focus.saying.categories[0]?.text ?? 'Unsortiert';
 
   return (
     <div
@@ -24,7 +28,7 @@ export function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
         alt={focus.saying.text}
         className="absolute inset-0 h-full w-full object-cover"
         decoding="async"
-        fetchpriority={isMain ? 'high' : 'low'}
+        fetchPriority={isMain ? 'high' : 'low'}
         loading={isMain ? 'eager' : 'lazy'}
         src={focus.image.url}
       />
@@ -42,6 +46,13 @@ export function FocusTile({ focus, variant = 'preview' }: FocusTileProps) {
       >
         {focus.saying.text}
       </div>
+      {!isMain ? (
+        <div className="absolute left-2 top-2 z-10">
+          <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_6px_18px_rgba(0,0,0,0.16)]">
+            {previewCategory}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

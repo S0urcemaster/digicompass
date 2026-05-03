@@ -210,8 +210,8 @@ Planned purpose:
 Here the user can browse all available images mapped in data/images.ts
 Layout is plit in half horizontally . Left is a big image of the selected item . right is a 3-column list of image previews of the factory images . use the images in public/images/preview here
 Above the images field is a text input to narrow the image list to the category typed in
-On the big image in the top left corner is a big round checkbox button to add/remove it to/from the user collection
-On the bottom of the big image are 5 clickable stars . When an image is in the user collection : the image rating can be set
+There is no separate add button on the big image anymore
+On the bottom of the big image are 5 clickable stars . Activating a star adds the image to the user collection and sets its rating
 When clicking on the big image itself : its modal maximizing / closes on click / for the user to have a closer look
 
 ### Sayings

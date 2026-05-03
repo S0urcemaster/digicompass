@@ -4,9 +4,7 @@ import { StarRating } from '../shared/StarRating';
 
 type CollectionImagePanelProps = {
   image: CompassImage;
-  isInCollection: boolean;
   panelClassName?: string;
-  onToggleCollection: () => void;
   onOpenModal: () => void;
   onSetRating: (rating: Rating) => void;
   showImageId?: boolean;
@@ -14,9 +12,7 @@ type CollectionImagePanelProps = {
 
 export function CollectionImagePanel({
   image,
-  isInCollection,
   panelClassName,
-  onToggleCollection,
   onOpenModal,
   onSetRating,
   showImageId = false,
@@ -29,7 +25,7 @@ export function CollectionImagePanel({
         alt={image.categories.map((category) => category.text).join(', ')}
         className="min-[900px]:h-full w-full object-contain"
         decoding="async"
-        fetchpriority="high"
+        fetchPriority="high"
         loading="eager"
         src={image.url}
       />
@@ -42,17 +38,11 @@ export function CollectionImagePanel({
       ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />
 
-      <Button
-        aria-label={isInCollection ? 'Bild aus der Sammlung entfernen' : 'Bild zur Sammlung hinzufügen'}
-        aria-pressed={isInCollection}
-        className="absolute left-6 top-6 z-10 h-[5.25rem] w-[5.25rem] text-[1.875rem]"
-        onClick={onToggleCollection}
-        shape="round"
-        tone="light"
-        variant="overlay-action"
-      >
-        {isInCollection ? '✓' : '+'}
-      </Button>
+      <div className="absolute left-6 top-6 z-10">
+        <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-3 py-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.18)]">
+          {image.categories[0]?.text ?? 'Unsortiert'}
+        </p>
+      </div>
 
       <Button
         aria-label="Vergrößertes Bild öffnen"
@@ -74,17 +64,11 @@ export function CollectionImagePanel({
         </svg>
       </Button>
 
-      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
-        <div className="flex-1" />
-
-        <div className="z-10 text-right">
-          <p className="mb-3 text-[1.65rem] font-semibold leading-tight text-[#1f1712]">
-            {image.categories.map((category) => category.text).join(' / ')}
-          </p>
+      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-6 pb-6 pt-20 sm:px-7 sm:pb-7">
+        <div className="ml-auto max-w-[26rem]">
           <StarRating
             className="w-full justify-between px-2"
             buttonClassName="flex-1 text-center"
-            disabled={!isInCollection}
             rating={image.rating}
             starClassName="text-[3.25rem]"
             tone="dark"
