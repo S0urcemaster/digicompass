@@ -22,14 +22,15 @@ const COLLECTION_TABS = [
   { disabled: true, label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
-const COLLECTION_PAGE_SIZE = 9;
+const COLLECTION_IMAGE_PAGE_SIZE = 9;
+const COLLECTION_SAYING_PAGE_SIZE = 5;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 
 const getSayingFontSize = (fontSize: number, expanded = false) =>
   expanded
     ? `clamp(2rem, ${fontSize / 12}vw, ${fontSize * 1.08}px)`
-    : `clamp(1.5rem, ${fontSize / 14.67}vw, ${Math.max(33, fontSize * 0.78)}px)`;
+    : `clamp(1.35rem, ${fontSize / 16.2}vw, ${Math.max(29, fontSize * 0.7)}px)`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 
@@ -70,11 +71,11 @@ export function CollectionView({
       ? true
       : image.categories.some((category) => category.text.toLowerCase().includes(normalizedImageFilter))
   );
-  const collectionImagePageCount = Math.max(1, Math.ceil(filteredCollectionImages.length / COLLECTION_PAGE_SIZE));
+  const collectionImagePageCount = Math.max(1, Math.ceil(filteredCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
   const safeCollectionImagePage = Math.min(collectionImagePage, collectionImagePageCount - 1);
   const pagedCollectionImages = filteredCollectionImages.slice(
-    safeCollectionImagePage * COLLECTION_PAGE_SIZE,
-    (safeCollectionImagePage + 1) * COLLECTION_PAGE_SIZE
+    safeCollectionImagePage * COLLECTION_IMAGE_PAGE_SIZE,
+    (safeCollectionImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
   );
   const selectedCollectionImage =
     filteredCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? filteredCollectionImages[0] ?? null;
@@ -88,11 +89,11 @@ export function CollectionView({
       ? true
       : saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
   );
-  const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_PAGE_SIZE));
+  const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeCollectionSayingPage = Math.min(collectionSayingPage, collectionSayingPageCount - 1);
   const pagedCollectionSayings = filteredCollectionSayings.slice(
-    safeCollectionSayingPage * COLLECTION_PAGE_SIZE,
-    (safeCollectionSayingPage + 1) * COLLECTION_PAGE_SIZE
+    safeCollectionSayingPage * COLLECTION_SAYING_PAGE_SIZE,
+    (safeCollectionSayingPage + 1) * COLLECTION_SAYING_PAGE_SIZE
   );
 
   const handleSetSelectedImageRating = (rating: number) => {
@@ -378,19 +379,23 @@ export function CollectionView({
                           />
                           <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
                             <div className="flex min-w-0 flex-1 flex-col gap-2">
-                              <div className="flex flex-wrap items-start gap-2">
-                                {showCollectionSayingIds ? (
-                                  <div className="shrink-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-sm font-semibold text-[#1f1712]">
-                                    {saying.id}
-                                  </div>
-                                ) : null}
-                                <p className="inline-flex border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
-                                  {saying.categories.length > 0
-                                    ? saying.categories.map((category) => category.text).join('   ')
-                                    : 'Unsortiert'}
-                                </p>
+                              <div className="flex items-start justify-between gap-3">
+                                <div
+                                  className={`min-w-0 ${showCollectionSayingIds ? 'grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2' : 'block'}`}
+                                >
+                                  {showCollectionSayingIds ? (
+                                    <div className="border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-sm font-semibold text-[#1f1712]">
+                                      {saying.id}
+                                    </div>
+                                  ) : null}
+                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
+                                    {saying.categories.length > 0
+                                      ? saying.categories.map((category) => category.text).join('   ')
+                                      : 'Unsortiert'}
+                                  </p>
+                                </div>
                                 <StarRating
-                                  className="relative z-10 ml-auto justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
+                                  className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
                                   rating={previewRating}
                                   buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
                                   starClassName="text-[2.3rem] leading-none"
