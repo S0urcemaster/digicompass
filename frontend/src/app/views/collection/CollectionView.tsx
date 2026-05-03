@@ -691,209 +691,198 @@ export function CollectionView({
                 </section>
               </div>
 
-              <section className="space-y-4 rounded-[28px] border border-amber-950/10 bg-white/55 p-4 shadow-[0_22px_60px_rgba(76,59,48,0.08)] sm:p-5">
-                <div className="flex flex-col gap-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-accent">Editor</p>
-                  <h3 className="text-xl font-semibold tracking-tight text-ink">Bilder und Sprüche aus deiner Sammlung</h3>
-                </div>
-
-                <div className="grid gap-5 min-[980px]:grid-cols-2 min-[980px]:items-start">
-                  <section className="space-y-4">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                      <label className="block flex-1" htmlFor="focus-editor-image-filter">
-                        <input
-                          id="focus-editor-image-filter"
-                          className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                          placeholder="User-Bilder nach Kategorie filtern"
-                          value={focusEditorImageFilter}
-                          onChange={(event) => setFocusEditorImageFilter(event.target.value)}
-                        />
-                      </label>
-
-                      {filteredFocusEditorImages.length > 0 ? (
-                        <div className="flex items-center gap-3 sm:w-[15rem]">
-                          <Button
-                            aria-label="Vorherige User-Bildseite"
-                            className="flex-1"
-                            disabled={safeFocusEditorImagePage === 0}
-                            fullWidth
-                            onClick={() => setFocusEditorImagePage((page) => Math.max(0, page - 1))}
-                            shape="pill"
-                            variant="pager"
-                          >
-                            ←
-                          </Button>
-                          <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
-                            {safeFocusEditorImagePage + 1} / {focusEditorImagePageCount}
-                          </div>
-                          <Button
-                            aria-label="Nächste User-Bildseite"
-                            className="flex-1"
-                            disabled={safeFocusEditorImagePage >= focusEditorImagePageCount - 1}
-                            fullWidth
-                            onClick={() =>
-                              setFocusEditorImagePage((page) => Math.min(focusEditorImagePageCount - 1, page + 1))
-                            }
-                            shape="pill"
-                            variant="pager"
-                          >
-                            →
-                          </Button>
-                        </div>
-                      ) : null}
-                    </div>
+              <div className="grid gap-5 min-[980px]:grid-cols-2 min-[980px]:items-start">
+                <section className="space-y-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <label className="block flex-1" htmlFor="focus-editor-image-filter">
+                      <input
+                        id="focus-editor-image-filter"
+                        className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        placeholder="User-Bilder nach Kategorie filtern"
+                        value={focusEditorImageFilter}
+                        onChange={(event) => setFocusEditorImageFilter(event.target.value)}
+                      />
+                    </label>
 
                     {filteredFocusEditorImages.length > 0 ? (
-                      <div className="grid grid-cols-3 gap-3">
-                        {pagedFocusEditorImages.map((image) => {
-                          const isSelected = image.id === selectedFocusEditorImage?.id;
-                          const overlayTone = getImageOverlayTone(image.color);
-
-                          return (
-                            <Button
-                              align="left"
-                              key={image.id}
-                              className="group relative overflow-hidden rounded-[18px]"
-                              onClick={() => setSelectedFocusEditorImageId(image.id)}
-                              selected={isSelected}
-                              variant="surface"
-                            >
-                              <img
-                                alt={image.categories.map((category) => category.text).join(', ')}
-                                className="aspect-[733/1024] w-full object-cover"
-                                decoding="async"
-                                loading="lazy"
-                                src={getPreviewImageUrl(image.url)}
-                              />
-                              <div className="absolute left-2 top-2">
-                                <p
-                                  className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
-                                >
-                                  {image.categories[0]?.text ?? 'Unsortiert'}
-                                </p>
-                              </div>
-                              <div
-                                className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
-                              >
-                                <StarRating
-                                  className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
-                                  disabled
-                                  rating={image.rating}
-                                  starClassName="text-[0.9rem]"
-                                  tone={overlayTone}
-                                />
-                              </div>
-                            </Button>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">In deiner Sammlung passen keine Bilder zu diesem Filter.</p>
-                      </div>
-                    )}
-                  </section>
-
-                  <section className="space-y-4">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                      <label className="block flex-1" htmlFor="focus-editor-saying-filter">
-                        <input
-                          id="focus-editor-saying-filter"
-                          className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                          placeholder="User-Sprüche nach Kategorie filtern"
-                          value={focusEditorSayingFilter}
-                          onChange={(event) => setFocusEditorSayingFilter(event.target.value)}
-                        />
-                      </label>
-
-                      {filteredFocusEditorSayings.length > 0 ? (
-                        <div className="flex items-center gap-3 sm:w-[15rem]">
-                          <Button
-                            aria-label="Vorherige User-Spruchseite"
-                            className="flex-1"
-                            disabled={safeFocusEditorSayingPage === 0}
-                            fullWidth
-                            onClick={() => setFocusEditorSayingPage((page) => Math.max(0, page - 1))}
-                            shape="pill"
-                            variant="pager"
-                          >
-                            ←
-                          </Button>
-                          <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
-                            {safeFocusEditorSayingPage + 1} / {focusEditorSayingPageCount}
-                          </div>
-                          <Button
-                            aria-label="Nächste User-Spruchseite"
-                            className="flex-1"
-                            disabled={safeFocusEditorSayingPage >= focusEditorSayingPageCount - 1}
-                            fullWidth
-                            onClick={() =>
-                              setFocusEditorSayingPage((page) => Math.min(focusEditorSayingPageCount - 1, page + 1))
-                            }
-                            shape="pill"
-                            variant="pager"
-                          >
-                            →
-                          </Button>
+                      <div className="flex items-center gap-3 sm:w-[15rem]">
+                        <Button
+                          aria-label="Vorherige User-Bildseite"
+                          className="flex-1"
+                          disabled={safeFocusEditorImagePage === 0}
+                          fullWidth
+                          onClick={() => setFocusEditorImagePage((page) => Math.max(0, page - 1))}
+                          shape="pill"
+                          variant="pager"
+                        >
+                          ←
+                        </Button>
+                        <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
+                          {safeFocusEditorImagePage + 1} / {focusEditorImagePageCount}
                         </div>
-                      ) : null}
+                        <Button
+                          aria-label="Nächste User-Bildseite"
+                          className="flex-1"
+                          disabled={safeFocusEditorImagePage >= focusEditorImagePageCount - 1}
+                          fullWidth
+                          onClick={() => setFocusEditorImagePage((page) => Math.min(focusEditorImagePageCount - 1, page + 1))}
+                          shape="pill"
+                          variant="pager"
+                        >
+                          →
+                        </Button>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {filteredFocusEditorImages.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      {pagedFocusEditorImages.map((image) => {
+                        const isSelected = image.id === selectedFocusEditorImage?.id;
+                        const overlayTone = getImageOverlayTone(image.color);
+
+                        return (
+                          <Button
+                            align="left"
+                            key={image.id}
+                            className="group relative overflow-hidden rounded-[18px]"
+                            onClick={() => setSelectedFocusEditorImageId(image.id)}
+                            selected={isSelected}
+                            variant="surface"
+                          >
+                            <img
+                              alt={image.categories.map((category) => category.text).join(', ')}
+                              className="aspect-[733/1024] w-full object-cover"
+                              decoding="async"
+                              loading="lazy"
+                              src={getPreviewImageUrl(image.url)}
+                            />
+                            <div className="absolute left-2 top-2">
+                              <p
+                                className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
+                              >
+                                {image.categories[0]?.text ?? 'Unsortiert'}
+                              </p>
+                            </div>
+                            <div
+                              className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
+                            >
+                              <StarRating
+                                className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
+                                disabled
+                                rating={image.rating}
+                                starClassName="text-[0.9rem]"
+                                tone={overlayTone}
+                              />
+                            </div>
+                          </Button>
+                        );
+                      })}
                     </div>
+                  ) : (
+                    <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                      <p className="text-sm text-muted">In deiner Sammlung passen keine Bilder zu diesem Filter.</p>
+                    </div>
+                  )}
+                </section>
+
+                <section className="space-y-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <label className="block flex-1" htmlFor="focus-editor-saying-filter">
+                      <input
+                        id="focus-editor-saying-filter"
+                        className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        placeholder="User-Sprüche nach Kategorie filtern"
+                        value={focusEditorSayingFilter}
+                        onChange={(event) => setFocusEditorSayingFilter(event.target.value)}
+                      />
+                    </label>
 
                     {filteredFocusEditorSayings.length > 0 ? (
-                      <div className="grid grid-cols-1 gap-3">
-                        {pagedFocusEditorSayings.map((saying) => {
-                          const isSelected = saying.id === selectedFocusEditorSaying?.id;
+                      <div className="flex items-center gap-3 sm:w-[15rem]">
+                        <Button
+                          aria-label="Vorherige User-Spruchseite"
+                          className="flex-1"
+                          disabled={safeFocusEditorSayingPage === 0}
+                          fullWidth
+                          onClick={() => setFocusEditorSayingPage((page) => Math.max(0, page - 1))}
+                          shape="pill"
+                          variant="pager"
+                        >
+                          ←
+                        </Button>
+                        <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
+                          {safeFocusEditorSayingPage + 1} / {focusEditorSayingPageCount}
+                        </div>
+                        <Button
+                          aria-label="Nächste User-Spruchseite"
+                          className="flex-1"
+                          disabled={safeFocusEditorSayingPage >= focusEditorSayingPageCount - 1}
+                          fullWidth
+                          onClick={() => setFocusEditorSayingPage((page) => Math.min(focusEditorSayingPageCount - 1, page + 1))}
+                          shape="pill"
+                          variant="pager"
+                        >
+                          →
+                        </Button>
+                      </div>
+                    ) : null}
+                  </div>
 
-                          return (
-                            <article
-                              key={saying.id}
-                              className={`relative overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition ${
-                                isSelected ? 'ring-2 ring-accent/40' : ''
-                              }`}
-                            >
-                              <button
-                                className="absolute inset-0 z-0"
-                                aria-label={`User-Spruch ${saying.id} auswählen`}
-                                onClick={() => setSelectedFocusEditorSayingId(saying.id)}
-                                type="button"
-                              />
-                              <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
-                                <div className="flex min-w-0 flex-1 flex-col gap-2">
-                                  <div className="flex items-start justify-between gap-3">
-                                    <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
-                                      {saying.categories.length > 0
-                                        ? saying.categories.map((category) => category.text).join('   ')
-                                        : 'Unsortiert'}
-                                    </p>
-                                    <StarRating
-                                      className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
-                                      rating={saying.rating}
-                                      buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
-                                      starClassName="text-[2.3rem] leading-none"
-                                      tone="dark"
-                                      onChange={(rating) => handleSetSayingRating(saying, rating)}
-                                    />
-                                  </div>
-                                  <p
-                                    className="w-full font-semibold tracking-[-0.04em] text-[#1f1712]"
-                                    style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.1 }}
-                                  >
-                                    {saying.text}
+                  {filteredFocusEditorSayings.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-3">
+                      {pagedFocusEditorSayings.map((saying) => {
+                        const isSelected = saying.id === selectedFocusEditorSaying?.id;
+
+                        return (
+                          <article
+                            key={saying.id}
+                            className={`relative overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition ${
+                              isSelected ? 'ring-2 ring-accent/40' : ''
+                            }`}
+                          >
+                            <button
+                              className="absolute inset-0 z-0"
+                              aria-label={`User-Spruch ${saying.id} auswählen`}
+                              onClick={() => setSelectedFocusEditorSayingId(saying.id)}
+                              type="button"
+                            />
+                            <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
+                              <div className="flex min-w-0 flex-1 flex-col gap-2">
+                                <div className="flex items-start justify-between gap-3">
+                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
+                                    {saying.categories.length > 0
+                                      ? saying.categories.map((category) => category.text).join('   ')
+                                      : 'Unsortiert'}
                                   </p>
+                                  <StarRating
+                                    className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
+                                    rating={saying.rating}
+                                    buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
+                                    starClassName="text-[2.3rem] leading-none"
+                                    tone="dark"
+                                    onChange={(rating) => handleSetSayingRating(saying, rating)}
+                                  />
                                 </div>
+                                <p
+                                  className="w-full font-semibold tracking-[-0.04em] text-[#1f1712]"
+                                  style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.1 }}
+                                >
+                                  {saying.text}
+                                </p>
                               </div>
-                            </article>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">In deiner Sammlung passen keine Sprüche zu diesem Filter.</p>
-                      </div>
-                    )}
-                  </section>
-                </div>
-              </section>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                      <p className="text-sm text-muted">In deiner Sammlung passen keine Sprüche zu diesem Filter.</p>
+                    </div>
+                  )}
+                </section>
+              </div>
             </div>
           ) : (
             <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
