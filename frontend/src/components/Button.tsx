@@ -76,25 +76,23 @@ const getVariantClassName = ({
   if (variant === 'star') {
     if (disabled) {
       if (active) {
-        return `${defaultBg} ${tone === 'light' ? 'text-[#8b4d16]' : 'text-[#ffd56a]'} opacity-85`;
+        return tone === 'light' ? 'text-[#ffd56a] opacity-85' : 'text-[#8b4d16] opacity-85';
       }
 
-      return `${defaultBg} ${tone === 'light' ? 'text-[#1f1712]/28' : 'text-white/35'} opacity-70`;
+      return tone === 'light' ? 'text-white/35 opacity-70' : 'text-[#1f1712]/28 opacity-70';
     }
 
     if (active) {
-      return `${activeBg} ${tone === 'light' ? 'text-[#8b4d16]' : 'text-[#ffd56a]'} hover:scale-105`;
+      return tone === 'light' ? 'text-[#ffd56a] hover:scale-105' : 'text-[#8b4d16] hover:scale-105';
     }
 
     return tone === 'light'
-      ? `${defaultBg} text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]`
-      : `${defaultBg} text-white/55 hover:scale-105 hover:text-[#ffe19b]`;
+      ? 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
+      : 'text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]';
   }
 
   if (variant === 'overlay-action') {
-    return tone === 'light'
-      ? `border-[#1f1712]/78 ${active ? activeBg : defaultBg} text-[#f6efe2] backdrop-blur`
-      : `border-white/78 ${active ? activeBg : defaultBg} text-[#1f1712] backdrop-blur`;
+    return 'backdrop-blur';
   }
 
   if (variant === 'surface') {

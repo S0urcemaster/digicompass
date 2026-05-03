@@ -6,6 +6,13 @@ import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
 import { StarRating } from '../shared/StarRating';
+import {
+  getImageBadgeClassName,
+  getImageBottomOverlayClassName,
+  getImageIdBadgeClassName,
+  getImageOverlayTone,
+  getImageStarContainerClassName,
+} from './imageOverlayTone';
 
 const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
@@ -33,7 +40,7 @@ export function CollectionView({
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
-  const [showCollectionImageIds, setShowCollectionImageIds] = useState(false);
+  const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
   const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
@@ -167,6 +174,7 @@ export function CollectionView({
                       const isSelected = image.id === selectedCollectionImage.id;
                       const collectedListImage = collectionImageById.get(image.id) ?? null;
                       const previewRating = collectedListImage?.rating ?? 0;
+                      const overlayTone = getImageOverlayTone(image.color);
 
                       return (
                         <Button
@@ -186,23 +194,29 @@ export function CollectionView({
                           />
                           {showCollectionImageIds ? (
                             <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                              <div className="rounded-full bg-[#fff7ed]/92 px-4 py-2 text-3xl font-semibold text-[#1f1712] shadow-[0_10px_22px_rgba(0,0,0,0.16)]">
+                              <div
+                                className={`rounded-full px-4 py-2 text-3xl font-semibold ${getImageIdBadgeClassName(overlayTone)}`}
+                              >
                                 {image.id}
                               </div>
                             </div>
                           ) : null}
                           <div className="absolute left-2 top-2">
-                            <p className="inline-flex rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_6px_18px_rgba(0,0,0,0.16)]">
+                            <p
+                              className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
+                            >
                               {image.categories[0]?.text ?? 'Unsortiert'}
                             </p>
                           </div>
-                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-2 pb-2 pt-8">
+                          <div
+                            className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
+                          >
                             <StarRating
-                              className="w-full justify-center gap-0.5"
+                              className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
                               disabled
                               rating={previewRating}
                               starClassName="text-[0.9rem]"
-                              tone="dark"
+                              tone={overlayTone}
                             />
                           </div>
                         </Button>

@@ -14,7 +14,7 @@
     radial-gradient(circle at top left, var(--app-background-highlight) 0%, rgba(255, 250, 242, 0) 36%),
     radial-gradient(circle at right 20%, var(--app-background-tint) 0%, rgba(184, 80, 66, 0) 32%),
     var(--app-background-base);
-  --button-bg-light: rgba(234, 203, 203, 0.8);
+  --button-bg-light: rgba(243, 229, 229, 0.8);
   --button-bg-light-active: #875656;
   --button-bg-dark: rgb(31 23 18 / 0.88);
   --button-bg-dark-active: #17110d;
