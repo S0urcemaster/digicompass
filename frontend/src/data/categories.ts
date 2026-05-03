@@ -16,6 +16,7 @@ export const CATEGORIES: Record<string, Category> = {
   frieden: { id: 12, text: 'Frieden' },
   geduld: { id: 13, text: 'Geduld' },
   gelassenheit: { id: 14, text: 'Gelassenheit' },
+  geburt: { id: 15, text: 'Gerechtigkeit' },
   gerechtigkeit: { id: 15, text: 'Gerechtigkeit' },
   gier: { id: 16, text: 'Gier' },
   glaube: { id: 17, text: 'Glaube' },
