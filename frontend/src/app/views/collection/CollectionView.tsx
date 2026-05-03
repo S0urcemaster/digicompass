@@ -25,6 +25,7 @@ const COLLECTION_TABS = [
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
 const COLLECTION_FOCUS_PAGE_SIZE = 9;
 const COLLECTION_SAYING_PAGE_SIZE = 5;
+const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 8;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
@@ -103,11 +104,11 @@ export function CollectionView({
       ? true
       : image.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusEditorImageFilter))
   );
-  const focusEditorImagePageCount = Math.max(1, Math.ceil(filteredFocusEditorImages.length / COLLECTION_IMAGE_PAGE_SIZE));
+  const focusEditorImagePageCount = Math.max(1, Math.ceil(filteredFocusEditorImages.length / FOCUS_EDITOR_IMAGE_PAGE_SIZE));
   const safeFocusEditorImagePage = Math.min(focusEditorImagePage, focusEditorImagePageCount - 1);
   const pagedFocusEditorImages = filteredFocusEditorImages.slice(
-    safeFocusEditorImagePage * COLLECTION_IMAGE_PAGE_SIZE,
-    (safeFocusEditorImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
+    safeFocusEditorImagePage * FOCUS_EDITOR_IMAGE_PAGE_SIZE,
+    (safeFocusEditorImagePage + 1) * FOCUS_EDITOR_IMAGE_PAGE_SIZE
   );
   const selectedFocusEditorImage =
     filteredFocusEditorImages.find((image) => image.id === selectedFocusEditorImageId) ?? filteredFocusEditorImages[0] ?? null;
@@ -736,7 +737,7 @@ export function CollectionView({
                   </div>
 
                   {filteredFocusEditorImages.length > 0 ? (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                       {pagedFocusEditorImages.map((image) => {
                         const isSelected = image.id === selectedFocusEditorImage?.id;
                         const overlayTone = getImageOverlayTone(image.color);
