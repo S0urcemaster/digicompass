@@ -29,16 +29,17 @@ export function StarRating({
       {Array.from({ length: 5 }, (_, index) => {
         const starValue = clampRating((index + 1) / 5);
         const active = index < filledStars;
+        const clearsRating = active && index === filledStars - 1;
 
         return (
           <Button
             active={active}
             align="center"
             key={starValue}
-            aria-label={`Bewertung auf ${index + 1} Sterne setzen`}
+            aria-label={clearsRating ? 'Bewertung zurücksetzen' : `Bewertung auf ${index + 1} Sterne setzen`}
             className={`${buttonClassName ?? ''} ${starClassName ?? 'text-2xl'}`}
             disabled={disabled}
-            onClick={() => onChange?.(starValue)}
+            onClick={() => onChange?.(clearsRating ? 0 : starValue)}
             tone={tone}
             variant="star"
           >

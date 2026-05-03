@@ -16,8 +16,8 @@ const createImage = (
 
 export const IMAGES: CompassImage[] = [
   createImage(0, "/images/angst dunkel 1.jpg", "dunkel", CATEGORIES.angst),
-  createImage(1, "/images/angst hell 1.jpg", "hell", CATEGORIES.angst),
-  createImage(2, "/images/angst hell 2.jpg", "hell", CATEGORIES.angst),
+  createImage(1, "/images/angst hell 1.jpg", "dunkel", CATEGORIES.angst),
+  createImage(2, "/images/angst hell 2.jpg", "dunkel", CATEGORIES.angst),
   createImage(3, "/images/autonomie hell 1.jpg", "hell", CATEGORIES.autonomie),
   createImage(4, "/images/autonomie hell 2.jpg", "hell", CATEGORIES.autonomie),
   createImage(11, "/images/autonomie dunkel 3.jpg", "dunkel", CATEGORIES.autonomie),
