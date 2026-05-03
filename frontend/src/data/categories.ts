@@ -1,6 +1,7 @@
 import type { Category } from '../types/domain';
 
 export const CATEGORIES: Record<string, Category> = {
+  abhaengigkeit: { id: 57, text: 'Abhängigkeit' },
   angst: { id: 0, text: 'Angst' }, //
   autonomie: { id: 1, text: 'Autonomie' }, //
   bewusstsein: { id: 2, text: 'Bewusstsein' }, //
@@ -8,6 +9,7 @@ export const CATEGORIES: Record<string, Category> = {
   dimension: { id: 4, text: 'Dimension' }, 
   dummheit: { id: 5, text: 'Dummheit' }, 
   entscheidung: { id: 6, text: 'Entscheidung' }, 
+  egoismus: { id: 58, text: 'Egoismus' },
   erfahrung: { id: 7, text: 'Erfahrung' }, 
   erfolg: { id: 8, text: 'Erfolg' },
   erkenntnis: { id: 9, text: 'Erkenntnis' }, //
@@ -26,6 +28,7 @@ export const CATEGORIES: Record<string, Category> = {
   handeln: { id: 21, text: 'Handeln' },
   hass: { id: 22, text: 'Hass' },
   humor: { id: 23, text: 'Humor' },
+  identität: { id: 24, text: 'Identität' },
   identitaet: { id: 24, text: 'Identität' },
   intuition: { id: 25, text: 'Intuition' },
   kunst: { id: 26, text: 'Kunst' },
