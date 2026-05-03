@@ -14,7 +14,7 @@ type CollectionImagePanelProps = {
   image: CompassImage;
   panelClassName?: string;
   onOpenModal: () => void;
-  onSetRating: (rating: Rating) => void;
+  onSetRating?: (rating: Rating) => void;
   showImageId?: boolean;
   topContent?: ReactNode;
 };
@@ -28,6 +28,7 @@ export function CollectionImagePanel({
   topContent,
 }: CollectionImagePanelProps) {
   const overlayTone = getImageOverlayTone(image.color);
+  const ratingDisabled = !onSetRating;
 
   return (
     <article
@@ -87,6 +88,7 @@ export function CollectionImagePanel({
           <StarRating
             className={`w-full justify-between rounded-full px-2 py-2 ${getImageStarContainerClassName(overlayTone)}`}
             buttonClassName="flex-1 text-center"
+            disabled={ratingDisabled}
             rating={image.rating}
             starClassName="text-[3.25rem]"
             tone={overlayTone}

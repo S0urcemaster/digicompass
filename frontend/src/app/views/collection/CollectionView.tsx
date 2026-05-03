@@ -36,6 +36,7 @@ const getSayingFontSize = (fontSize: number, expanded = false) =>
     : `clamp(1.35rem, ${fontSize / 16.2}vw, ${Math.max(29, fontSize * 0.7)}px)`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
+type FocusPreviewSource = 'editor' | 'focus';
 
 type CollectionViewProps = {
   collectionFoci: Focus[];
@@ -61,6 +62,7 @@ export function CollectionView({
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
   const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
   const [collectionFocusPage, setCollectionFocusPage] = useState(0);
+  const [focusPreviewSource, setFocusPreviewSource] = useState<FocusPreviewSource>('focus');
   const [focusEditorImagePage, setFocusEditorImagePage] = useState(0);
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
@@ -122,6 +124,30 @@ export function CollectionView({
   );
   const selectedFocusEditorSaying =
     filteredFocusEditorSayings.find((saying) => saying.id === selectedFocusEditorSayingId) ?? filteredFocusEditorSayings[0] ?? null;
+  const selectedEditorFocusKey =
+    selectedFocusEditorImage && selectedFocusEditorSaying
+      ? `${selectedFocusEditorSaying.id}:${selectedFocusEditorImage.id}`
+      : null;
+  const existingEditorFocus =
+    selectedEditorFocusKey === null
+      ? null
+      : collectionFoci.find((focus) => getFocusKey(focus) === selectedEditorFocusKey) ?? null;
+  const editorPreviewFocus =
+    selectedFocusEditorImage && selectedFocusEditorSaying
+      ? existingEditorFocus ?? {
+          image: selectedFocusEditorImage,
+          notes: '',
+          rating: 0,
+          saying: selectedFocusEditorSaying,
+        }
+      : null;
+  const previewFocus =
+    focusPreviewSource === 'editor'
+      ? editorPreviewFocus ?? selectedCollectionFocus
+      : selectedCollectionFocus ?? editorPreviewFocus;
+  const previewFocusKey = previewFocus ? getFocusKey(previewFocus) : null;
+  const storedPreviewFocus =
+    previewFocusKey === null ? null : collectionFoci.find((focus) => getFocusKey(focus) === previewFocusKey) ?? null;
 
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
@@ -561,7 +587,7 @@ export function CollectionView({
             </div>
           )
         ) : activeTab === 'foci' ? (
-          selectedCollectionFocus ? (
+          previewFocus || filteredCollectionFoci.length > 0 || filteredFocusEditorImages.length > 0 || filteredFocusEditorSayings.length > 0 ? (
             <div className="space-y-8">
               <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
                 <label className="block" htmlFor="collection-focus-filter">
@@ -606,24 +632,32 @@ export function CollectionView({
                   ) : null}
                 </div>
 
-                <CollectionImagePanel
-                  image={{ ...selectedCollectionFocus.image, rating: selectedCollectionFocus.rating }}
-                  onOpenModal={() => setZoomedImageId(selectedCollectionFocus.image.id)}
-                  onSetRating={(rating) => handleSetFocusRating(selectedCollectionFocus, rating)}
-                  topContent={
-                    <div className="max-w-[26rem] rounded-[24px] bg-black/32 px-5 py-4 text-left text-white shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px]">
-                      <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/80">
-                        {selectedCollectionFocus.image.categories[0]?.text ?? 'Unsortiert'}
-                      </p>
-                      <p
-                        className="mt-3 font-semibold tracking-[-0.04em] text-white"
-                        style={{ fontSize: getSayingFontSize(selectedCollectionFocus.saying.fontSize), lineHeight: 1.08 }}
-                      >
-                        {selectedCollectionFocus.saying.text}
-                      </p>
-                    </div>
-                  }
-                />
+                {previewFocus ? (
+                  <CollectionImagePanel
+                    image={{ ...previewFocus.image, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
+                    onOpenModal={() => setZoomedImageId(previewFocus.image.id)}
+                    onSetRating={
+                      storedPreviewFocus ? (rating) => handleSetFocusRating(storedPreviewFocus, rating) : undefined
+                    }
+                    topContent={
+                      <div className="max-w-[26rem] rounded-[24px] bg-black/32 px-5 py-4 text-left text-white shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px]">
+                        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/80">
+                          {previewFocus.image.categories[0]?.text ?? 'Unsortiert'}
+                        </p>
+                        <p
+                          className="mt-3 font-semibold tracking-[-0.04em] text-white"
+                          style={{ fontSize: getSayingFontSize(previewFocus.saying.fontSize), lineHeight: 1.08 }}
+                        >
+                          {previewFocus.saying.text}
+                        </p>
+                      </div>
+                    }
+                  />
+                ) : (
+                  <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                    <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
+                  </div>
+                )}
 
                 <section className="flex min-h-0 flex-col">
                   {filteredCollectionFoci.length > 0 ? (
@@ -631,7 +665,7 @@ export function CollectionView({
                       <div className="grid grid-cols-3 gap-3">
                         {pagedCollectionFoci.map((focus) => {
                           const focusKey = getFocusKey(focus);
-                          const isSelected = focusKey === getFocusKey(selectedCollectionFocus);
+                          const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);
                           const overlayTone = getImageOverlayTone(focus.image.color);
 
                           return (
@@ -639,7 +673,10 @@ export function CollectionView({
                               align="left"
                               key={focusKey}
                               className="group relative overflow-hidden rounded-[18px]"
-                              onClick={() => setSelectedCollectionFocusKey(focusKey)}
+                              onClick={() => {
+                                setSelectedCollectionFocusKey(focusKey);
+                                setFocusPreviewSource('focus');
+                              }}
                               selected={isSelected}
                               variant="surface"
                             >
@@ -733,7 +770,10 @@ export function CollectionView({
                             align="left"
                             key={image.id}
                             className="group relative overflow-hidden rounded-[18px]"
-                            onClick={() => setSelectedFocusEditorImageId(image.id)}
+                            onClick={() => {
+                              setSelectedFocusEditorImageId(image.id);
+                              setFocusPreviewSource('editor');
+                            }}
                             selected={isSelected}
                             variant="surface"
                           >
@@ -821,7 +861,10 @@ export function CollectionView({
                             <button
                               className="absolute inset-0 z-0"
                               aria-label={`User-Spruch ${saying.id} auswählen`}
-                              onClick={() => setSelectedFocusEditorSayingId(saying.id)}
+                              onClick={() => {
+                                setSelectedFocusEditorSayingId(saying.id);
+                                setFocusPreviewSource('editor');
+                              }}
                               type="button"
                             />
                             <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
