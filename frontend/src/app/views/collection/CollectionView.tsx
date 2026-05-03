@@ -61,9 +61,7 @@ export function CollectionView({
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
   const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
   const [collectionFocusPage, setCollectionFocusPage] = useState(0);
-  const [focusEditorImageFilter, setFocusEditorImageFilter] = useState('');
   const [focusEditorImagePage, setFocusEditorImagePage] = useState(0);
-  const [focusEditorSayingFilter, setFocusEditorSayingFilter] = useState('');
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
   const [collectionImagePage, setCollectionImagePage] = useState(0);
@@ -79,8 +77,6 @@ export function CollectionView({
   const [showCollectionSayingIds, setShowCollectionSayingIds] = useState(true);
 
   const normalizedFocusFilter = collectionFocusFilter.trim().toLowerCase();
-  const normalizedFocusEditorImageFilter = focusEditorImageFilter.trim().toLowerCase();
-  const normalizedFocusEditorSayingFilter = focusEditorSayingFilter.trim().toLowerCase();
   const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
   const normalizedSayingFilter = collectionSayingFilter.trim().toLowerCase();
 
@@ -100,9 +96,9 @@ export function CollectionView({
     filteredCollectionFoci.find((focus) => getFocusKey(focus) === selectedCollectionFocusKey) ?? filteredCollectionFoci[0] ?? null;
 
   const filteredFocusEditorImages = collectionImages.filter((image) =>
-    normalizedFocusEditorImageFilter.length === 0
+    normalizedFocusFilter.length === 0
       ? true
-      : image.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusEditorImageFilter))
+      : image.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusFilter))
   );
   const focusEditorImagePageCount = Math.max(1, Math.ceil(filteredFocusEditorImages.length / FOCUS_EDITOR_IMAGE_PAGE_SIZE));
   const safeFocusEditorImagePage = Math.min(focusEditorImagePage, focusEditorImagePageCount - 1);
@@ -114,9 +110,9 @@ export function CollectionView({
     filteredFocusEditorImages.find((image) => image.id === selectedFocusEditorImageId) ?? filteredFocusEditorImages[0] ?? null;
 
   const filteredFocusEditorSayings = collectionSayings.filter((saying) =>
-    normalizedFocusEditorSayingFilter.length === 0
+    normalizedFocusFilter.length === 0
       ? true
-      : saying.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusEditorSayingFilter))
+      : saying.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusFilter))
   );
   const focusEditorSayingPageCount = Math.max(1, Math.ceil(filteredFocusEditorSayings.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeFocusEditorSayingPage = Math.min(focusEditorSayingPage, focusEditorSayingPageCount - 1);
@@ -208,7 +204,7 @@ export function CollectionView({
 
   useEffect(() => {
     setFocusEditorImagePage(0);
-  }, [normalizedFocusEditorImageFilter]);
+  }, [normalizedFocusFilter]);
 
   useEffect(() => {
     if (selectedFocusEditorImageId === null && filteredFocusEditorImages[0]) {
@@ -233,7 +229,7 @@ export function CollectionView({
 
   useEffect(() => {
     setFocusEditorSayingPage(0);
-  }, [normalizedFocusEditorSayingFilter]);
+  }, [normalizedFocusFilter]);
 
   useEffect(() => {
     if (selectedFocusEditorSayingId === null && filteredFocusEditorSayings[0]) {
@@ -694,19 +690,9 @@ export function CollectionView({
 
               <div className="grid gap-5 min-[980px]:grid-cols-2 min-[980px]:items-start">
                 <section className="space-y-4">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <label className="block flex-1" htmlFor="focus-editor-image-filter">
-                      <input
-                        id="focus-editor-image-filter"
-                        className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                        placeholder="User-Bilder nach Kategorie filtern"
-                        value={focusEditorImageFilter}
-                        onChange={(event) => setFocusEditorImageFilter(event.target.value)}
-                      />
-                    </label>
-
+                  <div>
                     {filteredFocusEditorImages.length > 0 ? (
-                      <div className="flex items-center gap-3 sm:w-[15rem]">
+                      <div className="flex w-full items-center gap-3">
                         <Button
                           aria-label="Vorherige User-Bildseite"
                           className="flex-1"
@@ -788,19 +774,9 @@ export function CollectionView({
                 </section>
 
                 <section className="space-y-4">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <label className="block flex-1" htmlFor="focus-editor-saying-filter">
-                      <input
-                        id="focus-editor-saying-filter"
-                        className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                        placeholder="User-Sprüche nach Kategorie filtern"
-                        value={focusEditorSayingFilter}
-                        onChange={(event) => setFocusEditorSayingFilter(event.target.value)}
-                      />
-                    </label>
-
+                  <div>
                     {filteredFocusEditorSayings.length > 0 ? (
-                      <div className="flex items-center gap-3 sm:w-[15rem]">
+                      <div className="flex w-full items-center gap-3">
                         <Button
                           aria-label="Vorherige User-Spruchseite"
                           className="flex-1"
@@ -851,7 +827,7 @@ export function CollectionView({
                             <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
                               <div className="flex min-w-0 flex-1 flex-col gap-2">
                                 <div className="flex items-start justify-between gap-3">
-                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
+                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[24px] font-medium text-[#6c6258]">
                                     {saying.categories.length > 0
                                       ? saying.categories.map((category) => category.text).join('   ')
                                       : 'Unsortiert'}
@@ -859,8 +835,8 @@ export function CollectionView({
                                   <StarRating
                                     className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
                                     rating={saying.rating}
-                                    buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
-                                    starClassName="text-[2.3rem] leading-none"
+                                    buttonClassName="flex h-[1.45rem] w-[1.45rem] items-center justify-center p-0 leading-none"
+                                    starClassName="text-[1.7rem] leading-none"
                                     tone="dark"
                                     onChange={(rating) => handleSetSayingRating(saying, rating)}
                                   />
