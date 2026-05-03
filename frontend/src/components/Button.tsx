@@ -75,6 +75,10 @@ const getVariantClassName = ({
 
   if (variant === 'star') {
     if (disabled) {
+      if (active) {
+        return `${defaultBg} ${tone === 'light' ? 'text-[#8b4d16]' : 'text-[#ffd56a]'} opacity-85`;
+      }
+
       return `${defaultBg} ${tone === 'light' ? 'text-[#1f1712]/28' : 'text-white/35'} opacity-70`;
     }
 

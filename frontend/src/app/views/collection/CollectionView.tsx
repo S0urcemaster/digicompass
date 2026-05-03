@@ -5,6 +5,7 @@ import { IMAGES } from '../../../data/images';
 import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
+import { StarRating } from '../shared/StarRating';
 
 const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
@@ -34,6 +35,7 @@ export function CollectionView({
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(false);
   const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
+  const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
     normalizedImageFilter.length === 0
       ? true
@@ -47,9 +49,7 @@ export function CollectionView({
   );
   const selectedCollectionImage =
     filteredCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? filteredCollectionImages[0] ?? null;
-  const collectedImage = selectedCollectionImage
-    ? collectionImages.find((image) => image.id === selectedCollectionImage.id) ?? null
-    : null;
+  const collectedImage = selectedCollectionImage ? collectionImageById.get(selectedCollectionImage.id) ?? null : null;
   const selectedImageDetails = collectedImage ?? selectedCollectionImage;
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
@@ -165,7 +165,8 @@ export function CollectionView({
                   <div className="grid grid-cols-3 gap-3">
                     {pagedCollectionImages.map((image) => {
                       const isSelected = image.id === selectedCollectionImage.id;
-                      const isCollected = collectionImages.some((entry) => entry.id === image.id);
+                      const collectedListImage = collectionImageById.get(image.id) ?? null;
+                      const previewRating = collectedListImage?.rating ?? 0;
 
                       return (
                         <Button
@@ -195,11 +196,15 @@ export function CollectionView({
                               {image.categories[0]?.text ?? 'Unsortiert'}
                             </p>
                           </div>
-                          {isCollected ? (
-                            <div className="absolute right-2 top-2 rounded-full bg-[#fff7ed]/92 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1f1712]">
-                              Hinzugefügt
-                            </div>
-                          ) : null}
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#fff7ed]/96 via-[#fff7ed]/56 to-transparent px-2 pb-2 pt-8">
+                            <StarRating
+                              className="w-full justify-center gap-0.5"
+                              disabled
+                              rating={previewRating}
+                              starClassName="text-[0.9rem]"
+                              tone="dark"
+                            />
+                          </div>
                         </Button>
                       );
                     })}
