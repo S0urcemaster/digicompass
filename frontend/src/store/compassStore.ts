@@ -25,6 +25,8 @@ interface CompassState {
   addCollectionImage: (image: CompassImage) => void;
   removeCollectionImage: (imageId: number) => void;
   setCollectionImageRating: (imageId: number, rating: Rating) => void;
+  addCollectionSaying: (saying: Saying) => void;
+  setCollectionSayingRating: (sayingId: number, rating: Rating) => void;
 }
 
 const resetFactoryStoreOnReloadInDev = import.meta.env.DEV;
@@ -283,6 +285,34 @@ export const useCompassStore = create<CompassState>()(
               ...state.data.collection,
               images: state.data.collection.images.map((image) =>
                 image.id === imageId ? { ...image, rating } : image
+              ),
+            },
+          },
+        })),
+      addCollectionSaying: (saying) =>
+        set((state) => {
+          if (state.data.collection.sayings.some((entry) => entry.id === saying.id)) {
+            return state;
+          }
+
+          return {
+            data: {
+              ...state.data,
+              collection: {
+                ...state.data.collection,
+                sayings: [...state.data.collection.sayings, cloneSaying(saying)],
+              },
+            },
+          };
+        }),
+      setCollectionSayingRating: (sayingId, rating) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            collection: {
+              ...state.data.collection,
+              sayings: state.data.collection.sayings.map((saying) =>
+                saying.id === sayingId ? { ...saying, rating } : saying
               ),
             },
           },

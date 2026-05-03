@@ -19,10 +19,12 @@ export function App() {
   const {
     activeView,
     addCollectionImage,
+    addCollectionSaying,
     data,
     selectedFocusIndex,
     selectedMindsetIndex,
     setCollectionImageRating,
+    setCollectionSayingRating,
     setActiveView,
     setUsername,
     selectFocus,
@@ -79,8 +81,11 @@ export function App() {
       ) : activeView === 'collection' ? (
         <CollectionView
           addCollectionImage={addCollectionImage}
+          addCollectionSaying={addCollectionSaying}
           collectionImages={data.collection.images}
+          collectionSayings={data.collection.sayings}
           setCollectionImageRating={setCollectionImageRating}
+          setCollectionSayingRating={setCollectionSayingRating}
         />
       ) : (
         <FocusEditorView label={VIEW_LABELS[activeView]} />
