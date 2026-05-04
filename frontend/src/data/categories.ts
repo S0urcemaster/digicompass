@@ -37,7 +37,7 @@ export const CATEGORIES: Record<string, Category> = {
   leid: { id: 29, text: 'Leid' },
   lernen: { id: 30, text: 'Lernen' },
   liebe: { id: 31, text: 'Liebe' },
-  logik: { id: 32, text: 'Logik' },
+  logik: { id: 32, text: 'Logik' }, //
   luege: { id: 33, text: 'Lüge' },
   macht: { id: 34, text: 'Macht' },
   meditation: { id: 35, text: 'Meditation' },

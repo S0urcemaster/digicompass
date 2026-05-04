@@ -326,7 +326,7 @@ export const SAYINGS: Saying[] = [
   { id: 322, text: 'Die Lust treibt uns an / weiter treibt die Pflicht', fontSize: 50, categories: [CATEGORIES.verantwortung, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 323, text: 'Finde dich wieder in der vollständigen Akzeptanz all dessen : was gerade ist', fontSize: 44, categories: [CATEGORIES.gelassenheit, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 324, text: 'Mache zuerst das Notwendige - dann das Mögliche - und plötzlich schaffst Du das Unmögliche !', fontSize: 38, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
-  { id: 325, text: 'Nimm den Schlüssel zur nächsten Tür und lasse diesen Raum hinter dir', fontSize: 38, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
+  { id: 325, text: 'Nimm den Schlüssel zur nächsten Tür und lasse diesen Raum hinter dir', fontSize: 44, categories: [CATEGORIES.handeln, CATEGORIES.erkenntnis], rating: 0.5 },
   { id: 326, text: 'Wenn du nicht musst : warte bis zum Schluss', fontSize: 44, categories: [CATEGORIES.handeln, CATEGORIES.geduld], rating: 0.5 },
   { id: 327, text: 'Talent bedeutet Zeit / die andere nicht haben', fontSize: 44, categories: [CATEGORIES.zeit, CATEGORIES.identität, CATEGORIES.schicksal], rating: 0.5 },
   { id: 328, text: 'Manche Rollen spielt man lieber als andere', fontSize: 50, categories: [CATEGORIES.identitaet, CATEGORIES.schicksal, CATEGORIES.liebe], rating: 0.5 },
@@ -334,4 +334,5 @@ export const SAYINGS: Saying[] = [
   { id: 330, text: 'Man wird 2 mal geboren : das erste Mal durch fremden - das zweite Mal durch eigenen Willen', fontSize: 38, categories: [CATEGORIES.geburt, CATEGORIES.tod, CATEGORIES.wille], rating: 0.5 },
   { id: 331, text: 'Sind Worte leer : kann man aufhören zu sprechen - sind Herzen leer : kann man aufhören zu singen', fontSize: 38, categories: [CATEGORIES.liebe, CATEGORIES.tod, CATEGORIES.kunst], rating: 0.5 },
   { id: 332, text: 'Mut verschwindet nie : Irgendjemand wird dich daran erinnern', fontSize: 44, categories: [CATEGORIES.mut, CATEGORIES.logik], rating: 0.5 },
+  { id: 333, text: 'Glück : das ist einfach eine gute Gesundheit und ein schlechtes Gedächtnis', fontSize: 44, categories: [CATEGORIES.glueck, CATEGORIES.denken], rating: 0.5 },
 ];
