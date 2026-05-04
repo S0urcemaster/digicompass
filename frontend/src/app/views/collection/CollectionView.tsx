@@ -92,6 +92,7 @@ export function CollectionView({
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [selectedCollectionMindsetIndex, setSelectedCollectionMindsetIndex] = useState(0);
   const [collectionMindsetPage, setCollectionMindsetPage] = useState(0);
+  const [collectionModeFocusPage, setCollectionModeFocusPage] = useState(0);
   const [mindsetListMode, setMindsetListMode] = useState<MindsetListMode>('mindsets');
   const [isEditingMindsetDraft, setIsEditingMindsetDraft] = useState(false);
   const [editingMindsetIndex, setEditingMindsetIndex] = useState<number | null>(null);
@@ -201,7 +202,8 @@ export function CollectionView({
   const collectionMindsetListLength =
     mindsetListMode === 'mindsets' ? collectionMindsets.length + 1 : collectionFoci.length;
   const collectionMindsetPageCount = Math.max(1, Math.ceil(collectionMindsetListLength / COLLECTION_MINDSET_PAGE_SIZE));
-  const safeCollectionMindsetPage = Math.min(collectionMindsetPage, collectionMindsetPageCount - 1);
+  const activeCollectionModePage = mindsetListMode === 'mindsets' ? collectionMindsetPage : collectionModeFocusPage;
+  const safeCollectionMindsetPage = Math.min(activeCollectionModePage, collectionMindsetPageCount - 1);
   const pagedCollectionMindsets =
     mindsetListMode === 'mindsets'
       ? collectionMindsets.slice(
@@ -589,14 +591,14 @@ export function CollectionView({
   }, [filteredCollectionSayings, selectedCollectionSayingId]);
 
   useEffect(() => {
-    if (collectionMindsetPage !== safeCollectionMindsetPage) {
+    if (mindsetListMode === 'mindsets' && collectionMindsetPage !== safeCollectionMindsetPage) {
       setCollectionMindsetPage(safeCollectionMindsetPage);
     }
-  }, [collectionMindsetPage, safeCollectionMindsetPage]);
 
-  useEffect(() => {
-    setCollectionMindsetPage(0);
-  }, [mindsetListMode]);
+    if (mindsetListMode === 'foci' && collectionModeFocusPage !== safeCollectionMindsetPage) {
+      setCollectionModeFocusPage(safeCollectionMindsetPage);
+    }
+  }, [collectionMindsetPage, collectionModeFocusPage, mindsetListMode, safeCollectionMindsetPage]);
 
   useEffect(() => {
     if (selectedCollectionMindsetIndex !== safeSelectedCollectionMindsetIndex) {
@@ -1283,7 +1285,11 @@ export function CollectionView({
                     className="flex-1"
                     disabled={safeCollectionMindsetPage === 0}
                     fullWidth
-                    onClick={() => setCollectionMindsetPage((page) => Math.max(0, page - 1))}
+                    onClick={() =>
+                      mindsetListMode === 'mindsets'
+                        ? setCollectionMindsetPage((page) => Math.max(0, page - 1))
+                        : setCollectionModeFocusPage((page) => Math.max(0, page - 1))
+                    }
                     shape="pill"
                     variant="pager"
                   >
@@ -1297,7 +1303,11 @@ export function CollectionView({
                     className="flex-1"
                     disabled={safeCollectionMindsetPage >= collectionMindsetPageCount - 1}
                     fullWidth
-                    onClick={() => setCollectionMindsetPage((page) => Math.min(collectionMindsetPageCount - 1, page + 1))}
+                    onClick={() =>
+                      mindsetListMode === 'mindsets'
+                        ? setCollectionMindsetPage((page) => Math.min(collectionMindsetPageCount - 1, page + 1))
+                        : setCollectionModeFocusPage((page) => Math.min(collectionMindsetPageCount - 1, page + 1))
+                    }
                     shape="pill"
                     variant="pager"
                   >
