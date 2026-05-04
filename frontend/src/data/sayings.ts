@@ -333,4 +333,5 @@ export const SAYINGS: Saying[] = [
   { id: 329, text: 'We,ve come here to laugh at impossibilities and live our lives so beautifully that death fears to take us', fontSize: 38, categories: [CATEGORIES.identitaet, CATEGORIES.schicksal, CATEGORIES.liebe], rating: 0.5 },
   { id: 330, text: 'Man wird 2 mal geboren : das erste Mal durch fremden - das zweite Mal durch eigenen Willen', fontSize: 38, categories: [CATEGORIES.geburt, CATEGORIES.tod, CATEGORIES.wille], rating: 0.5 },
   { id: 331, text: 'Sind Worte leer : kann man aufhören zu sprechen - sind Herzen leer : kann man aufhören zu singen', fontSize: 38, categories: [CATEGORIES.liebe, CATEGORIES.tod, CATEGORIES.kunst], rating: 0.5 },
+  { id: 332, text: 'Mut verschwindet nie : Irgendjemand wird dich daran erinnern', fontSize: 44, categories: [CATEGORIES.mut, CATEGORIES.logik], rating: 0.5 },
 ];
