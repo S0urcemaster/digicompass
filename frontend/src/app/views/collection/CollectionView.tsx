@@ -1266,10 +1266,10 @@ export function CollectionView({
             </section>
 
             <section>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
                 <Tabs
                   activeValue={mindsetListMode}
-                  className="grid grid-cols-2 gap-2 sm:w-[16rem]"
+                  className="grid grid-cols-2 gap-2"
                   items={[
                     { label: 'Mindsets', value: 'mindsets' },
                     { label: 'Foki', value: 'foci' },
@@ -1277,7 +1277,7 @@ export function CollectionView({
                   onChange={setMindsetListMode}
                 />
 
-                <div className="flex items-center gap-3 sm:min-w-[19rem] sm:max-w-[22rem] sm:flex-1">
+                <div className="flex items-center gap-3">
                   <Button
                     aria-label={`Vorherige ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Foki-'}Seite`}
                     className="flex-1"
