@@ -252,6 +252,7 @@ export function CollectionView({
   const visibleMindsetEditorSlots = Array.from({ length: 5 }, (_, index) =>
     isEditingMindsetDraft ? draftMindsetFoci[index] ?? null : selectedCollectionMindset?.foci[index] ?? null
   );
+  const isCreatingMindsetDraft = isEditingMindsetDraft && editingMindsetIndex === null;
 
   const handleSetSelectedImageRating = (rating: number) => {
     if (!selectedCollectionImage) {
@@ -315,6 +316,16 @@ export function CollectionView({
     setSelectedDraftMindsetSlot(0);
     setMindsetListMode('foci');
     setCollectionMindsetPage(0);
+  };
+
+  const loadMindsetIntoEditor = (mindset: Mindset, index: number) => {
+    setSelectedCollectionMindsetIndex(index);
+    setIsEditingMindsetDraft(true);
+    setEditingMindsetIndex(index);
+    setDraftMindsetName(mindset.name);
+    setDraftMindsetRating(mindset.rating);
+    setDraftMindsetFoci(Array.from({ length: 5 }, (_, slotIndex) => mindset.foci[slotIndex] ?? null));
+    setSelectedDraftMindsetSlot(0);
   };
 
   const handleDraftFocusAssignment = (focus: Focus) => {
@@ -382,6 +393,8 @@ export function CollectionView({
 
     if (rating === 0) {
       removeMindset(safeSelectedCollectionMindsetIndex);
+      setIsEditingMindsetDraft(false);
+      setEditingMindsetIndex(null);
       return;
     }
 
@@ -395,6 +408,28 @@ export function CollectionView({
       updateMindset(editingMindsetIndex, { name });
     }
   };
+
+  useEffect(() => {
+    if (activeTab !== 'mindsets') {
+      return;
+    }
+
+    if (isCreatingMindsetDraft) {
+      return;
+    }
+
+    if (!selectedCollectionMindset) {
+      setIsEditingMindsetDraft(false);
+      setEditingMindsetIndex(null);
+      return;
+    }
+
+    setIsEditingMindsetDraft(true);
+    setEditingMindsetIndex(safeSelectedCollectionMindsetIndex);
+    setDraftMindsetName(selectedCollectionMindset.name);
+    setDraftMindsetRating(selectedCollectionMindset.rating);
+    setDraftMindsetFoci(Array.from({ length: 5 }, (_, index) => selectedCollectionMindset.foci[index] ?? null));
+  }, [activeTab, isCreatingMindsetDraft, safeSelectedCollectionMindsetIndex, selectedCollectionMindset]);
 
   useEffect(() => {
     void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
@@ -568,22 +603,6 @@ export function CollectionView({
       setSelectedCollectionMindsetIndex(safeSelectedCollectionMindsetIndex);
     }
   }, [safeSelectedCollectionMindsetIndex, selectedCollectionMindsetIndex]);
-
-  useEffect(() => {
-    if (mindsetListMode !== 'mindsets') {
-      return;
-    }
-
-    if (collectionMindsets.length === 0) {
-      return;
-    }
-
-    const nextPage = Math.floor(safeSelectedCollectionMindsetIndex / COLLECTION_MINDSET_PAGE_SIZE);
-
-    if (collectionMindsetPage !== nextPage) {
-      setCollectionMindsetPage(nextPage);
-    }
-  }, [collectionMindsetPage, collectionMindsets.length, mindsetListMode, safeSelectedCollectionMindsetIndex]);
 
   return (
     <section className="mt-6 space-y-5">
@@ -1303,7 +1322,7 @@ export function CollectionView({
                         key={`new-mindset-slot-${absoluteIndex}`}
                         className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
                         onClick={startMindsetDraft}
-                        selected={isEditingMindsetDraft}
+                        selected={isCreatingMindsetDraft}
                         variant="surface"
                       >
                         <div className="flex aspect-[733/1024] items-center justify-center border border-dashed border-amber-950/14 bg-[#fbf6ec]">
@@ -1359,7 +1378,7 @@ export function CollectionView({
                       align="left"
                       key={`${mindset.name}-${mindsetIndex}`}
                       className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
-                      onClick={() => setSelectedCollectionMindsetIndex(mindsetIndex)}
+                      onClick={() => loadMindsetIntoEditor(mindset, mindsetIndex)}
                       selected={isSelected}
                       variant="surface"
                     >
