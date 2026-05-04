@@ -28,6 +28,7 @@ export function App() {
     setCollectionImageRating,
     setCollectionSayingRating,
     setActiveView,
+    setMindsetRating,
     setUsername,
     selectFocus,
     selectMindset,
@@ -87,10 +88,12 @@ export function App() {
           addCollectionSaying={addCollectionSaying}
           collectionFoci={data.collection.foci}
           collectionImages={data.collection.images}
+          collectionMindsets={data.collection.mindsets}
           collectionSayings={data.collection.sayings}
           setCollectionFocusRating={setCollectionFocusRating}
           setCollectionImageRating={setCollectionImageRating}
           setCollectionSayingRating={setCollectionSayingRating}
+          setMindsetRating={setMindsetRating}
         />
       ) : (
         <FocusEditorView label={VIEW_LABELS[activeView]} />

@@ -4,8 +4,9 @@ import { Tabs } from '../../../components/Tabs';
 import { IMAGES } from '../../../data/images';
 import { SAYINGS } from '../../../data/sayings';
 import { preloadImages } from '../../../lib/imageCache';
-import type { CompassImage, Focus, Saying } from '../../../types/domain';
+import type { CompassImage, Focus, Mindset, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
+import { FocusTile } from '../shared/FocusTile';
 import { StarRating } from '../shared/StarRating';
 import {
   getImageBadgeClassName,
@@ -19,7 +20,7 @@ const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
   { label: 'Sprüche', value: 'sayings' },
   { label: 'Foki', value: 'foci' },
-  { disabled: true, label: 'Mindsets', value: 'mindsets' },
+  { label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
@@ -45,11 +46,13 @@ type CollectionViewProps = {
   addCollectionFocus: (focus: Focus) => void;
   collectionFoci: Focus[];
   collectionImages: CompassImage[];
+  collectionMindsets: Mindset[];
   collectionSayings: Saying[];
   addCollectionImage: (image: CompassImage) => void;
   addCollectionSaying: (saying: Saying) => void;
   setCollectionFocusRating: (focusKey: string, rating: number) => void;
   setCollectionImageRating: (imageId: number, rating: number) => void;
+  setMindsetRating: (index: number, rating: number) => void;
   setCollectionSayingRating: (sayingId: number, rating: number) => void;
 };
 
@@ -57,11 +60,13 @@ export function CollectionView({
   addCollectionFocus,
   collectionFoci,
   collectionImages,
+  collectionMindsets,
   collectionSayings,
   addCollectionImage,
   addCollectionSaying,
   setCollectionFocusRating,
   setCollectionImageRating,
+  setMindsetRating,
   setCollectionSayingRating,
 }: CollectionViewProps) {
   const shouldSyncFocusPageRef = useRef(false);
@@ -76,6 +81,7 @@ export function CollectionView({
   const [selectedCollectionFocusKey, setSelectedCollectionFocusKey] = useState<string | null>(null);
   const [selectedFocusEditorImageId, setSelectedFocusEditorImageId] = useState<number | null>(null);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
+  const [selectedCollectionMindsetIndex, setSelectedCollectionMindsetIndex] = useState(0);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
   const [collectionSayingFilter, setCollectionSayingFilter] = useState('');
@@ -175,6 +181,18 @@ export function CollectionView({
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   const collectionSayingById = new Map(collectionSayings.map((saying) => [saying.id, saying] as const));
+  const safeSelectedCollectionMindsetIndex = Math.min(
+    Math.max(selectedCollectionMindsetIndex, 0),
+    Math.max(collectionMindsets.length - 1, 0)
+  );
+  const selectedCollectionMindset = collectionMindsets[safeSelectedCollectionMindsetIndex] ?? null;
+  const selectedCollectionMindsetCategories = selectedCollectionMindset
+    ? Array.from(
+        new Set(
+          selectedCollectionMindset.foci.flatMap((focus) => focus.saying.categories.map((category) => category.text.trim())).filter(Boolean)
+        )
+      ).sort((left, right) => left.localeCompare(right, 'de'))
+    : [];
   const filteredCollectionSayings = SAYINGS.filter((saying) =>
     normalizedSayingFilter.length === 0
       ? true
@@ -396,6 +414,12 @@ export function CollectionView({
       setSelectedCollectionSayingId(filteredCollectionSayings[0].id);
     }
   }, [filteredCollectionSayings, selectedCollectionSayingId]);
+
+  useEffect(() => {
+    if (selectedCollectionMindsetIndex !== safeSelectedCollectionMindsetIndex) {
+      setSelectedCollectionMindsetIndex(safeSelectedCollectionMindsetIndex);
+    }
+  }, [safeSelectedCollectionMindsetIndex, selectedCollectionMindsetIndex]);
 
   return (
     <section className="mt-6 space-y-5">
@@ -977,9 +1001,89 @@ export function CollectionView({
               <p className="text-sm text-muted">In deiner Sammlung sind noch keine Foki verfügbar.</p>
             </div>
           )
+        ) : collectionMindsets.length > 0 && selectedCollectionMindset ? (
+          <div className="space-y-6">
+            <section>
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Aktives Mindset</p>
+                  <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">{selectedCollectionMindset.name}</p>
+                  <p className="mt-2 text-sm text-muted">
+                    {selectedCollectionMindsetCategories.join(' / ') || 'Unsortiert'}
+                  </p>
+                </div>
+                <StarRating
+                  className="shrink-0 items-start justify-center rounded-full border border-amber-950/10 bg-white/85 px-2.5 py-1 text-[#1f1712]"
+                  rating={selectedCollectionMindset.rating}
+                  buttonClassName="flex h-[1.85rem] w-[1.85rem] items-center justify-center p-0 leading-none"
+                  starClassName="text-[2.15rem] leading-none"
+                  tone="dark"
+                  onChange={(rating) => setMindsetRating(safeSelectedCollectionMindsetIndex, rating)}
+                />
+              </div>
+
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {selectedCollectionMindset.foci.slice(0, 5).map((focus, index) => (
+                  <article
+                    key={`${selectedCollectionMindset.name}-${getFocusKey(focus)}`}
+                    className={`min-w-[150px] flex-1 overflow-hidden rounded-[20px] border shadow-[0_18px_45px_rgba(41,29,20,0.12)] ${
+                      index === 0 ? 'border-accent/35 ring-2 ring-accent/20' : 'border-amber-950/10'
+                    }`}
+                  >
+                    <div className="relative">
+                      <FocusTile focus={focus} />
+                      <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-full bg-[#fff7ed]/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.14)]">
+                        {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Mindset-Liste</p>
+                <p className="mt-1 text-sm text-muted">Der erste Fokus jedes Mindsets dient unten als Repräsentant.</p>
+              </div>
+
+              <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+                {collectionMindsets.map((mindset, index) => {
+                  const representativeFocus = mindset.foci[0];
+
+                  if (!representativeFocus) {
+                    return null;
+                  }
+
+                  const isSelected = index === safeSelectedCollectionMindsetIndex;
+
+                  return (
+                    <Button
+                      align="left"
+                      key={`${mindset.name}-${index}`}
+                      className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                      onClick={() => setSelectedCollectionMindsetIndex(index)}
+                      selected={isSelected}
+                      variant="surface"
+                    >
+                      <div className="relative">
+                        <FocusTile focus={representativeFocus} />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/78 via-black/32 to-transparent px-3 pb-3 pt-10 text-left text-white">
+                          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/78">
+                            Repräsentant
+                          </p>
+                          <p className="mt-1 text-lg font-semibold tracking-[-0.03em]">{mindset.name}</p>
+                        </div>
+                      </div>
+                    </Button>
+                  );
+                })}
+              </div>
+            </section>
+          </div>
         ) : (
           <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-            <p className="text-sm text-muted">Dieser Bereich ist noch nicht umgesetzt.</p>
+            <p className="text-sm text-muted">In deiner Sammlung sind noch keine Mindsets verfügbar.</p>
           </div>
         )}
 
