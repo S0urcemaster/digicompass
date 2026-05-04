@@ -53,10 +53,12 @@ type CollectionViewProps = {
   collectionSayings: Saying[];
   addCollectionImage: (image: CompassImage) => void;
   addCollectionSaying: (saying: Saying) => void;
+  removeMindset: (index: number) => void;
   setCollectionFocusRating: (focusKey: string, rating: number) => void;
   setCollectionImageRating: (imageId: number, rating: number) => void;
   setMindsetRating: (index: number, rating: number) => void;
   setCollectionSayingRating: (sayingId: number, rating: number) => void;
+  updateMindset: (index: number, patch: Partial<Mindset>) => void;
 };
 
 export function CollectionView({
@@ -68,10 +70,12 @@ export function CollectionView({
   collectionSayings,
   addCollectionImage,
   addCollectionSaying,
+  removeMindset,
   setCollectionFocusRating,
   setCollectionImageRating,
   setMindsetRating,
   setCollectionSayingRating,
+  updateMindset,
 }: CollectionViewProps) {
   const emptyDraftSlots = () => Array.from({ length: 5 }, () => null as Focus | null);
   const shouldSyncFocusPageRef = useRef(false);
@@ -90,9 +94,9 @@ export function CollectionView({
   const [collectionMindsetPage, setCollectionMindsetPage] = useState(0);
   const [mindsetListMode, setMindsetListMode] = useState<MindsetListMode>('mindsets');
   const [isEditingMindsetDraft, setIsEditingMindsetDraft] = useState(false);
+  const [editingMindsetIndex, setEditingMindsetIndex] = useState<number | null>(null);
   const [draftMindsetName, setDraftMindsetName] = useState('Neues Mindset');
   const [draftMindsetRating, setDraftMindsetRating] = useState(0);
-  const [draftMindsetNotes] = useState('');
   const [draftMindsetFoci, setDraftMindsetFoci] = useState<Array<Focus | null>>(emptyDraftSlots);
   const [selectedDraftMindsetSlot, setSelectedDraftMindsetSlot] = useState(0);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
@@ -245,6 +249,9 @@ export function CollectionView({
     safeCollectionSayingPage * COLLECTION_SAYING_PAGE_SIZE,
     (safeCollectionSayingPage + 1) * COLLECTION_SAYING_PAGE_SIZE
   );
+  const visibleMindsetEditorSlots = Array.from({ length: 5 }, (_, index) =>
+    isEditingMindsetDraft ? draftMindsetFoci[index] ?? null : selectedCollectionMindset?.foci[index] ?? null
+  );
 
   const handleSetSelectedImageRating = (rating: number) => {
     if (!selectedCollectionImage) {
@@ -299,16 +306,9 @@ export function CollectionView({
     setFocusPreviewSource('focus');
   };
 
-  const resetMindsetDraft = () => {
-    setIsEditingMindsetDraft(false);
-    setDraftMindsetName('Neues Mindset');
-    setDraftMindsetRating(0);
-    setDraftMindsetFoci(emptyDraftSlots());
-    setSelectedDraftMindsetSlot(0);
-  };
-
   const startMindsetDraft = () => {
     setIsEditingMindsetDraft(true);
+    setEditingMindsetIndex(null);
     setDraftMindsetName('Neues Mindset');
     setDraftMindsetRating(0);
     setDraftMindsetFoci(emptyDraftSlots());
@@ -322,27 +322,78 @@ export function CollectionView({
       return;
     }
 
-    setDraftMindsetFoci((current) =>
-      current.map((entry, index) => (index === selectedDraftMindsetSlot ? focus : entry))
-    );
+    setDraftMindsetFoci((current) => {
+      const nextFoci = current.map((entry, index) => (index === selectedDraftMindsetSlot ? focus : entry));
+
+      if (editingMindsetIndex !== null) {
+        updateMindset(editingMindsetIndex, {
+          foci: nextFoci.filter((entry): entry is Focus => entry !== null),
+          name: draftMindsetName.trim() || 'Neues Mindset',
+          rating: draftMindsetRating,
+        });
+      }
+
+      return nextFoci;
+    });
   };
 
-  const handleSaveMindsetDraft = () => {
-    const nextFoci = draftMindsetFoci.filter((focus): focus is Focus => focus !== null);
+  const handleSetMindsetRating = (rating: number) => {
+    if (isEditingMindsetDraft) {
+      setDraftMindsetRating(rating);
 
-    if (nextFoci.length === 0) {
+      if (rating === 0) {
+        if (editingMindsetIndex !== null) {
+          removeMindset(editingMindsetIndex);
+          setEditingMindsetIndex(null);
+        }
+
+        return;
+      }
+
+      const nextFoci = draftMindsetFoci.filter((focus): focus is Focus => focus !== null);
+
+      if (nextFoci.length === 0) {
+        return;
+      }
+
+      if (editingMindsetIndex === null) {
+        addMindset({
+          foci: nextFoci,
+          name: draftMindsetName.trim() || 'Neues Mindset',
+          notes: '',
+          rating,
+        });
+        setEditingMindsetIndex(collectionMindsets.length);
+        setSelectedCollectionMindsetIndex(collectionMindsets.length);
+        return;
+      }
+
+      updateMindset(editingMindsetIndex, {
+        foci: nextFoci,
+        name: draftMindsetName.trim() || 'Neues Mindset',
+        rating,
+      });
       return;
     }
 
-    addMindset({
-      foci: nextFoci,
-      name: draftMindsetName.trim() || 'Neues Mindset',
-      notes: draftMindsetNotes,
-      rating: draftMindsetRating,
-    });
-    setSelectedCollectionMindsetIndex(collectionMindsets.length);
-    setMindsetListMode('mindsets');
-    resetMindsetDraft();
+    if (!selectedCollectionMindset) {
+      return;
+    }
+
+    if (rating === 0) {
+      removeMindset(safeSelectedCollectionMindsetIndex);
+      return;
+    }
+
+    setMindsetRating(safeSelectedCollectionMindsetIndex, rating);
+  };
+
+  const handleDraftMindsetNameChange = (name: string) => {
+    setDraftMindsetName(name);
+
+    if (editingMindsetIndex !== null) {
+      updateMindset(editingMindsetIndex, { name });
+    }
   };
 
   useEffect(() => {
@@ -1126,7 +1177,7 @@ export function CollectionView({
                         className="mt-1 w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
                         placeholder="Name des Mindsets"
                         value={draftMindsetName}
-                        onChange={(event) => setDraftMindsetName(event.target.value)}
+                        onChange={(event) => handleDraftMindsetNameChange(event.target.value)}
                       />
                       <p className="mt-2 text-sm text-muted">
                         {activeMindsetDraftCategories.join(' / ') || 'Wähle unten Foki und fülle damit die Slots.'}
@@ -1152,32 +1203,12 @@ export function CollectionView({
                   buttonClassName="flex h-[1.85rem] w-[1.85rem] items-center justify-center p-0 leading-none"
                   starClassName="text-[2.15rem] leading-none"
                   tone="dark"
-                  onChange={(rating) =>
-                    isEditingMindsetDraft
-                      ? setDraftMindsetRating(rating)
-                      : setMindsetRating(safeSelectedCollectionMindsetIndex, rating)
-                  }
+                  onChange={handleSetMindsetRating}
                 />
               </div>
 
-              {isEditingMindsetDraft ? (
-                <div className="mb-4 flex items-center gap-2">
-                  <Button
-                    disabled={draftMindsetFoci.every((focus) => focus === null)}
-                    onClick={handleSaveMindsetDraft}
-                    shape="pill"
-                    variant="tab"
-                  >
-                    Speichern
-                  </Button>
-                  <Button onClick={resetMindsetDraft} shape="pill" variant="tab">
-                    Abbrechen
-                  </Button>
-                </div>
-              ) : null}
-
               <div className="flex gap-3 overflow-x-auto pb-2">
-                {(isEditingMindsetDraft ? draftMindsetFoci : selectedCollectionMindset?.foci.slice(0, 5) ?? []).map((focus, index) =>
+                {visibleMindsetEditorSlots.map((focus, index) =>
                   focus ? (
                     <Button
                       align="left"
