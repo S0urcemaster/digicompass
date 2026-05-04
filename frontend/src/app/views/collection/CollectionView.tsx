@@ -25,7 +25,8 @@ const COLLECTION_TABS = [
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
 const COLLECTION_FOCUS_PAGE_SIZE = 9;
 const COLLECTION_SAYING_PAGE_SIZE = 5;
-const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 8;
+const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
+const FOCUS_EDITOR_SAYING_PAGE_SIZE = 4;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
@@ -118,11 +119,11 @@ export function CollectionView({
       ? true
       : saying.categories.some((category) => category.text.toLowerCase().includes(normalizedFocusFilter))
   );
-  const focusEditorSayingPageCount = Math.max(1, Math.ceil(filteredFocusEditorSayings.length / COLLECTION_SAYING_PAGE_SIZE));
+  const focusEditorSayingPageCount = Math.max(1, Math.ceil(filteredFocusEditorSayings.length / FOCUS_EDITOR_SAYING_PAGE_SIZE));
   const safeFocusEditorSayingPage = Math.min(focusEditorSayingPage, focusEditorSayingPageCount - 1);
   const pagedFocusEditorSayings = filteredFocusEditorSayings.slice(
-    safeFocusEditorSayingPage * COLLECTION_SAYING_PAGE_SIZE,
-    (safeFocusEditorSayingPage + 1) * COLLECTION_SAYING_PAGE_SIZE
+    safeFocusEditorSayingPage * FOCUS_EDITOR_SAYING_PAGE_SIZE,
+    (safeFocusEditorSayingPage + 1) * FOCUS_EDITOR_SAYING_PAGE_SIZE
   );
   const selectedFocusEditorSaying =
     filteredFocusEditorSayings.find((saying) => saying.id === selectedFocusEditorSayingId) ?? filteredFocusEditorSayings[0] ?? null;

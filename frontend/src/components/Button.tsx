@@ -76,19 +76,19 @@ const getVariantClassName = ({
   if (variant === 'star') {
     if (disabled) {
       if (active) {
-        return tone === 'light' ? 'text-[#ffd56a] opacity-85' : 'text-[#8b4d16] opacity-85';
+        return 'text-[#ffd56a] opacity-85';
       }
 
       return tone === 'light' ? 'text-white/35 opacity-70' : 'text-[#1f1712]/28 opacity-70';
     }
 
     if (active) {
-      return tone === 'light' ? 'text-[#ffd56a] hover:scale-105' : 'text-[#8b4d16] hover:scale-105';
+      return 'text-[#ffd56a] hover:scale-105';
     }
 
     return tone === 'light'
       ? 'text-white/55 hover:scale-105 hover:text-[#ffe19b]'
-      : 'text-[#1f1712]/48 hover:scale-105 hover:text-[#8b4d16]';
+      : 'text-[#1f1712]/48 hover:scale-105 hover:text-[#ffe19b]';
   }
 
   if (variant === 'overlay-action') {
