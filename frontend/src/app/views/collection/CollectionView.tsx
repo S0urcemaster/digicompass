@@ -1239,9 +1239,6 @@ export function CollectionView({
                     >
                       <div className="relative">
                         <FocusTile focus={focus} />
-                        <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-full bg-[#fff7ed]/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.14)]">
-                          {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
-                        </div>
                       </div>
                     </Button>
                   ) : (
@@ -1254,9 +1251,6 @@ export function CollectionView({
                       variant="surface"
                     >
                       <div className="flex aspect-[733/1024] flex-col items-center justify-center gap-3 border border-dashed border-amber-950/12 bg-[#fbf6ec] px-4 text-center">
-                        <div className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.08)]">
-                          {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
-                        </div>
                         <p className="text-sm font-semibold text-ink">Leeres Feld</p>
                         <p className="text-xs text-muted">Slot aktivieren und unten einen Fokus anklicken.</p>
                       </div>
@@ -1385,10 +1379,7 @@ export function CollectionView({
                       <div className="relative">
                         <FocusTile focus={representativeFocus} />
                         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/78 via-black/32 to-transparent px-3 pb-3 pt-10 text-left text-white">
-                          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/78">
-                            Repräsentant
-                          </p>
-                          <p className="mt-1 text-lg font-semibold tracking-[-0.03em]">{mindset.name}</p>
+                          <p className="text-lg font-semibold tracking-[-0.03em]">{mindset.name}</p>
                         </div>
                       </div>
                     </Button>
