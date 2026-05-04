@@ -25,6 +25,7 @@ const COLLECTION_TABS = [
 
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
 const COLLECTION_FOCUS_PAGE_SIZE = 9;
+const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 5;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
 const FOCUS_EDITOR_SAYING_PAGE_SIZE = 4;
@@ -41,6 +42,7 @@ const getFocusPreviewFontSize = (fontSize: number) => `${fontSize * 1.25}px`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
+type MindsetListMode = 'mindsets' | 'foci';
 
 type CollectionViewProps = {
   addCollectionFocus: (focus: Focus) => void;
@@ -82,6 +84,8 @@ export function CollectionView({
   const [selectedFocusEditorImageId, setSelectedFocusEditorImageId] = useState<number | null>(null);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
   const [selectedCollectionMindsetIndex, setSelectedCollectionMindsetIndex] = useState(0);
+  const [collectionMindsetPage, setCollectionMindsetPage] = useState(0);
+  const [mindsetListMode, setMindsetListMode] = useState<MindsetListMode>('mindsets');
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
   const [collectionSayingFilter, setCollectionSayingFilter] = useState('');
@@ -181,6 +185,26 @@ export function CollectionView({
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   const collectionSayingById = new Map(collectionSayings.map((saying) => [saying.id, saying] as const));
+  const collectionMindsetListLength = mindsetListMode === 'mindsets' ? collectionMindsets.length : collectionFoci.length;
+  const collectionMindsetPageCount = Math.max(1, Math.ceil(collectionMindsetListLength / COLLECTION_MINDSET_PAGE_SIZE));
+  const safeCollectionMindsetPage = Math.min(collectionMindsetPage, collectionMindsetPageCount - 1);
+  const pagedCollectionMindsets =
+    mindsetListMode === 'mindsets'
+      ? collectionMindsets.slice(
+          safeCollectionMindsetPage * COLLECTION_MINDSET_PAGE_SIZE,
+          (safeCollectionMindsetPage + 1) * COLLECTION_MINDSET_PAGE_SIZE
+        )
+      : [];
+  const pagedCollectionModeFoci =
+    mindsetListMode === 'foci'
+      ? collectionFoci.slice(
+          safeCollectionMindsetPage * COLLECTION_MINDSET_PAGE_SIZE,
+          (safeCollectionMindsetPage + 1) * COLLECTION_MINDSET_PAGE_SIZE
+        )
+      : [];
+  const visibleCollectionMindsetSlots = Array.from({ length: COLLECTION_MINDSET_PAGE_SIZE }, (_, index) =>
+    mindsetListMode === 'mindsets' ? (pagedCollectionMindsets[index] ?? null) : (pagedCollectionModeFoci[index] ?? null)
+  );
   const safeSelectedCollectionMindsetIndex = Math.min(
     Math.max(selectedCollectionMindsetIndex, 0),
     Math.max(collectionMindsets.length - 1, 0)
@@ -416,10 +440,36 @@ export function CollectionView({
   }, [filteredCollectionSayings, selectedCollectionSayingId]);
 
   useEffect(() => {
+    if (collectionMindsetPage !== safeCollectionMindsetPage) {
+      setCollectionMindsetPage(safeCollectionMindsetPage);
+    }
+  }, [collectionMindsetPage, safeCollectionMindsetPage]);
+
+  useEffect(() => {
+    setCollectionMindsetPage(0);
+  }, [mindsetListMode]);
+
+  useEffect(() => {
     if (selectedCollectionMindsetIndex !== safeSelectedCollectionMindsetIndex) {
       setSelectedCollectionMindsetIndex(safeSelectedCollectionMindsetIndex);
     }
   }, [safeSelectedCollectionMindsetIndex, selectedCollectionMindsetIndex]);
+
+  useEffect(() => {
+    if (mindsetListMode !== 'mindsets') {
+      return;
+    }
+
+    if (collectionMindsets.length === 0) {
+      return;
+    }
+
+    const nextPage = Math.floor(safeSelectedCollectionMindsetIndex / COLLECTION_MINDSET_PAGE_SIZE);
+
+    if (collectionMindsetPage !== nextPage) {
+      setCollectionMindsetPage(nextPage);
+    }
+  }, [collectionMindsetPage, collectionMindsets.length, mindsetListMode, safeSelectedCollectionMindsetIndex]);
 
   return (
     <section className="mt-6 space-y-5">
@@ -1042,27 +1092,91 @@ export function CollectionView({
             </section>
 
             <section>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Mindset-Liste</p>
-                <p className="mt-1 text-sm text-muted">Der erste Fokus jedes Mindsets dient unten als Repräsentant.</p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <Tabs
+                  activeValue={mindsetListMode}
+                  className="grid grid-cols-2 gap-2 sm:w-[16rem]"
+                  items={[
+                    { label: 'Mindsets', value: 'mindsets' },
+                    { label: 'Foki', value: 'foci' },
+                  ]}
+                  onChange={setMindsetListMode}
+                />
+
+                <div className="flex items-center gap-3 sm:min-w-[19rem] sm:max-w-[22rem] sm:flex-1">
+                  <Button
+                    aria-label={`Vorherige ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Foki-'}Seite`}
+                    className="flex-1"
+                    disabled={safeCollectionMindsetPage === 0}
+                    fullWidth
+                    onClick={() => setCollectionMindsetPage((page) => Math.max(0, page - 1))}
+                    shape="pill"
+                    variant="pager"
+                  >
+                    ←
+                  </Button>
+                  <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                    {safeCollectionMindsetPage + 1} / {collectionMindsetPageCount}
+                  </div>
+                  <Button
+                    aria-label={`Nächste ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Foki-'}Seite`}
+                    className="flex-1"
+                    disabled={safeCollectionMindsetPage >= collectionMindsetPageCount - 1}
+                    fullWidth
+                    onClick={() => setCollectionMindsetPage((page) => Math.min(collectionMindsetPageCount - 1, page + 1))}
+                    shape="pill"
+                    variant="pager"
+                  >
+                    →
+                  </Button>
+                </div>
               </div>
 
               <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
-                {collectionMindsets.map((mindset, index) => {
+                {visibleCollectionMindsetSlots.map((entry, slotIndex) => {
+                  if (!entry) {
+                    return (
+                      <div
+                        key={`empty-mindset-slot-${safeCollectionMindsetPage}-${slotIndex}`}
+                        className="min-w-[170px] flex-1 rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec]"
+                      />
+                    );
+                  }
+
+                  if (mindsetListMode === 'foci') {
+                    const focus = entry as Focus;
+
+                    return (
+                      <article
+                        key={`${getFocusKey(focus)}-${slotIndex}`}
+                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px] border border-amber-950/10 shadow-[0_18px_45px_rgba(41,29,20,0.12)]"
+                      >
+                        <FocusTile focus={focus} />
+                      </article>
+                    );
+                  }
+
+                  const mindset = entry as Mindset;
                   const representativeFocus = mindset.foci[0];
 
                   if (!representativeFocus) {
-                    return null;
+                    return (
+                      <div
+                        key={`missing-focus-slot-${safeCollectionMindsetPage}-${slotIndex}`}
+                        className="min-w-[170px] flex-1 rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec]"
+                      />
+                    );
                   }
 
-                  const isSelected = index === safeSelectedCollectionMindsetIndex;
+                  const mindsetIndex = safeCollectionMindsetPage * COLLECTION_MINDSET_PAGE_SIZE + slotIndex;
+                  const isSelected = mindsetIndex === safeSelectedCollectionMindsetIndex;
 
                   return (
                     <Button
                       align="left"
-                      key={`${mindset.name}-${index}`}
+                      key={`${mindset.name}-${mindsetIndex}`}
                       className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
-                      onClick={() => setSelectedCollectionMindsetIndex(index)}
+                      onClick={() => setSelectedCollectionMindsetIndex(mindsetIndex)}
                       selected={isSelected}
                       variant="surface"
                     >
