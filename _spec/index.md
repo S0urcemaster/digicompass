@@ -2,7 +2,7 @@
 
 Digi Compass is a web application for building personal mindset collections from short sayings paired with AI images.
 
-Users browse a base library of sayings and images, select items into their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
+Users browse a base library of sayings and images, add selected items to their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
 
 ## Project Structure
 
@@ -168,8 +168,8 @@ In development mode, the app reloads `factoryState` on browser refresh instead o
 Only one top-level view is active at a time:
 
 - `Primary`: shows the currently active mindset
-- `Focus Editor`: planned screen for joining an image with a saying
-- `Collection`: planned screen for managing the personal collection
+- `Focus Editor`: placeholder route, not yet designed as a standalone screen
+- `Collection`: screen for managing the personal collection
 
 ## Primary View
 
@@ -191,37 +191,50 @@ Current implementation note:
 
 ## Focus Editor View
 
-This view exists in store state and in the top-level navigation, but it is not designed yet in the UI.
+This view exists in store state and in the top-level navigation, but it is not designed yet as a separate UI.
 
 Planned purpose:
 
 - join an image with a saying into a focus
 - edit focus-level metadata
 
+Current note:
+
+- focus preview and selection currently happen inside the `Collection` view under `Foci`
+
 ## Collection View
 
 ### Overview
 
-- Manage what belongs to the user's personal collection / support selecting items from the base library into the collection
-- Provide separate sections or tabs for sayings, images, foci and mindsets
+- Manage what belongs to the user's personal collection
+- Support selecting items from the base library into the collection
+- Provide separate tabs for images, sayings, foci, and mindsets
 
 ### Images
 
-Here the user can browse all available images mapped in data/images.ts
-Layout is plit in half horizontally . Left is a big image of the selected item . right is a 3-column list of image previews of the factory images . use the images in public/images/preview here
-Above the images field is a text input to narrow the image list to the category typed in
-There is no separate add button on the big image anymore
-On the bottom of the big image are 5 clickable stars . Activating a star adds the image to the user collection and sets its rating
-When clicking on the big image itself : its modal maximizing / closes on click / for the user to have a closer look
+- Browse all available images from `data/images.ts`
+- Split layout: selected image on the left, paged 3-column preview grid on the right
+- Use preview assets from `public/images/preview` in the grid
+- Filter the image list by category text
+- No separate add button
+- The 5-star control on the large image adds the image to the collection and sets its rating
+- The image can be opened in a larger modal view for closer inspection
 
 ### Sayings
 
-todo
+- Browse all available sayings from the base data
+- Filter the list by category text
+- Rating a saying adds it to the collection and sets its rating
+- The current UI uses a compact list instead of a large detail card
 
 ### Foci
 
-todo
+- Browse collected foci and filter them by category text
+- Show a large focus preview with saying and image combined
+- Allow rating existing collected foci
+- Allow assembling a focus preview from collected images and collected sayings only
+- A dedicated save/create flow for new foci is still pending
 
 ### Mindsets
 
-todo
+- Pending
