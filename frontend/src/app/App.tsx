@@ -17,6 +17,7 @@ const VIEW_TABS = Object.entries(VIEW_LABELS).map(([value, label]) => ({
 
 export function App() {
   const {
+    addMindset,
     addCollectionFocus,
     activeView,
     addCollectionImage,
@@ -83,6 +84,7 @@ export function App() {
         />
       ) : activeView === 'collection' ? (
         <CollectionView
+          addMindset={addMindset}
           addCollectionFocus={addCollectionFocus}
           addCollectionImage={addCollectionImage}
           addCollectionSaying={addCollectionSaying}

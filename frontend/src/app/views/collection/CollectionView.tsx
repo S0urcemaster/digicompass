@@ -45,6 +45,7 @@ type FocusPreviewSource = 'editor' | 'focus';
 type MindsetListMode = 'mindsets' | 'foci';
 
 type CollectionViewProps = {
+  addMindset: (mindset: Mindset) => void;
   addCollectionFocus: (focus: Focus) => void;
   collectionFoci: Focus[];
   collectionImages: CompassImage[];
@@ -59,6 +60,7 @@ type CollectionViewProps = {
 };
 
 export function CollectionView({
+  addMindset,
   addCollectionFocus,
   collectionFoci,
   collectionImages,
@@ -71,6 +73,7 @@ export function CollectionView({
   setMindsetRating,
   setCollectionSayingRating,
 }: CollectionViewProps) {
+  const emptyDraftSlots = () => Array.from({ length: 5 }, () => null as Focus | null);
   const shouldSyncFocusPageRef = useRef(false);
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
   const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
@@ -86,6 +89,12 @@ export function CollectionView({
   const [selectedCollectionMindsetIndex, setSelectedCollectionMindsetIndex] = useState(0);
   const [collectionMindsetPage, setCollectionMindsetPage] = useState(0);
   const [mindsetListMode, setMindsetListMode] = useState<MindsetListMode>('mindsets');
+  const [isEditingMindsetDraft, setIsEditingMindsetDraft] = useState(false);
+  const [draftMindsetName, setDraftMindsetName] = useState('Neues Mindset');
+  const [draftMindsetRating, setDraftMindsetRating] = useState(0);
+  const [draftMindsetNotes] = useState('');
+  const [draftMindsetFoci, setDraftMindsetFoci] = useState<Array<Focus | null>>(emptyDraftSlots);
+  const [selectedDraftMindsetSlot, setSelectedDraftMindsetSlot] = useState(0);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
   const [collectionSayingFilter, setCollectionSayingFilter] = useState('');
@@ -185,7 +194,8 @@ export function CollectionView({
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   const collectionSayingById = new Map(collectionSayings.map((saying) => [saying.id, saying] as const));
-  const collectionMindsetListLength = mindsetListMode === 'mindsets' ? collectionMindsets.length : collectionFoci.length;
+  const collectionMindsetListLength =
+    mindsetListMode === 'mindsets' ? collectionMindsets.length + 1 : collectionFoci.length;
   const collectionMindsetPageCount = Math.max(1, Math.ceil(collectionMindsetListLength / COLLECTION_MINDSET_PAGE_SIZE));
   const safeCollectionMindsetPage = Math.min(collectionMindsetPage, collectionMindsetPageCount - 1);
   const pagedCollectionMindsets =
@@ -210,6 +220,13 @@ export function CollectionView({
     Math.max(collectionMindsets.length - 1, 0)
   );
   const selectedCollectionMindset = collectionMindsets[safeSelectedCollectionMindsetIndex] ?? null;
+  const activeMindsetDraftCategories = Array.from(
+    new Set(
+      draftMindsetFoci
+        .flatMap((focus) => focus?.saying.categories.map((category) => category.text.trim()) ?? [])
+        .filter(Boolean)
+    )
+  ).sort((left, right) => left.localeCompare(right, 'de'));
   const selectedCollectionMindsetCategories = selectedCollectionMindset
     ? Array.from(
         new Set(
@@ -280,6 +297,52 @@ export function CollectionView({
     setSelectedCollectionFocusKey(getFocusKey(nextFocus));
     setCollectionFocusPage(Math.max(0, Math.ceil((filteredCollectionFoci.length + 1) / COLLECTION_FOCUS_PAGE_SIZE) - 1));
     setFocusPreviewSource('focus');
+  };
+
+  const resetMindsetDraft = () => {
+    setIsEditingMindsetDraft(false);
+    setDraftMindsetName('Neues Mindset');
+    setDraftMindsetRating(0);
+    setDraftMindsetFoci(emptyDraftSlots());
+    setSelectedDraftMindsetSlot(0);
+  };
+
+  const startMindsetDraft = () => {
+    setIsEditingMindsetDraft(true);
+    setDraftMindsetName('Neues Mindset');
+    setDraftMindsetRating(0);
+    setDraftMindsetFoci(emptyDraftSlots());
+    setSelectedDraftMindsetSlot(0);
+    setMindsetListMode('foci');
+    setCollectionMindsetPage(0);
+  };
+
+  const handleDraftFocusAssignment = (focus: Focus) => {
+    if (!isEditingMindsetDraft) {
+      return;
+    }
+
+    setDraftMindsetFoci((current) =>
+      current.map((entry, index) => (index === selectedDraftMindsetSlot ? focus : entry))
+    );
+  };
+
+  const handleSaveMindsetDraft = () => {
+    const nextFoci = draftMindsetFoci.filter((focus): focus is Focus => focus !== null);
+
+    if (nextFoci.length === 0) {
+      return;
+    }
+
+    addMindset({
+      foci: nextFoci,
+      name: draftMindsetName.trim() || 'Neues Mindset',
+      notes: draftMindsetNotes,
+      rating: draftMindsetRating,
+    });
+    setSelectedCollectionMindsetIndex(collectionMindsets.length);
+    setMindsetListMode('mindsets');
+    resetMindsetDraft();
   };
 
   useEffect(() => {
@@ -1051,43 +1114,110 @@ export function CollectionView({
               <p className="text-sm text-muted">In deiner Sammlung sind noch keine Foki verfügbar.</p>
             </div>
           )
-        ) : collectionMindsets.length > 0 && selectedCollectionMindset ? (
+        ) : activeTab === 'mindsets' ? (
           <div className="space-y-6">
             <section>
               <div className="mb-4 flex items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Aktives Mindset</p>
-                  <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">{selectedCollectionMindset.name}</p>
-                  <p className="mt-2 text-sm text-muted">
-                    {selectedCollectionMindsetCategories.join(' / ') || 'Unsortiert'}
-                  </p>
+                  {isEditingMindsetDraft ? (
+                    <>
+                      <input
+                        className="mt-1 w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        placeholder="Name des Mindsets"
+                        value={draftMindsetName}
+                        onChange={(event) => setDraftMindsetName(event.target.value)}
+                      />
+                      <p className="mt-2 text-sm text-muted">
+                        {activeMindsetDraftCategories.join(' / ') || 'Wähle unten Foki und fülle damit die Slots.'}
+                      </p>
+                    </>
+                  ) : selectedCollectionMindset ? (
+                    <>
+                      <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">{selectedCollectionMindset.name}</p>
+                      <p className="mt-2 text-sm text-muted">
+                        {selectedCollectionMindsetCategories.join(' / ') || 'Unsortiert'}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">Noch kein Mindset</p>
+                      <p className="mt-2 text-sm text-muted">Lege unten mit `+` ein neues Mindset an.</p>
+                    </>
+                  )}
                 </div>
                 <StarRating
                   className="shrink-0 items-start justify-center rounded-full border border-amber-950/10 bg-white/85 px-2.5 py-1 text-[#1f1712]"
-                  rating={selectedCollectionMindset.rating}
+                  rating={isEditingMindsetDraft ? draftMindsetRating : selectedCollectionMindset?.rating ?? 0}
                   buttonClassName="flex h-[1.85rem] w-[1.85rem] items-center justify-center p-0 leading-none"
                   starClassName="text-[2.15rem] leading-none"
                   tone="dark"
-                  onChange={(rating) => setMindsetRating(safeSelectedCollectionMindsetIndex, rating)}
+                  onChange={(rating) =>
+                    isEditingMindsetDraft
+                      ? setDraftMindsetRating(rating)
+                      : setMindsetRating(safeSelectedCollectionMindsetIndex, rating)
+                  }
                 />
               </div>
 
-              <div className="flex gap-3 overflow-x-auto pb-2">
-                {selectedCollectionMindset.foci.slice(0, 5).map((focus, index) => (
-                  <article
-                    key={`${selectedCollectionMindset.name}-${getFocusKey(focus)}`}
-                    className={`min-w-[150px] flex-1 overflow-hidden rounded-[20px] border shadow-[0_18px_45px_rgba(41,29,20,0.12)] ${
-                      index === 0 ? 'border-accent/35 ring-2 ring-accent/20' : 'border-amber-950/10'
-                    }`}
+              {isEditingMindsetDraft ? (
+                <div className="mb-4 flex items-center gap-2">
+                  <Button
+                    disabled={draftMindsetFoci.every((focus) => focus === null)}
+                    onClick={handleSaveMindsetDraft}
+                    shape="pill"
+                    variant="tab"
                   >
-                    <div className="relative">
-                      <FocusTile focus={focus} />
-                      <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-full bg-[#fff7ed]/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.14)]">
-                        {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
+                    Speichern
+                  </Button>
+                  <Button onClick={resetMindsetDraft} shape="pill" variant="tab">
+                    Abbrechen
+                  </Button>
+                </div>
+              ) : null}
+
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {(isEditingMindsetDraft ? draftMindsetFoci : selectedCollectionMindset?.foci.slice(0, 5) ?? []).map((focus, index) =>
+                  focus ? (
+                    <Button
+                      align="left"
+                      key={`${isEditingMindsetDraft ? 'draft' : selectedCollectionMindset.name}-${getFocusKey(focus)}-${index}`}
+                      className="min-w-[150px] flex-1 overflow-hidden rounded-[20px]"
+                      onClick={() => isEditingMindsetDraft && setSelectedDraftMindsetSlot(index)}
+                      selected={isEditingMindsetDraft && selectedDraftMindsetSlot === index}
+                      variant="surface"
+                    >
+                      <div className="relative">
+                        <FocusTile focus={focus} />
+                        <div className="pointer-events-none absolute left-3 top-3 z-20 rounded-full bg-[#fff7ed]/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.14)]">
+                          {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </Button>
+                  ) : (
+                    <Button
+                      align="left"
+                      key={`draft-empty-slot-${index}`}
+                      className="min-w-[150px] flex-1 overflow-hidden rounded-[20px]"
+                      onClick={() => setSelectedDraftMindsetSlot(index)}
+                      selected={selectedDraftMindsetSlot === index}
+                      variant="surface"
+                    >
+                      <div className="flex aspect-[733/1024] flex-col items-center justify-center gap-3 border border-dashed border-amber-950/12 bg-[#fbf6ec] px-4 text-center">
+                        <div className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_10px_24px_rgba(0,0,0,0.08)]">
+                          {index === 0 ? 'Kopf' : `Fokus ${index + 1}`}
+                        </div>
+                        <p className="text-sm font-semibold text-ink">Leeres Feld</p>
+                        <p className="text-xs text-muted">Slot aktivieren und unten einen Fokus anklicken.</p>
+                      </div>
+                    </Button>
+                  )
+                )}
+                {!isEditingMindsetDraft && !selectedCollectionMindset ? (
+                  <div className="flex min-h-[12rem] w-full items-center justify-center rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 text-center text-sm text-muted">
+                    Noch keine Foki im aktiven Mindset.
+                  </div>
+                ) : null}
               </div>
             </section>
 
@@ -1134,6 +1264,24 @@ export function CollectionView({
 
               <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
                 {visibleCollectionMindsetSlots.map((entry, slotIndex) => {
+                  const absoluteIndex = safeCollectionMindsetPage * COLLECTION_MINDSET_PAGE_SIZE + slotIndex;
+
+                  if (mindsetListMode === 'mindsets' && absoluteIndex === collectionMindsets.length) {
+                    return (
+                      <Button
+                        key={`new-mindset-slot-${absoluteIndex}`}
+                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                        onClick={startMindsetDraft}
+                        selected={isEditingMindsetDraft}
+                        variant="surface"
+                      >
+                        <div className="flex aspect-[733/1024] items-center justify-center border border-dashed border-amber-950/14 bg-[#fbf6ec]">
+                          <span className="text-6xl font-light leading-none text-accent">+</span>
+                        </div>
+                      </Button>
+                    );
+                  }
+
                   if (!entry) {
                     return (
                       <div
@@ -1147,12 +1295,16 @@ export function CollectionView({
                     const focus = entry as Focus;
 
                     return (
-                      <article
+                      <Button
+                        align="left"
                         key={`${getFocusKey(focus)}-${slotIndex}`}
-                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px] border border-amber-950/10 shadow-[0_18px_45px_rgba(41,29,20,0.12)]"
+                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                        onClick={() => handleDraftFocusAssignment(focus)}
+                        selected={isEditingMindsetDraft && draftMindsetFoci[selectedDraftMindsetSlot] !== null && getFocusKey(draftMindsetFoci[selectedDraftMindsetSlot] as Focus) === getFocusKey(focus)}
+                        variant="surface"
                       >
                         <FocusTile focus={focus} />
-                      </article>
+                      </Button>
                     );
                   }
 
