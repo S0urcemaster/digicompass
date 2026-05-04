@@ -26,7 +26,7 @@ const COLLECTION_TABS = [
 const COLLECTION_IMAGE_PAGE_SIZE = 9;
 const COLLECTION_FOCUS_PAGE_SIZE = 9;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
-const COLLECTION_SAYING_PAGE_SIZE = 5;
+const COLLECTION_SAYING_PAGE_SIZE = 7;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
 const FOCUS_EDITOR_SAYING_PAGE_SIZE = 4;
 
@@ -240,11 +240,17 @@ export function CollectionView({
         )
       ).sort((left, right) => left.localeCompare(right, 'de'))
     : [];
-  const filteredCollectionSayings = SAYINGS.filter((saying) =>
+  const filteredCollectionSayings =
     normalizedSayingFilter.length === 0
-      ? true
-      : saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
-  );
+      ? SAYINGS
+      : [
+          ...SAYINGS.filter((saying) => saying.text.toLowerCase().includes(normalizedSayingFilter)),
+          ...SAYINGS.filter(
+            (saying) =>
+              !saying.text.toLowerCase().includes(normalizedSayingFilter) &&
+              saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
+          ),
+        ];
   const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeCollectionSayingPage = Math.min(collectionSayingPage, collectionSayingPageCount - 1);
   const pagedCollectionSayings = filteredCollectionSayings.slice(
