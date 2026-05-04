@@ -17,6 +17,7 @@ const VIEW_TABS = Object.entries(VIEW_LABELS).map(([value, label]) => ({
 
 export function App() {
   const {
+    addCollectionFocus,
     activeView,
     addCollectionImage,
     addCollectionSaying,
@@ -81,6 +82,7 @@ export function App() {
         />
       ) : activeView === 'collection' ? (
         <CollectionView
+          addCollectionFocus={addCollectionFocus}
           addCollectionImage={addCollectionImage}
           addCollectionSaying={addCollectionSaying}
           collectionFoci={data.collection.foci}

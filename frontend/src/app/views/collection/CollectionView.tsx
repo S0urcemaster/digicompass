@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Tabs } from '../../../components/Tabs';
 import { IMAGES } from '../../../data/images';
@@ -42,6 +42,7 @@ type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
 
 type CollectionViewProps = {
+  addCollectionFocus: (focus: Focus) => void;
   collectionFoci: Focus[];
   collectionImages: CompassImage[];
   collectionSayings: Saying[];
@@ -53,6 +54,7 @@ type CollectionViewProps = {
 };
 
 export function CollectionView({
+  addCollectionFocus,
   collectionFoci,
   collectionImages,
   collectionSayings,
@@ -62,6 +64,7 @@ export function CollectionView({
   setCollectionImageRating,
   setCollectionSayingRating,
 }: CollectionViewProps) {
+  const shouldSyncFocusPageRef = useRef(false);
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
   const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
   const [collectionFocusPage, setCollectionFocusPage] = useState(0);
@@ -212,6 +215,31 @@ export function CollectionView({
     setCollectionFocusRating(getFocusKey(focus), rating);
   };
 
+  const handleSetEditorFocusRating = (rating: number) => {
+    if (!editorPreviewFocus) {
+      return;
+    }
+
+    if (existingEditorFocus) {
+      shouldSyncFocusPageRef.current = true;
+      setCollectionFocusRating(getFocusKey(existingEditorFocus), rating);
+      setSelectedCollectionFocusKey(getFocusKey(existingEditorFocus));
+      setFocusPreviewSource('focus');
+      return;
+    }
+
+    const nextFocus = {
+      ...editorPreviewFocus,
+      rating,
+    };
+
+    addCollectionFocus(nextFocus);
+    shouldSyncFocusPageRef.current = true;
+    setSelectedCollectionFocusKey(getFocusKey(nextFocus));
+    setCollectionFocusPage(Math.max(0, Math.ceil((filteredCollectionFoci.length + 1) / COLLECTION_FOCUS_PAGE_SIZE) - 1));
+    setFocusPreviewSource('focus');
+  };
+
   useEffect(() => {
     void preloadImages(IMAGES.map((image) => getPreviewImageUrl(image.url)));
   }, []);
@@ -225,6 +253,26 @@ export function CollectionView({
   useEffect(() => {
     setCollectionFocusPage(0);
   }, [normalizedFocusFilter]);
+
+  useEffect(() => {
+    if (!shouldSyncFocusPageRef.current || !selectedCollectionFocusKey) {
+      return;
+    }
+
+    const selectedFocusIndex = filteredCollectionFoci.findIndex((focus) => getFocusKey(focus) === selectedCollectionFocusKey);
+
+    if (selectedFocusIndex < 0) {
+      shouldSyncFocusPageRef.current = false;
+      return;
+    }
+
+    const nextPage = Math.floor(selectedFocusIndex / COLLECTION_FOCUS_PAGE_SIZE);
+    shouldSyncFocusPageRef.current = false;
+
+    if (collectionFocusPage !== nextPage) {
+      setCollectionFocusPage(nextPage);
+    }
+  }, [collectionFocusPage, filteredCollectionFoci, selectedCollectionFocusKey]);
 
   useEffect(() => {
     if (focusEditorImagePage !== safeFocusEditorImagePage) {
@@ -641,7 +689,11 @@ export function CollectionView({
                     image={{ ...previewFocus.image, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
                     onOpenModal={() => setZoomedImageId(previewFocus.image.id)}
                     onSetRating={
-                      storedPreviewFocus ? (rating) => handleSetFocusRating(storedPreviewFocus, rating) : undefined
+                      focusPreviewSource === 'editor'
+                        ? handleSetEditorFocusRating
+                        : storedPreviewFocus
+                          ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
+                          : undefined
                     }
                     topContent={
                       <div
