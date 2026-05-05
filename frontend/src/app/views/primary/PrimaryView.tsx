@@ -11,6 +11,7 @@ type PrimaryViewProps = {
   selectedMindsetIndex: number;
   onSelectFocus: (index: number) => void;
   onSelectMindset: (value: string) => void;
+  onUpdateMindsetNotes: (notes: string) => void;
 };
 
 const VISIBLE_MINDSET_TAB_COUNT = 4;
@@ -22,6 +23,7 @@ export function PrimaryView({
   selectedMindsetIndex,
   onSelectFocus,
   onSelectMindset,
+  onUpdateMindsetNotes,
 }: PrimaryViewProps) {
   if (!currentMindset || !currentFocus) {
     return <p className="mt-6 text-sm text-muted">Keine Mindset-Daten verfügbar.</p>;
@@ -54,16 +56,6 @@ export function PrimaryView({
   return (
     <section className="mt-6 space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Aktuelles Mindset</p>
-            <p className="mt-1 text-2xl font-semibold text-ink">{currentMindset.name}</p>
-          </div>
-          <div className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-            Bewertung {currentMindset.rating.toFixed(2)}
-          </div>
-        </div>
-
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
           <Button
             aria-label="Vorherige Mindset-Tabs"
@@ -120,22 +112,13 @@ export function PrimaryView({
         </section>
       </section>
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-[20px] bg-[#f4e8d5] p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Fokus-Bewertung</p>
-          <p className="mt-2 text-2xl font-semibold text-ink">{currentFocus.rating.toFixed(2)}</p>
-        </div>
-        <div className="rounded-[20px] bg-[#e8efe8] p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Kategorien</p>
-          <p className="mt-2 text-sm leading-6 text-ink">
-            {currentFocus.saying.categories.map((category) => category.text).join(' / ')}
-          </p>
-        </div>
-        <div className="rounded-[20px] bg-[#e4ebf1] p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Notizen</p>
-          <p className="mt-2 text-sm leading-6 text-ink">{currentFocus.notes || 'Noch keine Notizen.'}</p>
-        </div>
-      </section>
+      <textarea
+        id="mindset-notes"
+        className="min-h-32 w-full rounded-[18px] border border-amber-950/10 bg-white/90 px-4 py-3 text-base leading-7 text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+        placeholder="Noch keine Notizen zum aktuellen Mindset."
+        value={currentMindset.notes}
+        onChange={(event) => onUpdateMindsetNotes(event.target.value)}
+      />
     </section>
   );
 }

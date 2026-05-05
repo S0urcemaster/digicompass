@@ -76,6 +76,7 @@ export function App() {
           selectedMindsetIndex={selectedMindsetIndex}
           onSelectFocus={selectFocus}
           onSelectMindset={(value) => selectMindset(Number(value))}
+          onUpdateMindsetNotes={(notes) => updateMindset(selectedMindsetIndex, { notes })}
         />
       ) : activeView === 'collection' ? (
         <CollectionView
