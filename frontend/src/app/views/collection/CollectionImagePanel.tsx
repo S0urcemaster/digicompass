@@ -12,6 +12,7 @@ import {
 
 type CollectionImagePanelProps = {
   image: CompassImage;
+  imageClassName?: string;
   panelClassName?: string;
   onOpenModal: () => void;
   onSetRating?: (rating: Rating) => void;
@@ -21,6 +22,7 @@ type CollectionImagePanelProps = {
 
 export function CollectionImagePanel({
   image,
+  imageClassName,
   panelClassName,
   onOpenModal,
   onSetRating,
@@ -36,7 +38,7 @@ export function CollectionImagePanel({
     >
       <img
         alt={image.categories.map((category) => category.text).join(', ')}
-        className="min-[900px]:h-full w-full object-contain"
+        className={imageClassName ?? 'min-[900px]:h-full w-full object-contain'}
         decoding="async"
         fetchPriority="high"
         loading="eager"
