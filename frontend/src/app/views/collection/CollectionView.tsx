@@ -924,6 +924,7 @@ export function CollectionView({
                 {previewFocus ? (
                   <CollectionImagePanel
                     image={{ ...previewFocus.image, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
+                    panelClassName="aspect-[10/14]"
                     onOpenModal={() => setZoomedImageId(previewFocus.image.id)}
                     onSetRating={
                       focusPreviewSource === 'editor'
