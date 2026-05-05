@@ -24,6 +24,7 @@ export function App() {
     addCollectionSaying,
     data,
     removeMindset,
+    removeCollectionFocus,
     selectedFocusIndex,
     selectedMindsetIndex,
     setCollectionFocusRating,
@@ -94,6 +95,7 @@ export function App() {
           collectionImages={data.collection.images}
           collectionMindsets={data.collection.mindsets}
           collectionSayings={data.collection.sayings}
+          removeCollectionFocus={removeCollectionFocus}
           removeMindset={removeMindset}
           setCollectionFocusRating={setCollectionFocusRating}
           setCollectionImageRating={setCollectionImageRating}

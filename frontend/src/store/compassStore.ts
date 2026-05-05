@@ -27,6 +27,7 @@ interface CompassState {
   setCollectionImageRating: (imageId: number, rating: Rating) => void;
   addCollectionSaying: (saying: Saying) => void;
   addCollectionFocus: (focus: Focus) => void;
+  removeCollectionFocus: (focusKey: string) => void;
   setCollectionSayingRating: (sayingId: number, rating: Rating) => void;
   setCollectionFocusRating: (focusKey: string, rating: Rating) => void;
 }
@@ -320,6 +321,24 @@ export const useCompassStore = create<CompassState>()(
               collection: {
                 ...state.data.collection,
                 foci: [...state.data.collection.foci, nextFocus],
+              },
+            },
+          };
+        }),
+      removeCollectionFocus: (focusKey) =>
+        set((state) => {
+          const foci = state.data.collection.foci.filter((focus) => getFocusKey(focus) !== focusKey);
+          const validFocusKeys = new Set(foci.map(getFocusKey));
+          const mindsets = state.data.mindsets.filter((mindset) =>
+            mindset.foci.every((focus) => validFocusKeys.has(getFocusKey(focus)))
+          );
+
+          return {
+            data: {
+              ...syncMindsets(state.data, mindsets),
+              collection: {
+                ...syncMindsets(state.data, mindsets).collection,
+                foci,
               },
             },
           };

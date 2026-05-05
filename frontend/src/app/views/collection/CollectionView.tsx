@@ -53,6 +53,7 @@ type CollectionViewProps = {
   collectionSayings: Saying[];
   addCollectionImage: (image: CompassImage) => void;
   addCollectionSaying: (saying: Saying) => void;
+  removeCollectionFocus: (focusKey: string) => void;
   removeMindset: (index: number) => void;
   setCollectionFocusRating: (focusKey: string, rating: number) => void;
   setCollectionImageRating: (imageId: number, rating: number) => void;
@@ -70,6 +71,7 @@ export function CollectionView({
   collectionSayings,
   addCollectionImage,
   addCollectionSaying,
+  removeCollectionFocus,
   removeMindset,
   setCollectionFocusRating,
   setCollectionImageRating,
@@ -287,6 +289,14 @@ export function CollectionView({
   };
 
   const handleSetFocusRating = (focus: Focus, rating: number) => {
+    if (rating === 0) {
+      setSelectedFocusEditorImageId(focus.image.id);
+      setSelectedFocusEditorSayingId(focus.saying.id);
+      setFocusPreviewSource('editor');
+      removeCollectionFocus(getFocusKey(focus));
+      return;
+    }
+
     setCollectionFocusRating(getFocusKey(focus), rating);
   };
 
@@ -296,9 +306,17 @@ export function CollectionView({
     }
 
     if (existingEditorFocus) {
+      const existingFocusKey = getFocusKey(existingEditorFocus);
+
+      if (rating === 0) {
+        removeCollectionFocus(existingFocusKey);
+        setFocusPreviewSource('editor');
+        return;
+      }
+
       shouldSyncFocusPageRef.current = true;
-      setCollectionFocusRating(getFocusKey(existingEditorFocus), rating);
-      setSelectedCollectionFocusKey(getFocusKey(existingEditorFocus));
+      setCollectionFocusRating(existingFocusKey, rating);
+      setSelectedCollectionFocusKey(existingFocusKey);
       setFocusPreviewSource('focus');
       return;
     }
