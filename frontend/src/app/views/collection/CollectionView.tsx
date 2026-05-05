@@ -648,46 +648,48 @@ export function CollectionView({
         {activeTab === 'images' ? (
           selectedCollectionImage && selectedImageDetails ? (
             <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
-              <label className="block" htmlFor="collection-image-filter">
-                <input
-                  id="collection-image-filter"
-                  className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                  placeholder="Kategorie"
-                  value={collectionImageFilter}
-                  onChange={(event) => setCollectionImageFilter(event.target.value)}
-                />
-              </label>
+              <div className="min-[900px]:col-span-2 space-y-3">
+                <label className="block" htmlFor="collection-image-filter">
+                  <input
+                    id="collection-image-filter"
+                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    placeholder="Kategorie"
+                    value={collectionImageFilter}
+                    onChange={(event) => setCollectionImageFilter(event.target.value)}
+                  />
+                </label>
 
-              <div>
-                {visibleCollectionImages.length > 0 ? (
-                  <div className="flex items-center gap-3">
-                    <Button
-                      aria-label="Vorherige Bildseite"
-                      className="flex-1"
-                      disabled={safeCollectionImagePage === 0}
-                      fullWidth
-                      onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
-                      shape="pill"
-                      variant="pager"
-                    >
-                      ←
-                    </Button>
-                    <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
-                      {safeCollectionImagePage + 1} / {collectionImagePageCount}
+                <div>
+                  {visibleCollectionImages.length > 0 ? (
+                    <div className="flex items-center gap-3">
+                      <Button
+                        aria-label="Vorherige Bildseite"
+                        className="flex-1"
+                        disabled={safeCollectionImagePage === 0}
+                        fullWidth
+                        onClick={() => setCollectionImagePage((page) => Math.max(0, page - 1))}
+                        shape="pill"
+                        variant="pager"
+                      >
+                        ←
+                      </Button>
+                      <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                        {safeCollectionImagePage + 1} / {collectionImagePageCount}
+                      </div>
+                      <Button
+                        aria-label="Nächste Bildseite"
+                        className="flex-1"
+                        disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
+                        fullWidth
+                        onClick={() => setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))}
+                        shape="pill"
+                        variant="pager"
+                      >
+                        →
+                      </Button>
                     </div>
-                    <Button
-                      aria-label="Nächste Bildseite"
-                      className="flex-1"
-                      disabled={safeCollectionImagePage >= collectionImagePageCount - 1}
-                      fullWidth
-                      onClick={() => setCollectionImagePage((page) => Math.min(collectionImagePageCount - 1, page + 1))}
-                      shape="pill"
-                      variant="pager"
-                    >
-                      →
-                    </Button>
-                  </div>
-                ) : null}
+                  ) : null}
+                </div>
               </div>
 
               <CollectionImagePanel
