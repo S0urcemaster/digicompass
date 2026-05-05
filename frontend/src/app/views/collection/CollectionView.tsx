@@ -28,7 +28,7 @@ const COLLECTION_FOCUS_PAGE_SIZE = 9;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 7;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
-const FOCUS_EDITOR_SAYING_PAGE_SIZE = 4;
+const FOCUS_EDITOR_SAYING_PAGE_SIZE = 6;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
@@ -1175,7 +1175,7 @@ export function CollectionView({
                             <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
                               <div className="flex min-w-0 flex-1 flex-col gap-2">
                                 <div className="flex items-start justify-between gap-3">
-                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[24px] font-medium text-[#6c6258]">
+                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[18px] font-medium text-[#6c6258]">
                                     {saying.categories.length > 0
                                       ? saying.categories.map((category) => category.text).join('   ')
                                       : 'Unsortiert'}
@@ -1190,8 +1190,8 @@ export function CollectionView({
                                   />
                                 </div>
                                 <p
-                                  className="w-full font-semibold tracking-[-0.04em] text-[#1f1712]"
-                                  style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.1 }}
+                                  className="w-full text-[1rem] font-semibold tracking-[-0.04em] text-[#1f1712]"
+                                  style={{ lineHeight: 1.1 }}
                                 >
                                   {saying.text}
                                 </p>
