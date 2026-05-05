@@ -29,14 +29,6 @@ const cn = (...parts: Array<string | false | null | undefined>) => parts.filter(
 const ARROW_BUTTON_LABELS = new Set(['←', '→', '↑', '↓']);
 
 const getShapeClassName = (shape: ButtonShape) => {
-  if (shape === 'pill') {
-    return 'rounded-full';
-  }
-
-  if (shape === 'round') {
-    return 'rounded-full';
-  }
-
   return '';
 };
 
