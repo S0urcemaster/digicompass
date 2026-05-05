@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Tabs } from '../../../components/Tabs';
 import { IMAGES } from '../../../data/images';
@@ -7,13 +7,11 @@ import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage, Focus, Mindset, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
 import { FocusTile } from '../shared/FocusTile';
+import { ImageTile } from '../shared/ImageTile';
 import { StarRating } from '../shared/StarRating';
 import {
-  getImageBadgeClassName,
-  getImageBottomOverlayClassName,
   getImageIdBadgeClassName,
   getImageOverlayTone,
-  getImageStarContainerClassName,
 } from './imageOverlayTone';
 
 const COLLECTION_TABS = [
@@ -37,8 +35,6 @@ const getSayingFontSize = (fontSize: number, expanded = false) =>
   expanded
     ? `clamp(2rem, ${fontSize / 12}vw, ${fontSize * 1.08}px)`
     : `clamp(1.35rem, ${fontSize / 16.2}vw, ${Math.max(29, fontSize * 0.7)}px)`;
-
-const getFocusPreviewFontSize = (fontSize: number) => `${fontSize * 1.25}px`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
@@ -181,8 +177,6 @@ export function CollectionView({
   const previewFocusKey = previewFocus ? getFocusKey(previewFocus) : null;
   const storedPreviewFocus =
     previewFocusKey === null ? null : collectionFoci.find((focus) => getFocusKey(focus) === previewFocusKey) ?? null;
-  const previewOverlayTone = previewFocus ? getImageOverlayTone(previewFocus.image.color) : null;
-
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
     normalizedImageFilter.length === 0
@@ -244,17 +238,20 @@ export function CollectionView({
         )
       ).sort((left, right) => left.localeCompare(right, 'de'))
     : [];
-  const filteredCollectionSayings =
-    normalizedSayingFilter.length === 0
-      ? SAYINGS
-      : [
-          ...SAYINGS.filter((saying) => saying.text.toLowerCase().includes(normalizedSayingFilter)),
-          ...SAYINGS.filter(
-            (saying) =>
-              !saying.text.toLowerCase().includes(normalizedSayingFilter) &&
-              saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
-          ),
-        ];
+  const filteredCollectionSayings = useMemo(
+    () =>
+      normalizedSayingFilter.length === 0
+        ? SAYINGS
+        : [
+            ...SAYINGS.filter((saying) => saying.text.toLowerCase().includes(normalizedSayingFilter)),
+            ...SAYINGS.filter(
+              (saying) =>
+                !saying.text.toLowerCase().includes(normalizedSayingFilter) &&
+                saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
+            ),
+          ],
+    [normalizedSayingFilter]
+  );
   const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeCollectionSayingPage = Math.min(collectionSayingPage, collectionSayingPageCount - 1);
   const pagedCollectionSayings = filteredCollectionSayings.slice(
@@ -708,7 +705,6 @@ export function CollectionView({
                         const isSelected = image.id === selectedCollectionImage.id;
                         const collectedListImage = collectionImageById.get(image.id) ?? null;
                         const previewRating = collectedListImage?.rating ?? 0;
-                        const overlayTone = getImageOverlayTone(image.color);
 
                         return (
                           <Button
@@ -719,40 +715,12 @@ export function CollectionView({
                             selected={isSelected}
                             variant="surface"
                           >
-                            <img
-                              alt={image.categories.map((category) => category.text).join(', ')}
-                              className="aspect-[733/1024] w-full object-cover"
-                              decoding="async"
-                              loading="lazy"
-                              src={getPreviewImageUrl(image.url)}
+                            <ImageTile
+                              image={{ ...image, rating: previewRating }}
+                              imageUrl={getPreviewImageUrl(image.url)}
+                              rating={previewRating}
+                              showImageId={showCollectionImageIds}
                             />
-                            {showCollectionImageIds ? (
-                              <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-                                <div
-                                  className={`rounded-full border-0 px-3 py-1.5 text-[1.5rem] font-semibold ${getImageIdBadgeClassName(overlayTone)}`}
-                                >
-                                  {image.id}
-                                </div>
-                              </div>
-                            ) : null}
-                            <div className="absolute left-2 top-2">
-                              <p
-                                className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
-                              >
-                                {image.categories[0]?.text ?? 'Unsortiert'}
-                              </p>
-                            </div>
-                            <div
-                              className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
-                            >
-                              <StarRating
-                                className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
-                                disabled
-                                rating={previewRating}
-                                starClassName="text-[0.9rem]"
-                                tone={overlayTone}
-                              />
-                            </div>
                           </Button>
                         );
                       })}
@@ -922,40 +890,40 @@ export function CollectionView({
                 </div>
 
                 {previewFocus ? (
-                  <CollectionImagePanel
-                    image={{ ...previewFocus.image, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
-                    imageClassName="h-full w-full object-cover"
-                    panelClassName="aspect-[10/14]"
-                    onOpenModal={() => setZoomedImageId(previewFocus.image.id)}
-                    onSetRating={
-                      focusPreviewSource === 'editor'
-                        ? handleSetEditorFocusRating
-                        : storedPreviewFocus
-                          ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
-                          : undefined
-                    }
-                    topContent={
-                      <div
-                        className={`max-w-[26rem] rounded-[24px] px-5 py-4 text-left shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px] ${
-                          previewOverlayTone === 'light' ? 'bg-[#1f1712]/72 text-[#fff7ed]' : 'bg-[#fff7ed]/78 text-[#1f1712]'
-                        }`}
+                  <div className="relative">
+                    <FocusTile
+                      focus={{ ...previewFocus, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
+                      onSetRating={
+                        focusPreviewSource === 'editor'
+                          ? handleSetEditorFocusRating
+                          : storedPreviewFocus
+                            ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
+                            : undefined
+                      }
+                      variant="main"
+                    />
+                    <Button
+                      aria-label="Vergrößertes Bild öffnen"
+                      className={`absolute right-6 top-6 z-20 h-[5.25rem] w-[5.25rem] ${getImageIdBadgeClassName(
+                        getImageOverlayTone(previewFocus.image.color)
+                      )}`}
+                      onClick={() => setZoomedImageId(previewFocus.image.id)}
+                      shape="round"
+                      tone={getImageOverlayTone(previewFocus.image.color)}
+                      variant="overlay-action"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="h-9 w-9"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        <p
-                          className={`text-[0.68rem] font-semibold uppercase tracking-[0.18em] ${
-                            previewOverlayTone === 'light' ? 'text-[#fff7ed]/80' : 'text-[#1f1712]/72'
-                          }`}
-                        >
-                          {previewFocus.image.categories[0]?.text ?? 'Unsortiert'}
-                        </p>
-                        <p
-                          className="mt-3 font-semibold tracking-[-0.04em]"
-                          style={{ fontSize: getFocusPreviewFontSize(previewFocus.saying.fontSize), lineHeight: 1.08 }}
-                        >
-                          {previewFocus.saying.text}
-                        </p>
-                      </div>
-                    }
-                  />
+                        <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+                        <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                      </svg>
+                    </Button>
+                  </div>
                 ) : (
                   <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
                     <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
@@ -969,7 +937,6 @@ export function CollectionView({
                         {pagedCollectionFoci.map((focus) => {
                           const focusKey = getFocusKey(focus);
                           const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);
-                          const overlayTone = getImageOverlayTone(focus.image.color);
 
                           return (
                             <Button
@@ -983,38 +950,7 @@ export function CollectionView({
                               selected={isSelected}
                               variant="surface"
                             >
-                              <img
-                                alt={focus.image.categories.map((category) => category.text).join(', ')}
-                                className="aspect-[733/1024] w-full object-cover"
-                                decoding="async"
-                                loading="lazy"
-                                src={getPreviewImageUrl(focus.image.url)}
-                              />
-                              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-2">
-                                <div className="rounded-[14px] bg-black/32 px-3 py-2 text-left text-white shadow-[0_12px_30px_rgba(0,0,0,0.2)] backdrop-blur-[3px]">
-                                  <p className="line-clamp-4 text-sm font-semibold leading-[1.05] tracking-[-0.04em]">
-                                    {focus.saying.text}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="absolute left-2 top-2 pt-[5.8rem]">
-                                <p
-                                  className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
-                                >
-                                  {focus.image.categories[0]?.text ?? 'Unsortiert'}
-                                </p>
-                              </div>
-                              <div
-                                className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
-                              >
-                                <StarRating
-                                  className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
-                                  disabled
-                                  rating={focus.rating}
-                                  starClassName="text-[0.9rem]"
-                                  tone={overlayTone}
-                                />
-                              </div>
+                              <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
                             </Button>
                           );
                         })}
@@ -1066,7 +1002,6 @@ export function CollectionView({
                     <div className="grid grid-cols-2 gap-3">
                       {pagedFocusEditorImages.map((image) => {
                         const isSelected = image.id === selectedFocusEditorImage?.id;
-                        const overlayTone = getImageOverlayTone(image.color);
 
                         return (
                           <Button
@@ -1080,31 +1015,7 @@ export function CollectionView({
                             selected={isSelected}
                             variant="surface"
                           >
-                            <img
-                              alt={image.categories.map((category) => category.text).join(', ')}
-                              className="aspect-[733/1024] w-full object-cover"
-                              decoding="async"
-                              loading="lazy"
-                              src={getPreviewImageUrl(image.url)}
-                            />
-                            <div className="absolute left-2 top-2">
-                              <p
-                                className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}
-                              >
-                                {image.categories[0]?.text ?? 'Unsortiert'}
-                              </p>
-                            </div>
-                            <div
-                              className={`absolute inset-x-0 bottom-0 px-2 pb-2 pt-8 ${getImageBottomOverlayClassName(overlayTone)}`}
-                            >
-                              <StarRating
-                                className={`w-full justify-center gap-0.5 rounded-full px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
-                                disabled
-                                rating={image.rating}
-                                starClassName="text-[0.9rem]"
-                                tone={overlayTone}
-                              />
-                            </div>
+                            <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />
                           </Button>
                         );
                       })}

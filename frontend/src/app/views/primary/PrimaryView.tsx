@@ -27,12 +27,8 @@ export function PrimaryView({
   onSelectMindset,
   onUpdateMindsetNotes,
 }: PrimaryViewProps) {
-  if (!currentMindset || !currentFocus) {
-    return <p className="mt-6 text-sm text-muted">Keine Mindset-Daten verfügbar.</p>;
-  }
-
-  const visibleFocusIndex = currentMindset.foci.findIndex((focus) => focus === currentFocus);
-  const remainingFoci = currentMindset.foci.filter((_, index) => index !== visibleFocusIndex).slice(0, 4);
+  const visibleFocusIndex = currentMindset?.foci.findIndex((focus) => focus === currentFocus) ?? -1;
+  const remainingFoci = currentMindset?.foci.filter((_, index) => index !== visibleFocusIndex).slice(0, 4) ?? [];
   const maxMindsetTabStart = Math.max(0, mindsetTabs.length - VISIBLE_MINDSET_TAB_COUNT);
   const [mindsetTabStart, setMindsetTabStart] = useState(() =>
     Math.min(selectedMindsetIndex, maxMindsetTabStart)
@@ -54,6 +50,10 @@ export function PrimaryView({
       return clampedStart;
     });
   }, [maxMindsetTabStart, selectedMindsetIndex]);
+
+  if (!currentMindset || !currentFocus) {
+    return <p className="mt-6 text-sm text-muted">Keine Mindset-Daten verfügbar.</p>;
+  }
 
   return (
     <section className="mt-6 space-y-4 sm:space-y-6">
