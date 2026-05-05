@@ -1,12 +1,11 @@
+import { useEffect } from 'react';
 import { CollectionView } from './views/collection/CollectionView';
-import { FocusEditorView } from './views/focusEditor/FocusEditorView';
 import { PrimaryView } from './views/primary/PrimaryView';
 import { Tabs } from '../components/Tabs';
 import { useCompassStore } from '../store/compassStore';
 
 const VIEW_LABELS = {
-  primary: 'Start',
-  'focus-editor': 'Fokus-Editor',
+  primary: 'Kompass',
   collection: 'Sammlung',
 } as const;
 
@@ -33,7 +32,6 @@ export function App() {
     setActiveView,
     setMindsetRating,
     updateMindset,
-    setUsername,
     selectFocus,
     selectMindset,
   } = useCompassStore();
@@ -44,36 +42,30 @@ export function App() {
     value: String(index),
   }));
 
+  useEffect(() => {
+    if (activeView === 'focus-editor') {
+      setActiveView('collection');
+    }
+  }, [activeView, setActiveView]);
+
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
       <header className="flex flex-col gap-5 border-b border-amber-950/10 pb-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Digi Compass</p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Mindsets für reale Situationen</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-                Wähle ein Mindset, fokussiere dich auf einen visuellen Spruch und halte den Rest des Sets direkt griffbereit.
-              </p>
-            </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Digi Compass</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Mindsets für reale Situationen</h1>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
+            Wähle ein Mindset, fokussiere dich auf einen visuellen Spruch und halte den Rest des Sets direkt griffbereit.
+          </p>
+        </div>
 
-            <label className="block sm:min-w-[220px]" htmlFor="username">
-              <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-muted">Benutzername</span>
-              <input
-                id="username"
-                className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                value={data.username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </label>
-          </div>
-
-          <Tabs
-            activeValue={activeView}
-            className="grid grid-cols-1 gap-2 sm:grid-cols-3"
-            items={VIEW_TABS}
-            onChange={setActiveView}
-            variant="nav"
-          />
+        <Tabs
+          activeValue={activeView}
+          className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+          items={VIEW_TABS}
+          onChange={setActiveView}
+          variant="nav"
+        />
       </header>
 
       {activeView === 'primary' ? (
@@ -104,7 +96,23 @@ export function App() {
           updateMindset={updateMindset}
         />
       ) : (
-        <FocusEditorView label={VIEW_LABELS[activeView]} />
+        <CollectionView
+          addMindset={addMindset}
+          addCollectionFocus={addCollectionFocus}
+          addCollectionImage={addCollectionImage}
+          addCollectionSaying={addCollectionSaying}
+          collectionFoci={data.collection.foci}
+          collectionImages={data.collection.images}
+          collectionMindsets={data.collection.mindsets}
+          collectionSayings={data.collection.sayings}
+          removeCollectionFocus={removeCollectionFocus}
+          removeMindset={removeMindset}
+          setCollectionFocusRating={setCollectionFocusRating}
+          setCollectionImageRating={setCollectionImageRating}
+          setCollectionSayingRating={setCollectionSayingRating}
+          setMindsetRating={setMindsetRating}
+          updateMindset={updateMindset}
+        />
       )}
     </main>
   );
