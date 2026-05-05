@@ -47,7 +47,7 @@ body {
 }
 
 .app-content--flush,
-.app-content--flush :where(section, article, div, form, label, input, textarea, button, p, h2, h3, h4) {
+.app-content--flush :where(section, article, div, form, label) {
   margin: 0 !important;
   padding: 0 !important;
 }

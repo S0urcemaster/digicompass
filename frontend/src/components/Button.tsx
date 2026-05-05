@@ -125,13 +125,13 @@ export function Button({
 }: ButtonProps) {
   const isArrowOnlyButton = typeof children === 'string' && ARROW_BUTTON_LABELS.has(children.trim());
   const classes = cn(
-    variant === 'nav-tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
-    variant === 'tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
+    variant === 'nav-tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
+    variant === 'tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
     variant === 'star' && 'leading-none transition',
     variant === 'overlay-action' && 'flex items-center justify-center border font-semibold transition',
     variant === 'surface' && 'transition',
     variant === 'pager' &&
-      'min-h-[3.25rem] px-5 py-3 text-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-45',
+      'min-h-[3.75rem] px-5 py-4 text-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-45',
     variant === 'toggle' && 'transition',
     variant === 'scrim' && 'flex cursor-zoom-out items-center justify-center',
     isArrowOnlyButton && 'text-[2rem] leading-none',
