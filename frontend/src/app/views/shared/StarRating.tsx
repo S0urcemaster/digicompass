@@ -2,6 +2,7 @@ import { Button } from '../../../components/Button';
 import type { Rating } from '../../../types/domain';
 
 type StarRatingProps = {
+  allowClear?: boolean;
   buttonClassName?: string;
   className?: string;
   disabled?: boolean;
@@ -14,6 +15,7 @@ type StarRatingProps = {
 const clampRating = (rating: number): Rating => Math.max(0, Math.min(1, rating));
 
 export function StarRating({
+  allowClear = true,
   buttonClassName,
   className,
   disabled = false,
@@ -29,7 +31,7 @@ export function StarRating({
       {Array.from({ length: 5 }, (_, index) => {
         const starValue = clampRating((index + 1) / 5);
         const active = index < filledStars;
-        const clearsRating = active && index === filledStars - 1;
+        const clearsRating = allowClear && active && index === filledStars - 1;
 
         return (
           <Button

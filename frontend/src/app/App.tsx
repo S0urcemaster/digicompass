@@ -37,6 +37,7 @@ export function App() {
   } = useCompassStore();
   const currentMindset = data.mindsets[selectedMindsetIndex];
   const currentFocus = currentMindset?.foci[selectedFocusIndex] ?? currentMindset?.foci[0];
+  const currentFocusKey = currentFocus ? `${currentFocus.saying.id}:${currentFocus.image.id}` : null;
   const mindsetTabs = data.mindsets.map((mindset, index) => ({
     label: mindset.name,
     value: String(index),
@@ -73,6 +74,13 @@ export function App() {
           currentFocus={currentFocus}
           currentMindset={currentMindset}
           mindsetTabs={mindsetTabs}
+          onSetFocusRating={(rating) => {
+            if (!currentFocusKey) {
+              return;
+            }
+
+            setCollectionFocusRating(currentFocusKey, rating);
+          }}
           selectedMindsetIndex={selectedMindsetIndex}
           onSelectFocus={selectFocus}
           onSelectMindset={(value) => selectMindset(Number(value))}

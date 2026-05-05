@@ -8,6 +8,7 @@ type PrimaryViewProps = {
   currentFocus: Focus | undefined;
   currentMindset: Mindset | undefined;
   mindsetTabs: Array<{ label: string; value: string }>;
+  onSetFocusRating: (rating: number) => void;
   selectedMindsetIndex: number;
   onSelectFocus: (index: number) => void;
   onSelectMindset: (value: string) => void;
@@ -20,6 +21,7 @@ export function PrimaryView({
   currentFocus,
   currentMindset,
   mindsetTabs,
+  onSetFocusRating,
   selectedMindsetIndex,
   onSelectFocus,
   onSelectMindset,
@@ -90,7 +92,7 @@ export function PrimaryView({
 
       <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
         <article className="overflow-hidden rounded-[24px] bg-[#201a18] text-white shadow-[0_30px_80px_rgba(32,26,24,0.32)]">
-          <FocusTile focus={currentFocus} variant="main" />
+          <FocusTile focus={currentFocus} onSetRating={onSetFocusRating} variant="main" />
         </article>
 
         <section className="grid gap-3 sm:grid-cols-2 sm:grid-rows-2 lg:auto-rows-[minmax(0,0.88fr)]">
