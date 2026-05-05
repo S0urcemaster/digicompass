@@ -729,7 +729,7 @@ export function CollectionView({
                             {showCollectionImageIds ? (
                               <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                                 <div
-                                  className={`rounded-full px-4 py-2 text-3xl font-semibold ${getImageIdBadgeClassName(overlayTone)}`}
+                                  className={`rounded-full border-0 px-3 py-1.5 text-[1.5rem] font-semibold ${getImageIdBadgeClassName(overlayTone)}`}
                                 >
                                   {image.id}
                                 </div>
