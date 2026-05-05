@@ -21,8 +21,8 @@ const COLLECTION_TABS = [
   { label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
-const COLLECTION_IMAGE_PAGE_SIZE = 9;
-const COLLECTION_FOCUS_PAGE_SIZE = 9;
+const COLLECTION_IMAGE_PAGE_SIZE = 6;
+const COLLECTION_FOCUS_PAGE_SIZE = 4;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 7;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
@@ -100,7 +100,7 @@ export function CollectionView({
   const [draftMindsetFoci, setDraftMindsetFoci] = useState<Array<Focus | null>>(emptyDraftSlots);
   const [selectedDraftMindsetSlot, setSelectedDraftMindsetSlot] = useState(0);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
-  const [showCollectionImageIds, setShowCollectionImageIds] = useState(true);
+  const [showCollectionImageIds, setShowCollectionImageIds] = useState(false);
   const [collectionSayingFilter, setCollectionSayingFilter] = useState('');
   const [collectionSayingPage, setCollectionSayingPage] = useState(0);
   const [selectedFocusEditorSayingId, setSelectedFocusEditorSayingId] = useState<number | null>(null);
@@ -700,7 +700,7 @@ export function CollectionView({
               <section className="flex min-h-0 flex-col">
                 {visibleCollectionImages.length > 0 ? (
                   <div className="pr-1">
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                       {pagedCollectionImages.map((image) => {
                         const isSelected = image.id === selectedCollectionImage.id;
                         const collectedListImage = collectionImageById.get(image.id) ?? null;
@@ -933,7 +933,7 @@ export function CollectionView({
                 <section className="flex min-h-0 flex-col">
                   {filteredCollectionFoci.length > 0 ? (
                     <div className="pr-1">
-                      <div className="grid grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 gap-3">
                         {pagedCollectionFoci.map((focus) => {
                           const focusKey = getFocusKey(focus);
                           const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);

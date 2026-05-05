@@ -24,8 +24,8 @@ export const getImageBadgeClassName = (tone: ImageOverlayTone) =>
 
 export const getImageIdBadgeClassName = (tone: ImageOverlayTone) =>
   tone === 'light'
-    ? 'border border-[#1f1712]/16 bg-[#1f1712]/84 text-[#fff7ed] shadow-[0_12px_28px_rgba(0,0,0,0.22)]'
-    : 'border border-[#fff7ed]/16 bg-[#fff7ed]/92 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.18)]';
+    ? 'bg-[#1f1712]/84 text-[#fff7ed] shadow-[0_12px_28px_rgba(0,0,0,0.22)]'
+    : 'bg-[#fff7ed]/92 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.18)]';
 
 export const getImageBottomOverlayClassName = (tone: ImageOverlayTone) =>
   tone === 'light'

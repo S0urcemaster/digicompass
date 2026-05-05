@@ -19,6 +19,7 @@ type CompassCardProps = {
   aspectClassName?: string;
   bottomContent?: ReactNode;
   className?: string;
+  imageIdClassName?: string;
   imageAlt: string;
   imageClassName?: string;
   imageFit?: 'contain' | 'cover';
@@ -43,6 +44,7 @@ export function CompassCard({
   aspectClassName = 'aspect-[10/14]',
   bottomContent,
   className,
+  imageIdClassName,
   imageAlt,
   imageClassName,
   imageFit = 'cover',
@@ -79,7 +81,11 @@ export function CompassCard({
       />
       {showImageId && imageId !== undefined ? (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <div className={cn('rounded-full px-6 py-3 text-5xl font-semibold', getImageIdBadgeClassName(overlayTone))}>{imageId}</div>
+          <div
+            className={cn('rounded-full px-6 py-3 text-5xl font-semibold', getImageIdBadgeClassName(overlayTone), imageIdClassName)}
+          >
+            {imageId}
+          </div>
         </div>
       ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/8 via-transparent to-black/55" />

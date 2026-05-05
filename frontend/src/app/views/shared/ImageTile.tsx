@@ -18,6 +18,7 @@ export function ImageTile({ image, imageUrl, rating = image.rating, showImageId 
       className="rounded-[18px] shadow-none"
       imageAlt={image.categories.map((category) => category.text).join(', ')}
       imageId={image.id}
+      imageIdClassName="px-3 py-1.5 text-[0.75rem]"
       imageUrl={imageUrl ?? image.url}
       overlayTone={overlayTone}
       rating={rating}
