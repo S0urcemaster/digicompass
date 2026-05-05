@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Tabs } from '../../../components/Tabs';
 import type { Focus, Mindset } from '../../../types/domain';
@@ -11,6 +12,8 @@ type PrimaryViewProps = {
   onSelectFocus: (index: number) => void;
   onSelectMindset: (value: string) => void;
 };
+
+const VISIBLE_MINDSET_TAB_COUNT = 4;
 
 export function PrimaryView({
   currentFocus,
@@ -26,6 +29,27 @@ export function PrimaryView({
 
   const visibleFocusIndex = currentMindset.foci.findIndex((focus) => focus === currentFocus);
   const remainingFoci = currentMindset.foci.filter((_, index) => index !== visibleFocusIndex).slice(0, 4);
+  const maxMindsetTabStart = Math.max(0, mindsetTabs.length - VISIBLE_MINDSET_TAB_COUNT);
+  const [mindsetTabStart, setMindsetTabStart] = useState(() =>
+    Math.min(selectedMindsetIndex, maxMindsetTabStart)
+  );
+  const visibleMindsetTabs = mindsetTabs.slice(mindsetTabStart, mindsetTabStart + VISIBLE_MINDSET_TAB_COUNT);
+
+  useEffect(() => {
+    setMindsetTabStart((currentStart) => {
+      const clampedStart = Math.min(currentStart, maxMindsetTabStart);
+
+      if (selectedMindsetIndex < clampedStart) {
+        return selectedMindsetIndex;
+      }
+
+      if (selectedMindsetIndex >= clampedStart + VISIBLE_MINDSET_TAB_COUNT) {
+        return Math.min(selectedMindsetIndex - VISIBLE_MINDSET_TAB_COUNT + 1, maxMindsetTabStart);
+      }
+
+      return clampedStart;
+    });
+  }, [maxMindsetTabStart, selectedMindsetIndex]);
 
   return (
     <section className="mt-6 space-y-4 sm:space-y-6">
@@ -40,14 +64,35 @@ export function PrimaryView({
           </div>
         </div>
 
-        <div className="overflow-x-auto pb-1">
+        <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2">
+          <Button
+            aria-label="Vorherige Mindset-Tabs"
+            disabled={mindsetTabStart === 0}
+            onClick={() =>
+              setMindsetTabStart((currentStart) => Math.max(0, currentStart - VISIBLE_MINDSET_TAB_COUNT))
+            }
+            shape="pill"
+            variant="pager"
+          >
+            ←
+          </Button>
           <Tabs
             activeValue={String(selectedMindsetIndex)}
-            className="grid min-w-full grid-flow-col auto-cols-[minmax(0,1fr)] gap-2"
-            items={mindsetTabs}
+            className="grid grid-cols-4 gap-2"
+            items={visibleMindsetTabs}
             onChange={onSelectMindset}
-            style={{ width: `${Math.max(mindsetTabs.length, 5) * 20}%` }}
           />
+          <Button
+            aria-label="Nächste Mindset-Tabs"
+            disabled={mindsetTabStart >= maxMindsetTabStart}
+            onClick={() =>
+              setMindsetTabStart((currentStart) => Math.min(maxMindsetTabStart, currentStart + VISIBLE_MINDSET_TAB_COUNT))
+            }
+            shape="pill"
+            variant="pager"
+          >
+            →
+          </Button>
         </div>
       </div>
 
