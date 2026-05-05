@@ -83,7 +83,8 @@ export function CollectionView({
   const [focusPreviewSource, setFocusPreviewSource] = useState<FocusPreviewSource>('focus');
   const [focusEditorImagePage, setFocusEditorImagePage] = useState(0);
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
-  const [collectionImageFilter, setCollectionImageFilter] = useState('');
+  const [selectedCollectionImageCategoryIndex, setSelectedCollectionImageCategoryIndex] = useState(0);
+  const [isCollectionImageCategoryFilterActive, setIsCollectionImageCategoryFilterActive] = useState(false);
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [lastVisibleCollectionImages, setLastVisibleCollectionImages] = useState<CompassImage[]>(IMAGES);
   const [selectedCollectionFocusKey, setSelectedCollectionFocusKey] = useState<string | null>(null);
@@ -108,8 +109,20 @@ export function CollectionView({
   const [showCollectionSayingIds, setShowCollectionSayingIds] = useState(true);
 
   const normalizedFocusFilter = collectionFocusFilter.trim().toLowerCase();
-  const normalizedImageFilter = collectionImageFilter.trim().toLowerCase();
   const normalizedSayingFilter = collectionSayingFilter.trim().toLowerCase();
+  const availableImageCategories = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          IMAGES.flatMap((image) => image.categories.map((category) => category.text.trim())).filter(Boolean)
+        )
+      ).sort((left, right) => left.localeCompare(right, 'de')),
+    []
+  );
+  const selectedCollectionImageCategory =
+    availableImageCategories[
+      Math.min(selectedCollectionImageCategoryIndex, Math.max(availableImageCategories.length - 1, 0))
+    ] ?? '';
 
   const filteredCollectionFoci = collectionFoci.filter((focus) =>
     normalizedFocusFilter.length === 0
@@ -179,9 +192,9 @@ export function CollectionView({
     previewFocusKey === null ? null : collectionFoci.find((focus) => getFocusKey(focus) === previewFocusKey) ?? null;
   const collectionImageById = new Map(collectionImages.map((image) => [image.id, image] as const));
   const filteredCollectionImages = IMAGES.filter((image) =>
-    normalizedImageFilter.length === 0
+    !isCollectionImageCategoryFilterActive || !selectedCollectionImageCategory
       ? true
-      : image.categories.some((category) => category.text.toLowerCase().includes(normalizedImageFilter))
+      : image.categories.some((category) => category.text === selectedCollectionImageCategory)
   );
   const visibleCollectionImages = filteredCollectionImages.length > 0 ? filteredCollectionImages : lastVisibleCollectionImages;
   const collectionImagePageCount = Math.max(1, Math.ceil(visibleCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
@@ -577,7 +590,17 @@ export function CollectionView({
 
   useEffect(() => {
     setCollectionImagePage(0);
-  }, [normalizedImageFilter]);
+  }, [isCollectionImageCategoryFilterActive, selectedCollectionImageCategory]);
+
+  useEffect(() => {
+    if (availableImageCategories.length === 0) {
+      return;
+    }
+
+    if (selectedCollectionImageCategoryIndex >= availableImageCategories.length) {
+      setSelectedCollectionImageCategoryIndex(availableImageCategories.length - 1);
+    }
+  }, [availableImageCategories, selectedCollectionImageCategoryIndex]);
 
   useEffect(() => {
     if (selectedCollectionImageId === null && filteredCollectionImages[0]) {
@@ -649,15 +672,51 @@ export function CollectionView({
           selectedCollectionImage && selectedImageDetails ? (
             <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
               <div className="min-[900px]:col-span-2 space-y-3">
-                <label className="block" htmlFor="collection-image-filter">
-                  <input
-                    id="collection-image-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Kategorie"
-                    value={collectionImageFilter}
-                    onChange={(event) => setCollectionImageFilter(event.target.value)}
-                  />
-                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  <Button
+                    aria-label="Vorherige Bildkategorie"
+                    className="px-4 py-2 font-semibold tracking-tight"
+                    disabled={availableImageCategories.length <= 1}
+                    fullWidth
+                    onClick={() =>
+                      setSelectedCollectionImageCategoryIndex((currentIndex) =>
+                        availableImageCategories.length === 0
+                          ? 0
+                          : (currentIndex - 1 + availableImageCategories.length) % availableImageCategories.length
+                      )
+                    }
+                    shape="pill"
+                    variant="pager"
+                  >
+                    ←
+                  </Button>
+                  <Button
+                    active={isCollectionImageCategoryFilterActive}
+                    aria-label={`Bildkategorie ${selectedCollectionImageCategory || 'Unsortiert'} umschalten`}
+                    className="truncate px-4 py-2 text-lg font-semibold tracking-tight"
+                    fullWidth
+                    onClick={() => setIsCollectionImageCategoryFilterActive((current) => !current)}
+                    shape="pill"
+                    variant="tab"
+                  >
+                    {selectedCollectionImageCategory || 'Unsortiert'}
+                  </Button>
+                  <Button
+                    aria-label="Nächste Bildkategorie"
+                    className="px-4 py-2 font-semibold tracking-tight"
+                    disabled={availableImageCategories.length <= 1}
+                    fullWidth
+                    onClick={() =>
+                      setSelectedCollectionImageCategoryIndex((currentIndex) =>
+                        availableImageCategories.length === 0 ? 0 : (currentIndex + 1) % availableImageCategories.length
+                      )
+                    }
+                    shape="pill"
+                    variant="pager"
+                  >
+                    →
+                  </Button>
+                </div>
 
                 <div>
                   {visibleCollectionImages.length > 0 ? (

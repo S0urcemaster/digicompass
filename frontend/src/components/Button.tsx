@@ -26,6 +26,7 @@ type ButtonProps = ComponentPropsWithoutRef<'button'> & {
 };
 
 const cn = (...parts: Array<string | false | null | undefined>) => parts.filter(Boolean).join(' ');
+const ARROW_BUTTON_LABELS = new Set(['←', '→', '↑', '↓']);
 
 const getShapeClassName = (shape: ButtonShape) => {
   if (shape === 'pill') {
@@ -130,6 +131,7 @@ export function Button({
   variant,
   ...props
 }: ButtonProps) {
+  const isArrowOnlyButton = typeof children === 'string' && ARROW_BUTTON_LABELS.has(children.trim());
   const classes = cn(
     variant === 'nav-tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
     variant === 'tab' && 'px-4 py-2 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
@@ -140,6 +142,7 @@ export function Button({
       'min-h-[3.25rem] px-5 py-3 text-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-45',
     variant === 'toggle' && 'transition',
     variant === 'scrim' && 'flex cursor-zoom-out items-center justify-center',
+    isArrowOnlyButton && 'text-[2rem] leading-none',
     fullWidth && 'w-full',
     align === 'left' && 'text-left',
     getShapeClassName(shape),
