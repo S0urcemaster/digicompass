@@ -91,9 +91,7 @@ export function PrimaryView({
       </div>
 
       <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
-        <article className="overflow-hidden rounded-[24px] bg-[#201a18] text-white shadow-[0_30px_80px_rgba(32,26,24,0.32)]">
-          <FocusTile focus={currentFocus} onSetRating={onSetFocusRating} variant="main" />
-        </article>
+        <FocusTile focus={currentFocus} onSetRating={onSetFocusRating} variant="main" />
 
         <section className="grid gap-3 sm:grid-cols-2 sm:grid-rows-2 lg:auto-rows-[minmax(0,0.88fr)]">
           {remainingFoci.map((focus) => {
@@ -103,7 +101,7 @@ export function PrimaryView({
               <Button
                 align="left"
                 key={`${focus.saying.id}-${focus.image.id}`}
-                className="overflow-hidden rounded-[20px]"
+                className="overflow-hidden"
                 onClick={() => onSelectFocus(nextIndex)}
                 variant="surface"
               >

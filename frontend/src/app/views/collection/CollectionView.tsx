@@ -6,8 +6,10 @@ import { SAYINGS } from '../../../data/sayings';
 import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage, Focus, Mindset, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
+import { CollectionSayingPanel } from './CollectionSayingPanel';
 import { FocusTile } from '../shared/FocusTile';
 import { ImageTile } from '../shared/ImageTile';
+import { MindsetTile } from '../shared/MindsetTile';
 import { StarRating } from '../shared/StarRating';
 import {
   getImageIdBadgeClassName,
@@ -30,11 +32,6 @@ const FOCUS_EDITOR_SAYING_PAGE_SIZE = 6;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
-
-const getSayingFontSize = (fontSize: number, expanded = false) =>
-  expanded
-    ? `clamp(2rem, ${fontSize / 12}vw, ${fontSize * 1.08}px)`
-    : `clamp(1.35rem, ${fontSize / 16.2}vw, ${Math.max(29, fontSize * 0.7)}px)`;
 
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
@@ -771,7 +768,7 @@ export function CollectionView({
                           <Button
                             align="left"
                             key={image.id}
-                            className="group relative overflow-hidden rounded-[18px]"
+                            className="group relative overflow-hidden"
                             onClick={() => setSelectedCollectionImageId(image.id)}
                             selected={isSelected}
                             variant="surface"
@@ -848,51 +845,16 @@ export function CollectionView({
                       const previewRating = collectedListSaying?.rating ?? 0;
 
                       return (
-                        <article
+                        <CollectionSayingPanel
                           key={saying.id}
-                          className="relative overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition"
-                        >
-                          <button
-                            className="absolute inset-0 z-0"
-                            aria-label={`Spruch ${saying.id} auswählen`}
-                            onClick={() => setSelectedCollectionSayingId(saying.id)}
-                            type="button"
-                          />
-                          <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
-                            <div className="flex min-w-0 flex-1 flex-col gap-2">
-                              <div className="flex items-start justify-between gap-3">
-                                <div
-                                  className={`min-w-0 ${showCollectionSayingIds ? 'grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2' : 'block'}`}
-                                >
-                                  {showCollectionSayingIds ? (
-                                    <div className="border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-sm font-semibold text-[#1f1712]">
-                                      {saying.id}
-                                    </div>
-                                  ) : null}
-                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[32px] font-medium text-[#6c6258]">
-                                    {saying.categories.length > 0
-                                      ? saying.categories.map((category) => category.text).join('   ')
-                                      : 'Unsortiert'}
-                                  </p>
-                                </div>
-                                <StarRating
-                                  className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
-                                  rating={previewRating}
-                                  buttonClassName="flex h-[1.9rem] w-[1.9rem] items-center justify-center p-0 leading-none"
-                                  starClassName="text-[2.3rem] leading-none"
-                                  tone="dark"
-                                  onChange={(rating) => handleSetSayingRating(saying, rating)}
-                                />
-                              </div>
-                              <p
-                                className="w-full font-semibold tracking-[-0.04em] text-[#1f1712]"
-                                style={{ fontSize: getSayingFontSize(saying.fontSize), lineHeight: 1.1 }}
-                              >
-                                {saying.text}
-                              </p>
-                            </div>
-                          </div>
-                        </article>
+                          onSelect={() => setSelectedCollectionSayingId(saying.id)}
+                          onSetRating={(rating) => handleSetSayingRating(saying, rating)}
+                          panelClassName="shadow-none"
+                          saying={{ ...saying, rating: previewRating }}
+                          selected={selectedCollectionSayingId === saying.id}
+                          showSayingId={showCollectionSayingIds}
+                          variant="preview"
+                        />
                       );
                     })}
                   </div>
@@ -1003,7 +965,7 @@ export function CollectionView({
                             <Button
                               align="left"
                               key={focusKey}
-                              className="group relative overflow-hidden rounded-[18px]"
+                              className="group relative overflow-hidden"
                               onClick={() => {
                                 setSelectedCollectionFocusKey(focusKey);
                                 setFocusPreviewSource('focus');
@@ -1068,7 +1030,7 @@ export function CollectionView({
                           <Button
                             align="left"
                             key={image.id}
-                            className="group relative overflow-hidden rounded-[18px]"
+                            className="group relative overflow-hidden"
                             onClick={() => {
                               setSelectedFocusEditorImageId(image.id);
                               setFocusPreviewSource('editor');
@@ -1127,51 +1089,18 @@ export function CollectionView({
                         const isSelected = saying.id === selectedFocusEditorSaying?.id;
 
                         return (
-                          <article
+                          <CollectionSayingPanel
                             key={saying.id}
-                            className={`relative cursor-pointer overflow-hidden border border-amber-950/12 bg-[var(--button-bg-light)] transition ${
-                              isSelected ? 'ring-2 ring-accent/40' : ''
-                            }`}
-                            onClick={() => {
+                            onSelect={() => {
                               setSelectedFocusEditorSayingId(saying.id);
                               setFocusPreviewSource('editor');
                             }}
-                          >
-                            <button
-                              className="absolute inset-0 z-0"
-                              aria-label={`User-Spruch ${saying.id} auswählen`}
-                              onClick={() => {
-                                setSelectedFocusEditorSayingId(saying.id);
-                                setFocusPreviewSource('editor');
-                              }}
-                              type="button"
-                            />
-                            <div className="relative z-10 flex h-full flex-col gap-3 px-4 py-3 sm:px-5">
-                              <div className="flex min-w-0 flex-1 flex-col gap-2">
-                                <div className="flex items-start justify-between gap-3">
-                                  <p className="min-w-0 border border-amber-950/12 bg-[var(--button-bg-light)] px-2.5 py-1 text-[18px] font-medium text-[#6c6258]">
-                                    {saying.categories.length > 0
-                                      ? saying.categories.map((category) => category.text).join('   ')
-                                      : 'Unsortiert'}
-                                  </p>
-                                  <StarRating
-                                    className="relative z-10 shrink-0 items-start justify-center self-start border border-amber-950/12 bg-[var(--button-bg-light)] px-2 py-0 text-[#1f1712]"
-                                    rating={saying.rating}
-                                    buttonClassName="flex h-[1.45rem] w-[1.45rem] items-center justify-center p-0 leading-none"
-                                    starClassName="text-[1.7rem] leading-none"
-                                    tone="dark"
-                                    onChange={(rating) => handleSetSayingRating(saying, rating)}
-                                  />
-                                </div>
-                                <p
-                                  className="w-full text-[1rem] font-semibold tracking-[-0.04em] text-[#1f1712]"
-                                  style={{ lineHeight: 1.1 }}
-                                >
-                                  {saying.text}
-                                </p>
-                              </div>
-                            </div>
-                          </article>
+                            onSetRating={(rating) => handleSetSayingRating(saying, rating)}
+                            panelClassName="shadow-none"
+                            saying={saying}
+                            selected={isSelected}
+                            variant="preview"
+                          />
                         );
                       })}
                     </div>
@@ -1236,7 +1165,7 @@ export function CollectionView({
                     <Button
                       align="left"
                       key={`${isEditingMindsetDraft ? 'draft' : selectedCollectionMindset.name}-${getFocusKey(focus)}-${index}`}
-                      className="min-w-[150px] flex-1 overflow-hidden rounded-[20px]"
+                      className="min-w-[150px] flex-1 overflow-hidden"
                       onClick={() => isEditingMindsetDraft && setSelectedDraftMindsetSlot(index)}
                       selected={isEditingMindsetDraft && selectedDraftMindsetSlot === index}
                       variant="surface"
@@ -1249,7 +1178,7 @@ export function CollectionView({
                     <Button
                       align="left"
                       key={`draft-empty-slot-${index}`}
-                      className="min-w-[150px] flex-1 overflow-hidden rounded-[20px]"
+                      className="min-w-[150px] flex-1 overflow-hidden"
                       onClick={() => setSelectedDraftMindsetSlot(index)}
                       selected={selectedDraftMindsetSlot === index}
                       variant="surface"
@@ -1262,7 +1191,7 @@ export function CollectionView({
                   )
                 )}
                 {!isEditingMindsetDraft && !selectedCollectionMindset ? (
-                  <div className="flex min-h-[12rem] w-full items-center justify-center rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 text-center text-sm text-muted">
+                  <div className="flex min-h-[12rem] w-full items-center justify-center border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 text-center text-sm text-muted">
                     Noch keine Foki im aktiven Mindset.
                   </div>
                 ) : null}
@@ -1326,7 +1255,7 @@ export function CollectionView({
                     return (
                       <Button
                         key={`new-mindset-slot-${absoluteIndex}`}
-                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                        className="min-w-[170px] flex-1 overflow-hidden"
                         onClick={startMindsetDraft}
                         selected={isCreatingMindsetDraft}
                         variant="surface"
@@ -1342,7 +1271,7 @@ export function CollectionView({
                     return (
                       <div
                         key={`empty-mindset-slot-${safeCollectionMindsetPage}-${slotIndex}`}
-                        className="min-w-[170px] flex-1 rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec]"
+                        className="min-w-[170px] flex-1 border border-dashed border-amber-950/14 bg-[#fbf6ec]"
                       />
                     );
                   }
@@ -1354,7 +1283,7 @@ export function CollectionView({
                       <Button
                         align="left"
                         key={`${getFocusKey(focus)}-${slotIndex}`}
-                        className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                        className="min-w-[170px] flex-1 overflow-hidden"
                         onClick={() => handleDraftFocusAssignment(focus)}
                         selected={isEditingMindsetDraft && draftMindsetFoci[selectedDraftMindsetSlot] !== null && getFocusKey(draftMindsetFoci[selectedDraftMindsetSlot] as Focus) === getFocusKey(focus)}
                         variant="surface"
@@ -1371,7 +1300,7 @@ export function CollectionView({
                     return (
                       <div
                         key={`missing-focus-slot-${safeCollectionMindsetPage}-${slotIndex}`}
-                        className="min-w-[170px] flex-1 rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec]"
+                        className="min-w-[170px] flex-1 border border-dashed border-amber-950/14 bg-[#fbf6ec]"
                       />
                     );
                   }
@@ -1383,17 +1312,12 @@ export function CollectionView({
                     <Button
                       align="left"
                       key={`${mindset.name}-${mindsetIndex}`}
-                      className="min-w-[170px] flex-1 overflow-hidden rounded-[20px]"
+                      className="min-w-[170px] flex-1 overflow-hidden"
                       onClick={() => loadMindsetIntoEditor(mindset, mindsetIndex)}
                       selected={isSelected}
                       variant="surface"
                     >
-                      <div className="relative">
-                        <FocusTile focus={representativeFocus} />
-                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-black/78 via-black/32 to-transparent px-3 pb-3 pt-10 text-left text-white">
-                          <p className="text-lg font-semibold tracking-[-0.03em]">{mindset.name}</p>
-                        </div>
-                      </div>
+                      <MindsetTile focus={representativeFocus} name={mindset.name} />
                     </Button>
                   );
                 })}

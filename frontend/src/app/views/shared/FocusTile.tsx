@@ -32,7 +32,7 @@ export function FocusTile({ focus, onSetRating, variant = 'preview' }: FocusTile
   const overlayTone = getImageOverlayTone(focus.image.color);
   const sayingCard = (
     <div
-      className={`max-w-[26rem] rounded-[24px] text-left shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px] ${
+      className={`max-w-[26rem] text-left shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-[3px] ${
         overlayTone === 'light' ? 'bg-[#1f1712]/72 text-[#fff7ed]' : 'bg-[#fff7ed]/78 text-[#1f1712]'
       } ${isMain ? 'px-5 py-4' : 'max-w-[86%] px-3.5 py-3'}`}
     >
@@ -74,7 +74,7 @@ export function FocusTile({ focus, onSetRating, variant = 'preview' }: FocusTile
   return (
     <CompassCard
       aspectClassName="aspect-[733/1024]"
-      className="rounded-[20px] shadow-none"
+      className="shadow-none"
       imageAlt={focus.saying.text}
       imageUrl={focus.image.url}
       overlayTone={overlayTone}

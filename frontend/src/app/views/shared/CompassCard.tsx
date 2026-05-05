@@ -66,7 +66,7 @@ export function CompassCard({
   return (
     <article
       className={cn(
-        'relative overflow-hidden rounded-[28px] bg-[#201a18] text-white shadow-[0_30px_90px_rgba(32,26,24,0.28)]',
+        'relative overflow-hidden bg-[#201a18] text-white shadow-[0_30px_90px_rgba(32,26,24,0.28)]',
         aspectClassName,
         className
       )}

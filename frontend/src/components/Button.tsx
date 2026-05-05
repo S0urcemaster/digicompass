@@ -28,7 +28,7 @@ type ButtonProps = ComponentPropsWithoutRef<'button'> & {
 const cn = (...parts: Array<string | false | null | undefined>) => parts.filter(Boolean).join(' ');
 const ARROW_BUTTON_LABELS = new Set(['←', '→', '↑', '↓']);
 
-const getShapeClassName = (shape: ButtonShape) => {
+const getShapeClassName = (_shape: ButtonShape) => {
   return '';
 };
 

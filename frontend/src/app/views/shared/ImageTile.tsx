@@ -15,7 +15,7 @@ export function ImageTile({ image, imageUrl, rating = image.rating, showImageId 
   return (
     <CompassCard
       aspectClassName="aspect-[733/1024]"
-      className="rounded-[18px] shadow-none"
+      className="shadow-none"
       imageAlt={image.categories.map((category) => category.text).join(', ')}
       imageId={image.id}
       imageIdClassName="px-3 py-1.5 text-[0.75rem]"
