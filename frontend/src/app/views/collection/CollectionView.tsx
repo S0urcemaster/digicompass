@@ -89,6 +89,7 @@ export function CollectionView({
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
   const [collectionImageFilter, setCollectionImageFilter] = useState('');
   const [collectionImagePage, setCollectionImagePage] = useState(0);
+  const [lastVisibleCollectionImages, setLastVisibleCollectionImages] = useState<CompassImage[]>(IMAGES);
   const [selectedCollectionFocusKey, setSelectedCollectionFocusKey] = useState<string | null>(null);
   const [selectedFocusEditorImageId, setSelectedFocusEditorImageId] = useState<number | null>(null);
   const [selectedCollectionImageId, setSelectedCollectionImageId] = useState<number | null>(IMAGES[0]?.id ?? null);
@@ -188,14 +189,15 @@ export function CollectionView({
       ? true
       : image.categories.some((category) => category.text.toLowerCase().includes(normalizedImageFilter))
   );
-  const collectionImagePageCount = Math.max(1, Math.ceil(filteredCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
+  const visibleCollectionImages = filteredCollectionImages.length > 0 ? filteredCollectionImages : lastVisibleCollectionImages;
+  const collectionImagePageCount = Math.max(1, Math.ceil(visibleCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
   const safeCollectionImagePage = Math.min(collectionImagePage, collectionImagePageCount - 1);
-  const pagedCollectionImages = filteredCollectionImages.slice(
+  const pagedCollectionImages = visibleCollectionImages.slice(
     safeCollectionImagePage * COLLECTION_IMAGE_PAGE_SIZE,
     (safeCollectionImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
   );
   const selectedCollectionImage =
-    filteredCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? filteredCollectionImages[0] ?? null;
+    visibleCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? visibleCollectionImages[0] ?? null;
   const collectedImage = selectedCollectionImage ? collectionImageById.get(selectedCollectionImage.id) ?? null : null;
   const selectedImageDetails = collectedImage ?? selectedCollectionImage;
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
@@ -565,6 +567,12 @@ export function CollectionView({
   }, [selectedCollectionImage]);
 
   useEffect(() => {
+    if (filteredCollectionImages.length > 0) {
+      setLastVisibleCollectionImages(filteredCollectionImages);
+    }
+  }, [filteredCollectionImages]);
+
+  useEffect(() => {
     if (collectionImagePage !== safeCollectionImagePage) {
       setCollectionImagePage(safeCollectionImagePage);
     }
@@ -646,15 +654,15 @@ export function CollectionView({
               <label className="block" htmlFor="collection-image-filter">
                 <input
                   id="collection-image-filter"
-                  className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                  placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                  className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                  placeholder="Kategorie"
                   value={collectionImageFilter}
                   onChange={(event) => setCollectionImageFilter(event.target.value)}
                 />
               </label>
 
               <div>
-                {filteredCollectionImages.length > 0 ? (
+                {visibleCollectionImages.length > 0 ? (
                   <div className="flex items-center gap-3">
                     <Button
                       aria-label="Vorherige Bildseite"
@@ -693,7 +701,7 @@ export function CollectionView({
               />
 
               <section className="flex min-h-0 flex-col">
-                {filteredCollectionImages.length > 0 ? (
+                {visibleCollectionImages.length > 0 ? (
                   <div className="pr-1">
                     <div className="grid grid-cols-3 gap-3">
                       {pagedCollectionImages.map((image) => {
@@ -750,11 +758,7 @@ export function CollectionView({
                       })}
                     </div>
                   </div>
-                ) : (
-                  <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                    <p className="text-sm text-muted">Keine Bilder passen zu diesem Kategorienfilter.</p>
-                  </div>
-                )}
+                ) : null}
               </section>
             </div>
           ) : (
@@ -769,8 +773,8 @@ export function CollectionView({
                 <label className="block" htmlFor="collection-saying-filter">
                   <input
                     id="collection-saying-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    placeholder="Suchbegriff/Kategorie"
                     value={collectionSayingFilter}
                     onChange={(event) => setCollectionSayingFilter(event.target.value)}
                   />
@@ -878,8 +882,8 @@ export function CollectionView({
                 <label className="block" htmlFor="collection-focus-filter">
                   <input
                     id="collection-focus-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-3 text-sm text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Kategorie eingeben, z. B. Freiheit oder Erkenntnis"
+                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    placeholder="Kategorie"
                     value={collectionFocusFilter}
                     onChange={(event) => setCollectionFocusFilter(event.target.value)}
                   />
@@ -1220,7 +1224,7 @@ export function CollectionView({
                     <>
                       <input
                         className="mt-1 w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                        placeholder="Name des Mindsets"
+                        placeholder="Name"
                         value={draftMindsetName}
                         onChange={(event) => handleDraftMindsetNameChange(event.target.value)}
                       />
