@@ -40,13 +40,15 @@ export function PrimaryView({
           </div>
         </div>
 
-        <Tabs
-          activeValue={String(selectedMindsetIndex)}
-          className="grid gap-2"
-          items={mindsetTabs}
-          onChange={onSelectMindset}
-          style={{ gridTemplateColumns: `repeat(${Math.max(mindsetTabs.length, 1)}, minmax(0, 1fr))` }}
-        />
+        <div className="overflow-x-auto pb-1">
+          <Tabs
+            activeValue={String(selectedMindsetIndex)}
+            className="grid min-w-full grid-flow-col auto-cols-[minmax(0,1fr)] gap-2"
+            items={mindsetTabs}
+            onChange={onSelectMindset}
+            style={{ width: `${Math.max(mindsetTabs.length, 5) * 20}%` }}
+          />
+        </div>
       </div>
 
       <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
