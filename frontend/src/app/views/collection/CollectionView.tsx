@@ -1110,10 +1110,10 @@ export function CollectionView({
                     </Button>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
                     <Button
                       aria-label={isFocusEditorMode ? 'Zur Fokussliste wechseln' : 'Editor aktivieren'}
-                      className="col-span-2 px-4 py-2 text-lg font-semibold tracking-tight"
+                      className="px-4 py-2 text-lg font-semibold tracking-tight"
                       fullWidth
                       onClick={toggleFocusEditorMode}
                       shape="pill"
@@ -1150,7 +1150,7 @@ export function CollectionView({
                   {((focusListMode === 'foci' && filteredCollectionFoci.length > 0) ||
                     (focusListMode === 'images' && filteredFocusEditorImages.length > 0) ||
                     (focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0)) ? (
-                    <div className="flex items-center gap-3">
+                    <div className="grid grid-cols-3 gap-3">
                       <Button
                         aria-label={
                           focusListMode === 'foci'
@@ -1159,7 +1159,7 @@ export function CollectionView({
                               ? 'Vorherige Bildseite'
                               : 'Vorherige Spruchseite'
                         }
-                        className="flex-1"
+                        className="px-4 py-2 font-semibold tracking-tight"
                         disabled={activeFocusListPage === 0}
                         fullWidth
                         onClick={() => {
@@ -1180,7 +1180,7 @@ export function CollectionView({
                       >
                         ←
                       </Button>
-                      <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
+                      <div className="flex items-center justify-center text-center text-base font-semibold text-muted">
                         {activeFocusListPage + 1} / {activeFocusListPageCount}
                       </div>
                       <Button
@@ -1191,7 +1191,7 @@ export function CollectionView({
                               ? 'Nächste Bildseite'
                               : 'Nächste Spruchseite'
                         }
-                        className="flex-1"
+                        className="px-4 py-2 font-semibold tracking-tight"
                         disabled={activeFocusListPage >= activeFocusListPageCount - 1}
                         fullWidth
                         onClick={() => {
