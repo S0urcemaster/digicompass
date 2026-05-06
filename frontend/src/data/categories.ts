@@ -12,9 +12,9 @@ export const CATEGORIES: Record<string, Category> = {
   egoismus: { id: 58, text: 'Egoismus' },
   erfahrung: { id: 7, text: 'Erfahrung' }, 
   erfolg: { id: 8, text: 'Erfolg' },
-  erkenntnis: { id: 9, text: 'Erkenntnis' }, //
+  erkenntnis: { id: 9, text: 'Erkenntnis' }, 
   fortschritt: { id: 10, text: 'Fortschritt' },
-  freiheit: { id: 11, text: 'Freiheit' }, //
+  freiheit: { id: 11, text: 'Freiheit' }, 
   frieden: { id: 12, text: 'Frieden' },
   geduld: { id: 13, text: 'Geduld' },
   gelassenheit: { id: 14, text: 'Gelassenheit' },
@@ -37,7 +37,7 @@ export const CATEGORIES: Record<string, Category> = {
   leid: { id: 29, text: 'Leid' },
   lernen: { id: 30, text: 'Lernen' },
   liebe: { id: 31, text: 'Liebe' },
-  logik: { id: 32, text: 'Logik' }, //
+  logik: { id: 32, text: 'Logik' }, 
   luege: { id: 33, text: 'Lüge' },
   macht: { id: 34, text: 'Macht' },
   meditation: { id: 35, text: 'Meditation' },

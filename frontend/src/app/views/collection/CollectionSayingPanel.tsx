@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { Button } from '../../../components/Button';
 import type { Rating, Saying } from '../../../types/domain';
 import { StarRating } from '../shared/StarRating';
 
@@ -54,12 +55,14 @@ export function CollectionSayingPanel({
       } ${panelClassName ?? ''}`}
     >
       {onSelect ? (
-        <button
+        <Button
           aria-label={`Spruch ${saying.id} auswählen`}
           className="absolute inset-0 z-0"
           onClick={onSelect}
           type="button"
-        />
+        >
+          <span className="sr-only">Spruch {saying.id} auswählen</span>
+        </Button>
       ) : null}
       <div
         className={`flex flex-col ${

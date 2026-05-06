@@ -21,6 +21,7 @@
   --button-bg-light-active: #875656;
   --button-bg-dark: rgb(31 23 18 / 0.88);
   --button-bg-dark-active: #17110d;
+  --app-shell-width: 1024px;
 }
 
 * {
@@ -72,6 +73,11 @@ body::before {
   min-height: 100vh;
   isolation: isolate;
   z-index: 1;
+}
+
+.app-shell {
+  width: min(100%, var(--app-shell-width));
+  margin-inline: auto;
 }
 
 .app-content--flush {

@@ -62,7 +62,7 @@ export function App() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="app-shell min-h-screen">
       <header className="flex flex-col gap-5 border-b border-amber-950/10 px-4 py-5 sm:px-6 sm:py-8">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent">Digi Compass</p>
