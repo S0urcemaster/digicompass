@@ -25,10 +25,10 @@ const COLLECTION_TABS = [
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
 const COLLECTION_IMAGE_PAGE_SIZE = 8;
-const COLLECTION_FOCUS_PAGE_SIZE = 4;
+const COLLECTION_FOCUS_PAGE_SIZE = 8;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 7;
-const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 6;
+const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 8;
 const FOCUS_EDITOR_SAYING_PAGE_SIZE = 6;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
@@ -160,6 +160,8 @@ export function CollectionView({
     safeCollectionFocusPage * COLLECTION_FOCUS_PAGE_SIZE,
     (safeCollectionFocusPage + 1) * COLLECTION_FOCUS_PAGE_SIZE
   );
+  const topPagedCollectionFoci = pagedCollectionFoci.slice(0, 4);
+  const bottomPagedCollectionFoci = pagedCollectionFoci.slice(4, 8);
   const selectedCollectionFocus =
     filteredCollectionFoci.find((focus) => getFocusKey(focus) === selectedCollectionFocusKey) ?? filteredCollectionFoci[0] ?? null;
 
@@ -174,6 +176,8 @@ export function CollectionView({
     safeFocusEditorImagePage * FOCUS_EDITOR_IMAGE_PAGE_SIZE,
     (safeFocusEditorImagePage + 1) * FOCUS_EDITOR_IMAGE_PAGE_SIZE
   );
+  const topPagedFocusEditorImages = pagedFocusEditorImages.slice(0, 4);
+  const bottomPagedFocusEditorImages = pagedFocusEditorImages.slice(4, 8);
   const selectedFocusEditorImage =
     filteredFocusEditorImages.find((image) => image.id === selectedFocusEditorImageId) ?? filteredFocusEditorImages[0] ?? null;
 
@@ -1177,7 +1181,7 @@ export function CollectionView({
                         renderTile={(focus) => (
                           <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
                         )}
-                        variant="four"
+                        variant="eight"
                       />
                     ) : focusListMode === 'images' && filteredFocusEditorImages.length > 0 ? (
                       <SelectableTileGrid
@@ -1189,7 +1193,7 @@ export function CollectionView({
                           setFocusPreviewSource('editor');
                         }}
                         renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
-                        variant="four"
+                        variant="eight"
                       />
                     ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <CollectionSayingList
@@ -1214,7 +1218,7 @@ export function CollectionView({
                     )}
                   </div>
 
-                  <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:grid-rows-2 min-[900px]:gap-3">
+                  <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-3">
                     {previewFocus ? (
                       <div className="relative min-[900px]:col-span-2 min-[900px]:row-span-2">
                         <FocusTile
@@ -1259,9 +1263,29 @@ export function CollectionView({
                     {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
                         <SelectableTileGrid
+                          desktopColumns={2}
                           getKey={(focus) => getFocusKey(focus)}
                           isSelected={(focus) => getFocusKey(focus) === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null)}
-                          items={pagedCollectionFoci}
+                          items={topPagedCollectionFoci}
+                          onSelect={(focus) => {
+                            setSelectedCollectionFocusKey(getFocusKey(focus));
+                            setFocusPreviewSource('focus');
+                          }}
+                          renderTile={(focus) => (
+                            <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
+                          )}
+                          variant="four"
+                        />
+                      </div>
+                    ) : null}
+
+                    {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
+                      <div className="min-[900px]:col-span-4">
+                        <SelectableTileGrid
+                          desktopColumns={4}
+                          getKey={(focus) => getFocusKey(focus)}
+                          isSelected={(focus) => getFocusKey(focus) === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null)}
+                          items={bottomPagedCollectionFoci}
                           onSelect={(focus) => {
                             setSelectedCollectionFocusKey(getFocusKey(focus));
                             setFocusPreviewSource('focus');
@@ -1275,9 +1299,27 @@ export function CollectionView({
                     ) : focusListMode === 'images' && filteredFocusEditorImages.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
                         <SelectableTileGrid
+                          desktopColumns={2}
                           getKey={(image) => image.id}
                           isSelected={(image) => image.id === selectedFocusEditorImage?.id}
-                          items={pagedFocusEditorImages}
+                          items={topPagedFocusEditorImages}
+                          onSelect={(image) => {
+                            setSelectedFocusEditorImageId(image.id);
+                            setFocusPreviewSource('editor');
+                          }}
+                          renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
+                          variant="four"
+                        />
+                      </div>
+                    ) : null}
+
+                    {focusListMode === 'images' && filteredFocusEditorImages.length > 0 ? (
+                      <div className="min-[900px]:col-span-4">
+                        <SelectableTileGrid
+                          desktopColumns={4}
+                          getKey={(image) => image.id}
+                          isSelected={(image) => image.id === selectedFocusEditorImage?.id}
+                          items={bottomPagedFocusEditorImages}
                           onSelect={(image) => {
                             setSelectedFocusEditorImageId(image.id);
                             setFocusPreviewSource('editor');
