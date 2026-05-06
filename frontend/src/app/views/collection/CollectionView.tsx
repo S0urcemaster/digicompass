@@ -6,10 +6,11 @@ import { SAYINGS } from '../../../data/sayings';
 import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage, Focus, Mindset, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
-import { CollectionSayingPanel } from './CollectionSayingPanel';
+import { CollectionSayingList } from './CollectionSayingList';
 import { FocusTile } from '../shared/FocusTile';
 import { ImageTile } from '../shared/ImageTile';
 import { MindsetTile } from '../shared/MindsetTile';
+import { SelectableTileGrid } from '../shared/SelectableTileGrid';
 import { StarRating } from '../shared/StarRating';
 import {
   getImageIdBadgeClassName,
@@ -787,29 +788,25 @@ export function CollectionView({
                   />
 
                   {pagedCollectionImages.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-3">
-                      {pagedCollectionImages.map((image) => {
+                    <SelectableTileGrid
+                      getKey={(image) => image.id}
+                      items={pagedCollectionImages}
+                      onSelect={(image) => setSelectedCollectionImageId(image.id)}
+                      renderTile={(image) => {
                         const collectedListImage = collectionImageById.get(image.id) ?? null;
                         const previewRating = collectedListImage?.rating ?? 0;
 
                         return (
-                          <Button
-                            align="left"
-                            key={image.id}
-                            className="group relative overflow-hidden"
-                            onClick={() => setSelectedCollectionImageId(image.id)}
-                            variant="surface"
-                          >
-                            <ImageTile
-                              image={{ ...image, rating: previewRating }}
-                              imageUrl={getPreviewImageUrl(image.url)}
-                              rating={previewRating}
-                              showImageId={showCollectionImageIds}
-                            />
-                          </Button>
+                          <ImageTile
+                            image={{ ...image, rating: previewRating }}
+                            imageUrl={getPreviewImageUrl(image.url)}
+                            rating={previewRating}
+                            showImageId={showCollectionImageIds}
+                          />
                         );
-                      })}
-                    </div>
+                      }}
+                      variant="eight"
+                    />
                   ) : null}
                 </div>
 
@@ -824,49 +821,49 @@ export function CollectionView({
                     />
                   </div>
 
-                  {topPagedCollectionImages.map((image) => {
-                    const collectedListImage = collectionImageById.get(image.id) ?? null;
-                    const previewRating = collectedListImage?.rating ?? 0;
+                  <div className="min-[900px]:col-span-2">
+                    <SelectableTileGrid
+                      getKey={(image) => image.id}
+                      items={topPagedCollectionImages}
+                      onSelect={(image) => setSelectedCollectionImageId(image.id)}
+                      renderTile={(image) => {
+                        const collectedListImage = collectionImageById.get(image.id) ?? null;
+                        const previewRating = collectedListImage?.rating ?? 0;
 
-                    return (
-                      <Button
-                        align="left"
-                        key={image.id}
-                        className="group relative overflow-hidden"
-                        onClick={() => setSelectedCollectionImageId(image.id)}
-                        variant="surface"
-                      >
-                        <ImageTile
-                          image={{ ...image, rating: previewRating }}
-                          imageUrl={getPreviewImageUrl(image.url)}
-                          rating={previewRating}
-                          showImageId={showCollectionImageIds}
-                        />
-                      </Button>
-                    );
-                  })}
+                        return (
+                          <ImageTile
+                            image={{ ...image, rating: previewRating }}
+                            imageUrl={getPreviewImageUrl(image.url)}
+                            rating={previewRating}
+                            showImageId={showCollectionImageIds}
+                          />
+                        );
+                      }}
+                      variant="four"
+                    />
+                  </div>
 
-                  {bottomPagedCollectionImages.map((image) => {
-                    const collectedListImage = collectionImageById.get(image.id) ?? null;
-                    const previewRating = collectedListImage?.rating ?? 0;
+                  <div className="min-[900px]:col-span-4">
+                    <SelectableTileGrid
+                      getKey={(image) => image.id}
+                      items={bottomPagedCollectionImages}
+                      onSelect={(image) => setSelectedCollectionImageId(image.id)}
+                      renderTile={(image) => {
+                        const collectedListImage = collectionImageById.get(image.id) ?? null;
+                        const previewRating = collectedListImage?.rating ?? 0;
 
-                    return (
-                      <Button
-                        align="left"
-                        key={image.id}
-                        className="group relative overflow-hidden"
-                        onClick={() => setSelectedCollectionImageId(image.id)}
-                        variant="surface"
-                      >
-                        <ImageTile
-                          image={{ ...image, rating: previewRating }}
-                          imageUrl={getPreviewImageUrl(image.url)}
-                          rating={previewRating}
-                          showImageId={showCollectionImageIds}
-                        />
-                      </Button>
-                    );
-                  })}
+                        return (
+                          <ImageTile
+                            image={{ ...image, rating: previewRating }}
+                            imageUrl={getPreviewImageUrl(image.url)}
+                            rating={previewRating}
+                            showImageId={showCollectionImageIds}
+                          />
+                        );
+                      }}
+                      variant="four"
+                    />
+                  </div>
                 </div>
               </section>
             </div>
@@ -922,25 +919,18 @@ export function CollectionView({
 
               <section className="flex min-h-0 flex-col">
                 <div className="pr-1">
-                  <div className="grid grid-cols-1 gap-3">
-                    {pagedCollectionSayings.map((saying) => {
+                  <CollectionSayingList
+                    onSelect={(saying) => setSelectedCollectionSayingId(saying.id)}
+                    onSetRating={handleSetSayingRating}
+                    sayings={pagedCollectionSayings.map((saying) => {
                       const collectedListSaying = collectionSayingById.get(saying.id) ?? null;
                       const previewRating = collectedListSaying?.rating ?? 0;
 
-                      return (
-                        <CollectionSayingPanel
-                          key={saying.id}
-                          onSelect={() => setSelectedCollectionSayingId(saying.id)}
-                          onSetRating={(rating) => handleSetSayingRating(saying, rating)}
-                          panelClassName="shadow-none"
-                          saying={{ ...saying, rating: previewRating }}
-                          selected={selectedCollectionSayingId === saying.id}
-                          showSayingId={showCollectionSayingIds}
-                          variant="preview"
-                        />
-                      );
+                      return { ...saying, rating: previewRating };
                     })}
-                  </div>
+                    selectedSayingId={selectedCollectionSayingId}
+                    showSayingId={showCollectionSayingIds}
+                  />
                 </div>
               </section>
             </div>
@@ -1075,28 +1065,19 @@ export function CollectionView({
                     )}
 
                     {filteredCollectionFoci.length > 0 ? (
-                      <div className="grid grid-cols-2 gap-3">
-                        {pagedCollectionFoci.map((focus) => {
-                          const focusKey = getFocusKey(focus);
-                          const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);
-
-                          return (
-                            <Button
-                              align="left"
-                              key={focusKey}
-                              className="group relative overflow-hidden"
-                              onClick={() => {
-                                setSelectedCollectionFocusKey(focusKey);
-                                setFocusPreviewSource('focus');
-                              }}
-                              selected={isSelected}
-                              variant="surface"
-                            >
-                              <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
-                            </Button>
-                          );
-                        })}
-                      </div>
+                      <SelectableTileGrid
+                        getKey={(focus) => getFocusKey(focus)}
+                        isSelected={(focus) => getFocusKey(focus) === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null)}
+                        items={pagedCollectionFoci}
+                        onSelect={(focus) => {
+                          setSelectedCollectionFocusKey(getFocusKey(focus));
+                          setFocusPreviewSource('focus');
+                        }}
+                        renderTile={(focus) => (
+                          <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
+                        )}
+                        variant="four"
+                      />
                     ) : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
                         <p className="text-sm text-muted">Keine Fokusse passen zu diesem Kategorienfilter.</p>
@@ -1147,26 +1128,21 @@ export function CollectionView({
                     )}
 
                     {filteredCollectionFoci.length > 0 ? (
-                      pagedCollectionFoci.map((focus) => {
-                        const focusKey = getFocusKey(focus);
-                        const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);
-
-                        return (
-                          <Button
-                            align="left"
-                            key={focusKey}
-                            className="group relative overflow-hidden"
-                            onClick={() => {
-                              setSelectedCollectionFocusKey(focusKey);
-                              setFocusPreviewSource('focus');
-                            }}
-                            selected={isSelected}
-                            variant="surface"
-                          >
+                      <div className="min-[900px]:col-span-2">
+                        <SelectableTileGrid
+                          getKey={(focus) => getFocusKey(focus)}
+                          isSelected={(focus) => getFocusKey(focus) === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null)}
+                          items={pagedCollectionFoci}
+                          onSelect={(focus) => {
+                            setSelectedCollectionFocusKey(getFocusKey(focus));
+                            setFocusPreviewSource('focus');
+                          }}
+                          renderTile={(focus) => (
                             <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
-                          </Button>
-                        );
-                      })
+                          )}
+                          variant="four"
+                        />
+                      </div>
                     ) : null}
                   </div>
                 </section>
@@ -1207,27 +1183,17 @@ export function CollectionView({
                   </div>
 
                   {filteredFocusEditorImages.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-3">
-                      {pagedFocusEditorImages.map((image) => {
-                        const isSelected = image.id === selectedFocusEditorImage?.id;
-
-                        return (
-                          <Button
-                            align="left"
-                            key={image.id}
-                            className="group relative overflow-hidden"
-                            onClick={() => {
-                              setSelectedFocusEditorImageId(image.id);
-                              setFocusPreviewSource('editor');
-                            }}
-                            selected={isSelected}
-                            variant="surface"
-                          >
-                            <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />
-                          </Button>
-                        );
-                      })}
-                    </div>
+                    <SelectableTileGrid
+                      getKey={(image) => image.id}
+                      isSelected={(image) => image.id === selectedFocusEditorImage?.id}
+                      items={pagedFocusEditorImages}
+                      onSelect={(image) => {
+                        setSelectedFocusEditorImageId(image.id);
+                        setFocusPreviewSource('editor');
+                      }}
+                      renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
+                      variant="four"
+                    />
                   ) : (
                     <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
                       <p className="text-sm text-muted">In deiner Sammlung passen keine Bilder zu diesem Filter.</p>
@@ -1269,26 +1235,15 @@ export function CollectionView({
                   </div>
 
                   {filteredFocusEditorSayings.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-3">
-                      {pagedFocusEditorSayings.map((saying) => {
-                        const isSelected = saying.id === selectedFocusEditorSaying?.id;
-
-                        return (
-                          <CollectionSayingPanel
-                            key={saying.id}
-                            onSelect={() => {
-                              setSelectedFocusEditorSayingId(saying.id);
-                              setFocusPreviewSource('editor');
-                            }}
-                            onSetRating={(rating) => handleSetSayingRating(saying, rating)}
-                            panelClassName="shadow-none"
-                            saying={saying}
-                            selected={isSelected}
-                            variant="preview"
-                          />
-                        );
-                      })}
-                    </div>
+                    <CollectionSayingList
+                      onSelect={(saying) => {
+                        setSelectedFocusEditorSayingId(saying.id);
+                        setFocusPreviewSource('editor');
+                      }}
+                      onSetRating={handleSetSayingRating}
+                      sayings={pagedFocusEditorSayings}
+                      selectedSayingId={selectedFocusEditorSaying?.id ?? null}
+                    />
                   ) : (
                     <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
                       <p className="text-sm text-muted">In deiner Sammlung passen keine Sprüche zu diesem Filter.</p>
