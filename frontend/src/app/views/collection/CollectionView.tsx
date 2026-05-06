@@ -28,7 +28,7 @@ const COLLECTION_TABS = [
 const COLLECTION_IMAGE_PAGE_SIZE = 8;
 const COLLECTION_FOCUS_PAGE_SIZE = 8;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
-const COLLECTION_SAYING_PAGE_SIZE = 7;
+const COLLECTION_SAYING_PAGE_SIZE = 8;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 8;
 const FOCUS_EDITOR_SAYING_PAGE_SIZE = 8;
 
@@ -305,9 +305,16 @@ export function CollectionView({
           ],
     [normalizedSayingFilter]
   );
-  const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_SAYING_PAGE_SIZE));
+  const selectedCollectionSaying =
+    filteredCollectionSayings.find((saying) => saying.id === selectedCollectionSayingId) ?? filteredCollectionSayings[0] ?? null;
+  const selectedCollectionSayingDetails =
+    selectedCollectionSaying ? collectionSayingById.get(selectedCollectionSaying.id) ?? selectedCollectionSaying : null;
+  const collectionSayingPreviews = selectedCollectionSaying
+    ? filteredCollectionSayings.filter((saying) => saying.id !== selectedCollectionSaying.id)
+    : filteredCollectionSayings;
+  const collectionSayingPageCount = Math.max(1, Math.ceil(collectionSayingPreviews.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeCollectionSayingPage = Math.min(collectionSayingPage, collectionSayingPageCount - 1);
-  const pagedCollectionSayings = filteredCollectionSayings.slice(
+  const pagedCollectionSayings = collectionSayingPreviews.slice(
     safeCollectionSayingPage * COLLECTION_SAYING_PAGE_SIZE,
     (safeCollectionSayingPage + 1) * COLLECTION_SAYING_PAGE_SIZE
   );
@@ -906,7 +913,7 @@ export function CollectionView({
             </div>
           )
         ) : activeTab === 'sayings' ? (
-          filteredCollectionSayings.length > 0 ? (
+          selectedCollectionSaying && selectedCollectionSayingDetails ? (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3 items-center">
                 <label className="block" htmlFor="collection-saying-filter">
@@ -951,7 +958,15 @@ export function CollectionView({
               </div>
 
               <section className="flex min-h-0 flex-col">
-                <div className="pr-1">
+                <div className="space-y-3 min-[900px]:hidden">
+                  <CollectionSayingPanel
+                    onSetRating={(rating) => handleSetSayingRating(selectedCollectionSayingDetails, rating)}
+                    panelClassName="shadow-none"
+                    saying={selectedCollectionSayingDetails}
+                    showSayingId={showCollectionSayingIds}
+                    variant="main"
+                  />
+
                   <CollectionSayingList
                     onSelect={(saying) => setSelectedCollectionSayingId(saying.id)}
                     onSetRating={handleSetSayingRating}
@@ -964,6 +979,36 @@ export function CollectionView({
                     selectedSayingId={selectedCollectionSayingId}
                     showSayingId={showCollectionSayingIds}
                   />
+                </div>
+
+                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-3">
+                  <div className="min-[900px]:col-span-2">
+                    <CollectionSayingPanel
+                      onSetRating={(rating) => handleSetSayingRating(selectedCollectionSayingDetails, rating)}
+                      panelClassName="aspect-[20/7] shadow-none"
+                      saying={selectedCollectionSayingDetails}
+                      showSayingId={showCollectionSayingIds}
+                      variant="rating"
+                    />
+                  </div>
+
+                  {pagedCollectionSayings.map((saying) => {
+                    const collectedListSaying = collectionSayingById.get(saying.id) ?? null;
+                    const previewRating = collectedListSaying?.rating ?? 0;
+
+                    return (
+                      <CollectionSayingPanel
+                        key={saying.id}
+                        onSelect={() => setSelectedCollectionSayingId(saying.id)}
+                        onSetRating={(rating) => handleSetSayingRating(saying, rating)}
+                        panelClassName="aspect-[20/7] shadow-none"
+                        saying={{ ...saying, rating: previewRating }}
+                        selected={selectedCollectionSayingId === saying.id}
+                        showSayingId={showCollectionSayingIds}
+                        variant="compact"
+                      />
+                    );
+                  })}
                 </div>
               </section>
             </div>

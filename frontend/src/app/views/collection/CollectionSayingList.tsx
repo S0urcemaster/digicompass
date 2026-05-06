@@ -2,7 +2,7 @@ import type { Rating, Saying } from '../../../types/domain';
 import { CollectionSayingPanel } from './CollectionSayingPanel';
 
 type CollectionSayingListProps = {
-  layout?: 'list' | 'focus-eight';
+  layout?: 'list' | 'focus-eight' | 'collection-twelve';
   onSelect: (saying: Saying) => void;
   onSetRating: (saying: Saying, rating: Rating) => void;
   sayings: Saying[];
@@ -18,6 +18,42 @@ export function CollectionSayingList({
   selectedSayingId = null,
   showSayingId = false,
 }: CollectionSayingListProps) {
+  if (layout === 'collection-twelve') {
+    return (
+      <>
+        <div className="grid grid-cols-1 gap-3 min-[900px]:hidden">
+          {sayings.map((saying) => (
+            <CollectionSayingPanel
+              key={saying.id}
+              onSelect={() => onSelect(saying)}
+              onSetRating={(rating) => onSetRating(saying, rating)}
+              panelClassName="shadow-none"
+              saying={saying}
+              selected={selectedSayingId === saying.id}
+              showSayingId={showSayingId}
+              variant="preview"
+            />
+          ))}
+        </div>
+
+        <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-3">
+          {sayings.map((saying) => (
+            <CollectionSayingPanel
+              key={saying.id}
+              onSelect={() => onSelect(saying)}
+              onSetRating={(rating) => onSetRating(saying, rating)}
+              panelClassName="aspect-[20/7] shadow-none"
+              saying={saying}
+              selected={selectedSayingId === saying.id}
+              showSayingId={showSayingId}
+              variant="compact"
+            />
+          ))}
+        </div>
+      </>
+    );
+  }
+
   if (layout === 'focus-eight') {
     const topSayings = sayings.slice(0, 4);
     const bottomSayings = sayings.slice(4, 8);
