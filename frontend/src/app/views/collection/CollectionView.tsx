@@ -85,6 +85,8 @@ export function CollectionView({
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
   const [selectedCollectionImageCategoryIndex, setSelectedCollectionImageCategoryIndex] = useState(0);
   const [isCollectionImageCategoryFilterActive, setIsCollectionImageCategoryFilterActive] = useState(false);
+  const [selectedCollectionSayingCategoryIndex, setSelectedCollectionSayingCategoryIndex] = useState(0);
+  const [isCollectionSayingCategoryFilterActive, setIsCollectionSayingCategoryFilterActive] = useState(false);
   const [selectedCollectionFocusCategoryIndex, setSelectedCollectionFocusCategoryIndex] = useState(0);
   const [isCollectionFocusCategoryFilterActive, setIsCollectionFocusCategoryFilterActive] = useState(false);
   const [collectionImagePage, setCollectionImagePage] = useState(0);
@@ -104,13 +106,10 @@ export function CollectionView({
   const [selectedDraftMindsetSlot, setSelectedDraftMindsetSlot] = useState(0);
   const [zoomedImageId, setZoomedImageId] = useState<number | null>(null);
   const [showCollectionImageIds, setShowCollectionImageIds] = useState(false);
-  const [collectionSayingFilter, setCollectionSayingFilter] = useState('');
   const [collectionSayingPage, setCollectionSayingPage] = useState(0);
   const [selectedFocusEditorSayingId, setSelectedFocusEditorSayingId] = useState<number | null>(null);
   const [selectedCollectionSayingId, setSelectedCollectionSayingId] = useState<number | null>(SAYINGS[0]?.id ?? null);
   const [showCollectionSayingIds, setShowCollectionSayingIds] = useState(true);
-
-  const normalizedSayingFilter = collectionSayingFilter.trim().toLowerCase();
   const availableImageCategories = useMemo(
     () =>
       Array.from(
@@ -123,6 +122,19 @@ export function CollectionView({
   const selectedCollectionImageCategory =
     availableImageCategories[
       Math.min(selectedCollectionImageCategoryIndex, Math.max(availableImageCategories.length - 1, 0))
+    ] ?? '';
+  const availableSayingCategories = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          SAYINGS.flatMap((saying) => saying.categories.map((category) => category.text.trim())).filter(Boolean)
+        )
+      ).sort((left, right) => left.localeCompare(right, 'de')),
+    []
+  );
+  const selectedCollectionSayingCategory =
+    availableSayingCategories[
+      Math.min(selectedCollectionSayingCategoryIndex, Math.max(availableSayingCategories.length - 1, 0))
     ] ?? '';
   const availableFocusCategories = useMemo(
     () =>
@@ -293,17 +305,12 @@ export function CollectionView({
     : [];
   const filteredCollectionSayings = useMemo(
     () =>
-      normalizedSayingFilter.length === 0
+      !isCollectionSayingCategoryFilterActive || !selectedCollectionSayingCategory
         ? SAYINGS
-        : [
-            ...SAYINGS.filter((saying) => saying.text.toLowerCase().includes(normalizedSayingFilter)),
-            ...SAYINGS.filter(
-              (saying) =>
-                !saying.text.toLowerCase().includes(normalizedSayingFilter) &&
-                saying.categories.some((category) => category.text.toLowerCase().includes(normalizedSayingFilter))
-            ),
-          ],
-    [normalizedSayingFilter]
+        : SAYINGS.filter((saying) =>
+            saying.categories.some((category) => category.text === selectedCollectionSayingCategory)
+          ),
+    [isCollectionSayingCategoryFilterActive, selectedCollectionSayingCategory]
   );
   const selectedCollectionSaying =
     filteredCollectionSayings.find((saying) => saying.id === selectedCollectionSayingId) ?? filteredCollectionSayings[0] ?? null;
@@ -690,7 +697,13 @@ export function CollectionView({
 
   useEffect(() => {
     setCollectionSayingPage(0);
-  }, [normalizedSayingFilter]);
+  }, [isCollectionSayingCategoryFilterActive, selectedCollectionSayingCategory]);
+
+  useEffect(() => {
+    if (selectedCollectionSayingCategoryIndex >= availableSayingCategories.length) {
+      setSelectedCollectionSayingCategoryIndex(0);
+    }
+  }, [availableSayingCategories, selectedCollectionSayingCategoryIndex]);
 
   useEffect(() => {
     if (selectedCollectionSayingId === null && filteredCollectionSayings[0]) {
@@ -915,16 +928,52 @@ export function CollectionView({
         ) : activeTab === 'sayings' ? (
           selectedCollectionSaying && selectedCollectionSayingDetails ? (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-3 items-center">
-                <label className="block" htmlFor="collection-saying-filter">
-                  <input
-                    id="collection-saying-filter"
-                    className="min-h-[3.75rem] w-full border border-amber-950/10 bg-white/90 px-4 py-3 text-lg font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Suchbegriff/Kategorie"
-                    value={collectionSayingFilter}
-                    onChange={(event) => setCollectionSayingFilter(event.target.value)}
-                  />
-                </label>
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-3">
+                  <Button
+                    aria-label="Vorherige Spruchkategorie"
+                    className="px-4 py-2 font-semibold tracking-tight"
+                    disabled={availableSayingCategories.length <= 1}
+                    fullWidth
+                    onClick={() =>
+                      setSelectedCollectionSayingCategoryIndex((currentIndex) =>
+                        availableSayingCategories.length === 0
+                          ? 0
+                          : (currentIndex - 1 + availableSayingCategories.length) % availableSayingCategories.length
+                      )
+                    }
+                    shape="pill"
+                    variant="pager"
+                  >
+                    ←
+                  </Button>
+                  <Button
+                    active={isCollectionSayingCategoryFilterActive}
+                    aria-label={`Spruchkategorie ${selectedCollectionSayingCategory || 'Unsortiert'} umschalten`}
+                    className="truncate px-4 py-2 text-lg font-semibold tracking-tight"
+                    fullWidth
+                    onClick={() => setIsCollectionSayingCategoryFilterActive((current) => !current)}
+                    shape="pill"
+                    variant="tab"
+                  >
+                    {selectedCollectionSayingCategory || 'Unsortiert'}
+                  </Button>
+                  <Button
+                    aria-label="Nächste Spruchkategorie"
+                    className="px-4 py-2 font-semibold tracking-tight"
+                    disabled={availableSayingCategories.length <= 1}
+                    fullWidth
+                    onClick={() =>
+                      setSelectedCollectionSayingCategoryIndex((currentIndex) =>
+                        availableSayingCategories.length === 0 ? 0 : (currentIndex + 1) % availableSayingCategories.length
+                      )
+                    }
+                    shape="pill"
+                    variant="pager"
+                  >
+                    →
+                  </Button>
+                </div>
 
                 {filteredCollectionSayings.length > 0 ? (
                   <div className="flex items-center gap-3">

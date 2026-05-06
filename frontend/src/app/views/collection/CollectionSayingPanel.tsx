@@ -45,6 +45,7 @@ export function CollectionSayingPanel({
   const isMain = variant === 'main';
   const isCompact = variant === 'compact';
   const isRating = variant === 'rating';
+  const categoryLabels = saying.categories.map((category) => category.text).join('\u2003') || 'Unsortiert';
 
   return (
     <article
@@ -73,7 +74,7 @@ export function CollectionSayingPanel({
       >
         <div className="flex items-start justify-between gap-4">
           <p
-            className={`inline-flex bg-[#fff7ed]/92 font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.12)] ${
+            className={`inline-flex max-w-full overflow-hidden whitespace-nowrap bg-[#fff7ed]/92 font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.12)] ${
               isMain
                 ? 'px-3 py-2 text-[0.8rem]'
                 : isRating
@@ -83,7 +84,7 @@ export function CollectionSayingPanel({
                     : 'px-2.5 py-1 text-[0.68rem]'
             }`}
           >
-            {saying.categories[0]?.text ?? 'Unsortiert'}
+            {categoryLabels}
           </p>
           {showSayingId ? (
             <div
