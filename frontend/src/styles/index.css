@@ -91,6 +91,7 @@ body::before {
 }
 
 .app-content--flush :where(section, article, div, form, label, button, input, textarea, p, h2, h3, h4, img) {
+  margin-left: 0.01rem !important;
   margin-right: 0.01rem !important;
   margin-bottom: 0.01rem !important;
 }
