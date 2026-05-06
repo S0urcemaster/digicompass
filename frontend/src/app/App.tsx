@@ -155,7 +155,7 @@ export function App() {
             Setzt den lokalen User-Store auf den aktuellen Auslieferungsstand zurueck.
           </p>
           <Button
-            className="min-h-[3rem] rounded-[1.1rem] border border-[#7f1d1d]/20 px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
+            className="min-h-[3rem] rounded-[1.1rem] px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
             onClick={handleFactoryReset}
             variant="surface"
           >
