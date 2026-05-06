@@ -43,6 +43,12 @@ body {
   overflow-x: hidden;
 }
 
+input,
+textarea,
+select {
+  border-radius: 0;
+}
+
 body::before {
   content: '';
   position: fixed;
@@ -51,7 +57,7 @@ body::before {
   background-image: var(--app-blueprint-overlay);
   background-position:
     center,
-    center 5.5rem;
+    center -100px;
   background-repeat: no-repeat;
   background-size:
     72rem 72rem,

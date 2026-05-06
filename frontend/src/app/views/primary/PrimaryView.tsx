@@ -114,7 +114,7 @@ export function PrimaryView({
 
       <textarea
         id="mindset-notes"
-        className="min-h-32 w-full rounded-[18px] border border-amber-950/10 bg-white/90 px-4 py-3 text-base leading-7 text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+        className="min-h-32 w-full border border-amber-950/10 bg-white/90 px-4 py-4 text-lg leading-7 text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
         placeholder="Noch keine Notizen zum aktuellen Mindset."
         value={currentMindset.notes}
         onChange={(event) => onUpdateMindsetNotes(event.target.value)}

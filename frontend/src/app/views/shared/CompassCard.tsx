@@ -14,6 +14,8 @@ type CompassCardAction = {
   onClick: () => void;
 };
 
+type CompassCardRatingVariant = 'main' | 'preview';
+
 type CompassCardProps = {
   action?: CompassCardAction;
   aspectClassName?: string;
@@ -29,7 +31,7 @@ type CompassCardProps = {
   rating?: Rating;
   ratingClassName?: string;
   ratingDisabled?: boolean;
-  ratingStarClassName?: string;
+  ratingVariant?: CompassCardRatingVariant;
   showImageId?: boolean;
   topContent?: ReactNode;
   topContentClassName?: string;
@@ -56,7 +58,7 @@ export function CompassCard({
   rating,
   ratingClassName,
   ratingDisabled = false,
-  ratingStarClassName = 'text-[3.25rem]',
+  ratingVariant = 'main',
   showImageId = false,
   topContent,
   topContentClassName,
@@ -116,12 +118,11 @@ export function CompassCard({
           <div className="ml-auto max-w-[26rem]">
             <StarRating
               allowClear={false}
-              buttonClassName="flex-1 text-center"
-              className={cn('w-full justify-between rounded-full px-2 py-2', ratingClassName)}
+              className={ratingClassName}
               disabled={ratingDisabled}
               rating={rating}
-              starClassName={ratingStarClassName}
               tone={overlayTone}
+              variant={ratingVariant === 'preview' ? 'image-preview' : 'image-main'}
               onChange={onSetRating}
             />
           </div>

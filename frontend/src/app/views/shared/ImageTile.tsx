@@ -22,9 +22,9 @@ export function ImageTile({ image, imageUrl, rating = image.rating, showImageId 
       imageUrl={imageUrl ?? image.url}
       overlayTone={overlayTone}
       rating={rating}
-      ratingClassName={`justify-center gap-0.5 px-1.5 py-1 ${getImageStarContainerClassName(overlayTone)}`}
+      ratingClassName={getImageStarContainerClassName(overlayTone)}
       ratingDisabled
-      ratingStarClassName="text-[0.9rem]"
+      ratingVariant="preview"
       showImageId={showImageId}
       topContent={
         <p className={`inline-flex rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] ${getImageBadgeClassName(overlayTone)}`}>

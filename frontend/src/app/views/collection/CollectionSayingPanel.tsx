@@ -68,11 +68,9 @@ export function CollectionSayingPanel({
 
         <div className={`ml-auto ${isMain ? 'max-w-[26rem]' : 'w-full'}`}>
           <StarRating
-            className={`w-full justify-between bg-[#fff7ed]/92 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.12)] ${isMain ? 'px-2 py-2' : 'px-1.5 py-1.5'}`}
-            buttonClassName="flex-1 text-center"
             rating={saying.rating}
-            starClassName={isMain ? 'text-[3.25rem]' : 'text-[1.9rem]'}
             tone="dark"
+            variant={isMain ? 'saying-main' : 'saying-preview'}
             onChange={onSetRating}
           />
         </div>

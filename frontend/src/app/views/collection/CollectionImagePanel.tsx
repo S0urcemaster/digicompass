@@ -59,6 +59,7 @@ export function CollectionImagePanel({
       rating={image.rating}
       ratingClassName={getImageStarContainerClassName(overlayTone)}
       ratingDisabled={ratingDisabled}
+      ratingVariant="main"
       showImageId={showImageId}
       topContent={
         topContent ?? (

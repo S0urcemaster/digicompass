@@ -799,7 +799,7 @@ export function CollectionView({
                 <label className="block" htmlFor="collection-saying-filter">
                   <input
                     id="collection-saying-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="min-h-[3.75rem] w-full border border-amber-950/10 bg-white/90 px-4 py-3 text-lg font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
                     placeholder="Suchbegriff/Kategorie"
                     value={collectionSayingFilter}
                     onChange={(event) => setCollectionSayingFilter(event.target.value)}
@@ -873,7 +873,7 @@ export function CollectionView({
                 <label className="block" htmlFor="collection-focus-filter">
                   <input
                     id="collection-focus-filter"
-                    className="w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                    className="min-h-[3.75rem] w-full border border-amber-950/10 bg-white/90 px-4 py-3 text-lg font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
                     placeholder="Kategorie"
                     value={collectionFocusFilter}
                     onChange={(event) => setCollectionFocusFilter(event.target.value)}
@@ -1126,7 +1126,7 @@ export function CollectionView({
                   {isEditingMindsetDraft ? (
                     <>
                       <input
-                        className="mt-1 w-full rounded-full border border-amber-950/10 bg-white/90 px-4 py-2 text-xl font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
+                        className="mt-1 min-h-[3.75rem] w-full border border-amber-950/10 bg-white/90 px-4 py-3 text-lg font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
                         placeholder="Name"
                         value={draftMindsetName}
                         onChange={(event) => handleDraftMindsetNameChange(event.target.value)}
@@ -1150,11 +1150,9 @@ export function CollectionView({
                   )}
                 </div>
                 <StarRating
-                  className="shrink-0 items-start justify-center rounded-full border border-amber-950/10 bg-white/85 px-2.5 py-1 text-[#1f1712]"
                   rating={isEditingMindsetDraft ? draftMindsetRating : selectedCollectionMindset?.rating ?? 0}
-                  buttonClassName="flex h-[1.85rem] w-[1.85rem] items-center justify-center p-0 leading-none"
-                  starClassName="text-[2.15rem] leading-none"
                   tone="dark"
+                  variant="mindset"
                   onChange={handleSetMindsetRating}
                 />
               </div>

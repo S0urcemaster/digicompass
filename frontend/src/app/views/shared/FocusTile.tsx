@@ -66,6 +66,7 @@ export function FocusTile({ focus, onSetRating, variant = 'preview' }: FocusTile
         overlayTone={overlayTone}
         rating={focus.rating}
         ratingClassName={getImageStarContainerClassName(overlayTone)}
+        ratingVariant="main"
         topContent={sayingCard}
       />
     );
