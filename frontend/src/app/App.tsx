@@ -86,10 +86,6 @@ export function App() {
           <section className="px-4 py-8 sm:px-6 sm:py-10">
             <div className="mx-auto max-w-6xl rounded-[1.8rem] border border-amber-950/10 bg-[rgba(255,250,242,0.72)] p-6 shadow-[0_20px_50px_rgba(32,26,24,0.08)] backdrop-blur">
               <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-accent">Navigator</p>
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Navigator folgt als eigener Hauptbereich.</h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
-                Kompass bleibt die voreingestellte Hauptansicht. Dieser Tab ist jetzt bereits im Shell-Navigationsbereich angelegt.
-              </p>
             </div>
           </section>
         ) : activeView === 'primary' ? (
@@ -150,10 +146,6 @@ export function App() {
 
       <footer className="px-4 pb-8 pt-10 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-3 border-t border-amber-950/10 pt-6">
-          <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-muted">Factory Reset</p>
-          <p className="max-w-2xl text-sm leading-6 text-muted">
-            Setzt den lokalen User-Store auf den aktuellen Auslieferungsstand zurueck.
-          </p>
           <Button
             className="min-h-[3rem] rounded-[1.1rem] px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
             onClick={handleFactoryReset}

@@ -133,7 +133,9 @@ export function Button({
 }: ButtonProps) {
   const isArrowOnlyButton = typeof children === 'string' && ARROW_BUTTON_LABELS.has(children.trim());
   const controlButtonClassName = 'min-h-[3rem] px-4 py-2 text-base font-semibold';
+  const baseButtonClassName = 'appearance-none border-solid';
   const classes = cn(
+    baseButtonClassName,
     variant === 'nav-tab' && `${controlButtonClassName} ${BORDER_CLASS_NAME} disabled:cursor-not-allowed`,
     variant === 'tab' && `${controlButtonClassName} ${BORDER_CLASS_NAME} disabled:cursor-not-allowed`,
     variant === 'star' && 'leading-none',
