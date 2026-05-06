@@ -1016,15 +1016,14 @@ export function CollectionView({
 
                   <div className="grid grid-cols-4 gap-3">
                     <Button
-                      active={isFocusEditorMode}
-                      aria-label="Editor umschalten"
+                      aria-label={isFocusEditorMode ? 'Zur Fokussliste wechseln' : 'Editor aktivieren'}
                       className="col-span-2 px-4 py-2 text-lg font-semibold tracking-tight"
                       fullWidth
                       onClick={toggleFocusEditorMode}
                       shape="pill"
                       variant="tab"
                     >
-                      Editor
+                      {isFocusEditorMode ? '← Fokusse' : 'Edit →'}
                     </Button>
                     <Button
                       active={focusListMode === 'images'}

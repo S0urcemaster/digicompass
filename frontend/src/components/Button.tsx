@@ -41,10 +41,11 @@ const getVariantClassName = ({
 }: Pick<ButtonProps, 'active' | 'disabled' | 'selected' | 'tone' | 'variant'>) => {
   const defaultBg = tone === 'light' ? 'bg-[var(--button-bg-light)]' : 'bg-[var(--button-bg-dark)]';
   const activeBg = tone === 'light' ? 'bg-[var(--button-bg-light-active)]' : 'bg-[var(--button-bg-dark-active)]';
+  const disabledSurface = `${defaultBg} text-muted ring-amber-950/10 opacity-45`;
 
   if (variant === 'nav-tab') {
     if (disabled) {
-      return `${defaultBg} text-muted ring-amber-950/10 opacity-70`;
+      return disabledSurface;
     }
 
     if (active) {
@@ -56,7 +57,7 @@ const getVariantClassName = ({
 
   if (variant === 'tab') {
     if (disabled) {
-      return `${defaultBg} text-muted ring-amber-950/10 opacity-70`;
+      return disabledSurface;
     }
 
     if (active) {
@@ -69,10 +70,10 @@ const getVariantClassName = ({
   if (variant === 'star') {
     if (disabled) {
       if (active) {
-        return 'text-[#ffd56a] opacity-85';
+        return 'text-[#ffd56a] opacity-45';
       }
 
-      return tone === 'light' ? 'text-white/35 opacity-70' : 'text-[#1f1712]/28 opacity-70';
+      return tone === 'light' ? 'text-white/35 opacity-45' : 'text-[#1f1712]/28 opacity-45';
     }
 
     if (active) {
@@ -85,20 +86,28 @@ const getVariantClassName = ({
   }
 
   if (variant === 'overlay-action') {
-    return 'backdrop-blur';
+    return disabled ? 'backdrop-blur opacity-45' : 'backdrop-blur';
   }
 
   if (variant === 'surface') {
+    if (disabled) {
+      return disabledSurface;
+    }
+
     return selected
       ? `${activeBg} ring-2 ring-accent shadow-[0_18px_40px_rgba(212,138,31,0.24)]`
       : `${defaultBg} ring-1 ring-amber-950/10 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(32,26,24,0.14)]`;
   }
 
   if (variant === 'pager') {
-    return `${defaultBg} text-ink`;
+    return disabled ? `${defaultBg} text-ink opacity-45` : `${defaultBg} text-ink`;
   }
 
   if (variant === 'toggle') {
+    if (disabled) {
+      return disabledSurface;
+    }
+
     return active ? activeBg : defaultBg;
   }
 
@@ -125,14 +134,13 @@ export function Button({
 }: ButtonProps) {
   const isArrowOnlyButton = typeof children === 'string' && ARROW_BUTTON_LABELS.has(children.trim());
   const classes = cn(
-    variant === 'nav-tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
-    variant === 'tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed disabled:opacity-100',
+    variant === 'nav-tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed',
+    variant === 'tab' && 'px-4 py-3 text-base font-semibold ring-1 transition disabled:cursor-not-allowed',
     variant === 'star' && 'leading-none transition',
     variant === 'overlay-action' && 'flex items-center justify-center border font-semibold transition',
     variant === 'surface' && 'transition',
-    variant === 'pager' &&
-      'min-h-[3.75rem] px-5 py-4 text-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-45',
-    variant === 'toggle' && 'transition',
+    variant === 'pager' && 'min-h-[3.75rem] px-5 py-4 text-lg font-semibold transition disabled:cursor-not-allowed',
+    variant === 'toggle' && 'transition disabled:cursor-not-allowed',
     variant === 'scrim' && 'flex cursor-zoom-out items-center justify-center',
     isArrowOnlyButton && 'text-[2rem] leading-none',
     fullWidth && 'w-full',
