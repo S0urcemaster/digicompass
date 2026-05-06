@@ -12,23 +12,23 @@ const getImageById = (imageId: number) => {
   return image;
 };
 
-const getSayingByIndex = (sayingIndex: number) => {
-  const saying = SAYINGS[sayingIndex];
+const getSayingById = (sayingId: number) => {
+  const saying = SAYINGS.find((entry) => entry.id === sayingId);
 
   if (!saying) {
-    throw new Error(`Factory state references missing saying index ${sayingIndex}.`);
+    throw new Error(`Factory state references missing saying id ${sayingId}.`);
   }
 
   return saying;
 };
 
 const createFocus = (
-  sayingIndex: number,
+  sayingId: number,
   imageId: number,
   rating: number,
   notes: string
 ): Focus => ({
-  saying: getSayingByIndex(sayingIndex),
+  saying: getSayingById(sayingId),
   image: getImageById(imageId),
   rating,
   notes,
@@ -55,7 +55,7 @@ const createMindset = (
   notes,
 });
 
-const collectionSayingIndexes = [
+const collectionSayingIds = [
   0, 3, 11, 15, 18, 23, 30, 38, 45, 52,
   57, 64, 71, 80, 92, 103, 117, 131, 152, 180,
 ];
@@ -78,13 +78,13 @@ const collectionFocusSpecs: Array<[number, number, number, string]> = [
   [180, 48, 0.8, "Doubt-driven knowledge benefits from the heavier freedom tone."],
 ];
 
-const collectionSayings = collectionSayingIndexes.map(getSayingByIndex);
+const collectionSayings = collectionSayingIds.map(getSayingById);
 const collectionImages = collectionImageIds.map((imageId) => ({
   ...getImageById(imageId),
   rating: 0.5,
 }));
-const collectionFoci = collectionFocusSpecs.map(([sayingIndex, imageId, rating, notes]) =>
-  createFocus(sayingIndex, imageId, rating, notes)
+const collectionFoci = collectionFocusSpecs.map(([sayingId, imageId, rating, notes]) =>
+  createFocus(sayingId, imageId, rating, notes)
 );
 
 const factoryMindsets: Mindset[] = [

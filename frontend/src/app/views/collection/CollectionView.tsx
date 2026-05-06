@@ -314,14 +314,15 @@ export function CollectionView({
   );
   const selectedCollectionSaying =
     filteredCollectionSayings.find((saying) => saying.id === selectedCollectionSayingId) ?? filteredCollectionSayings[0] ?? null;
-  const selectedCollectionSayingDetails =
-    selectedCollectionSaying ? collectionSayingById.get(selectedCollectionSaying.id) ?? selectedCollectionSaying : null;
-  const collectionSayingPreviews = selectedCollectionSaying
-    ? filteredCollectionSayings.filter((saying) => saying.id !== selectedCollectionSaying.id)
-    : filteredCollectionSayings;
-  const collectionSayingPageCount = Math.max(1, Math.ceil(collectionSayingPreviews.length / COLLECTION_SAYING_PAGE_SIZE));
+  const selectedCollectionSayingDetails = selectedCollectionSaying
+    ? {
+        ...selectedCollectionSaying,
+        rating: collectionSayingById.get(selectedCollectionSaying.id)?.rating ?? 0,
+      }
+    : null;
+  const collectionSayingPageCount = Math.max(1, Math.ceil(filteredCollectionSayings.length / COLLECTION_SAYING_PAGE_SIZE));
   const safeCollectionSayingPage = Math.min(collectionSayingPage, collectionSayingPageCount - 1);
-  const pagedCollectionSayings = collectionSayingPreviews.slice(
+  const pagedCollectionSayings = filteredCollectionSayings.slice(
     safeCollectionSayingPage * COLLECTION_SAYING_PAGE_SIZE,
     (safeCollectionSayingPage + 1) * COLLECTION_SAYING_PAGE_SIZE
   );
