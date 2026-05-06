@@ -37,6 +37,7 @@ const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
 type CollectionTabValue = (typeof COLLECTION_TABS)[number]['value'];
 type FocusPreviewSource = 'editor' | 'focus';
 type MindsetListMode = 'mindsets' | 'foci';
+type FocusListMode = 'foci' | 'images' | 'sayings';
 
 type CollectionViewProps = {
   addMindset: (mindset: Mindset) => void;
@@ -77,6 +78,7 @@ export function CollectionView({
   const shouldSyncFocusPageRef = useRef(false);
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
   const [collectionFocusPage, setCollectionFocusPage] = useState(0);
+  const [focusListMode, setFocusListMode] = useState<FocusListMode>('foci');
   const [focusPreviewSource, setFocusPreviewSource] = useState<FocusPreviewSource>('focus');
   const [focusEditorImagePage, setFocusEditorImagePage] = useState(0);
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
@@ -237,6 +239,10 @@ export function CollectionView({
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   const collectionSayingById = new Map(collectionSayings.map((saying) => [saying.id, saying] as const));
+  const isFocusEditorMode = focusListMode !== 'foci';
+  const activeFocusListPage = focusListMode === 'foci' ? safeCollectionFocusPage : focusListMode === 'images' ? safeFocusEditorImagePage : safeFocusEditorSayingPage;
+  const activeFocusListPageCount =
+    focusListMode === 'foci' ? collectionFocusPageCount : focusListMode === 'images' ? focusEditorImagePageCount : focusEditorSayingPageCount;
   const collectionMindsetListLength =
     mindsetListMode === 'mindsets' ? collectionMindsets.length + 1 : collectionFoci.length;
   const collectionMindsetPageCount = Math.max(1, Math.ceil(collectionMindsetListLength / COLLECTION_MINDSET_PAGE_SIZE));
@@ -370,6 +376,24 @@ export function CollectionView({
     setSelectedCollectionFocusKey(getFocusKey(nextFocus));
     setCollectionFocusPage(Math.max(0, Math.ceil((filteredCollectionFoci.length + 1) / COLLECTION_FOCUS_PAGE_SIZE) - 1));
     setFocusPreviewSource('focus');
+  };
+
+  const toggleFocusEditorMode = () => {
+    if (isFocusEditorMode) {
+      setFocusListMode('foci');
+      setFocusPreviewSource('focus');
+      return;
+    }
+
+    setFocusListMode('images');
+  };
+
+  const showFocusImageList = () => {
+    setFocusListMode('images');
+  };
+
+  const showFocusSayingList = () => {
+    setFocusListMode('sayings');
   };
 
   const startMindsetDraft = () => {
@@ -990,28 +1014,104 @@ export function CollectionView({
                     </Button>
                   </div>
 
-                  {filteredCollectionFoci.length > 0 ? (
+                  <div className="grid grid-cols-4 gap-3">
+                    <Button
+                      active={isFocusEditorMode}
+                      aria-label="Editor umschalten"
+                      className="col-span-2 px-4 py-2 text-lg font-semibold tracking-tight"
+                      fullWidth
+                      onClick={toggleFocusEditorMode}
+                      shape="pill"
+                      variant="tab"
+                    >
+                      Editor
+                    </Button>
+                    <Button
+                      active={focusListMode === 'images'}
+                      aria-label="Bildliste im Editor anzeigen"
+                      className="px-4 py-2 text-lg font-semibold tracking-tight"
+                      disabled={!isFocusEditorMode}
+                      fullWidth
+                      onClick={showFocusImageList}
+                      shape="pill"
+                      variant="tab"
+                    >
+                      Bilder
+                    </Button>
+                    <Button
+                      active={focusListMode === 'sayings'}
+                      aria-label="Spruchliste im Editor anzeigen"
+                      className="px-4 py-2 text-lg font-semibold tracking-tight"
+                      disabled={!isFocusEditorMode}
+                      fullWidth
+                      onClick={showFocusSayingList}
+                      shape="pill"
+                      variant="tab"
+                    >
+                      Sprüche
+                    </Button>
+                  </div>
+
+                  {((focusListMode === 'foci' && filteredCollectionFoci.length > 0) ||
+                    (focusListMode === 'images' && filteredFocusEditorImages.length > 0) ||
+                    (focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0)) ? (
                     <div className="flex items-center gap-3">
                       <Button
-                        aria-label="Vorherige Fokusseite"
+                        aria-label={
+                          focusListMode === 'foci'
+                            ? 'Vorherige Fokusseite'
+                            : focusListMode === 'images'
+                              ? 'Vorherige Bildseite'
+                              : 'Vorherige Spruchseite'
+                        }
                         className="flex-1"
-                        disabled={safeCollectionFocusPage === 0}
+                        disabled={activeFocusListPage === 0}
                         fullWidth
-                        onClick={() => setCollectionFocusPage((page) => Math.max(0, page - 1))}
+                        onClick={() => {
+                          if (focusListMode === 'foci') {
+                            setCollectionFocusPage((page) => Math.max(0, page - 1));
+                            return;
+                          }
+
+                          if (focusListMode === 'images') {
+                            setFocusEditorImagePage((page) => Math.max(0, page - 1));
+                            return;
+                          }
+
+                          setFocusEditorSayingPage((page) => Math.max(0, page - 1));
+                        }}
                         shape="pill"
                         variant="pager"
                       >
                         ←
                       </Button>
                       <div className="min-w-[6rem] text-center text-base font-semibold text-muted">
-                        {safeCollectionFocusPage + 1} / {collectionFocusPageCount}
+                        {activeFocusListPage + 1} / {activeFocusListPageCount}
                       </div>
                       <Button
-                        aria-label="Nächste Fokusseite"
+                        aria-label={
+                          focusListMode === 'foci'
+                            ? 'Nächste Fokusseite'
+                            : focusListMode === 'images'
+                              ? 'Nächste Bildseite'
+                              : 'Nächste Spruchseite'
+                        }
                         className="flex-1"
-                        disabled={safeCollectionFocusPage >= collectionFocusPageCount - 1}
+                        disabled={activeFocusListPage >= activeFocusListPageCount - 1}
                         fullWidth
-                        onClick={() => setCollectionFocusPage((page) => Math.min(collectionFocusPageCount - 1, page + 1))}
+                        onClick={() => {
+                          if (focusListMode === 'foci') {
+                            setCollectionFocusPage((page) => Math.min(collectionFocusPageCount - 1, page + 1));
+                            return;
+                          }
+
+                          if (focusListMode === 'images') {
+                            setFocusEditorImagePage((page) => Math.min(focusEditorImagePageCount - 1, page + 1));
+                            return;
+                          }
+
+                          setFocusEditorSayingPage((page) => Math.min(focusEditorSayingPageCount - 1, page + 1));
+                        }}
                         shape="pill"
                         variant="pager"
                       >
@@ -1064,7 +1164,7 @@ export function CollectionView({
                       </div>
                     )}
 
-                    {filteredCollectionFoci.length > 0 ? (
+                    {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
                       <SelectableTileGrid
                         getKey={(focus) => getFocusKey(focus)}
                         isSelected={(focus) => getFocusKey(focus) === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null)}
@@ -1078,9 +1178,37 @@ export function CollectionView({
                         )}
                         variant="four"
                       />
+                    ) : focusListMode === 'images' && filteredFocusEditorImages.length > 0 ? (
+                      <SelectableTileGrid
+                        getKey={(image) => image.id}
+                        isSelected={(image) => image.id === selectedFocusEditorImage?.id}
+                        items={pagedFocusEditorImages}
+                        onSelect={(image) => {
+                          setSelectedFocusEditorImageId(image.id);
+                          setFocusPreviewSource('editor');
+                        }}
+                        renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
+                        variant="four"
+                      />
+                    ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
+                      <CollectionSayingList
+                        onSelect={(saying) => {
+                          setSelectedFocusEditorSayingId(saying.id);
+                          setFocusPreviewSource('editor');
+                        }}
+                        onSetRating={handleSetSayingRating}
+                        sayings={pagedFocusEditorSayings}
+                        selectedSayingId={selectedFocusEditorSaying?.id ?? null}
+                      />
                     ) : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">Keine Fokusse passen zu diesem Kategorienfilter.</p>
+                        <p className="text-sm text-muted">
+                          {focusListMode === 'foci'
+                            ? 'Keine Fokusse passen zu diesem Kategorienfilter.'
+                            : focusListMode === 'images'
+                              ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
+                              : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -1127,7 +1255,7 @@ export function CollectionView({
                       </div>
                     )}
 
-                    {filteredCollectionFoci.length > 0 ? (
+                    {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
                         <SelectableTileGrid
                           getKey={(focus) => getFocusKey(focus)}
@@ -1143,112 +1271,44 @@ export function CollectionView({
                           variant="four"
                         />
                       </div>
-                    ) : null}
-                  </div>
-                </section>
-              </div>
-
-              <div className="grid gap-5 min-[980px]:grid-cols-2 min-[980px]:items-start">
-                <section className="space-y-4">
-                  <div>
-                    {filteredFocusEditorImages.length > 0 ? (
-                      <div className="flex w-full items-center gap-3">
-                        <Button
-                          aria-label="Vorherige User-Bildseite"
-                          className="flex-1"
-                          disabled={safeFocusEditorImagePage === 0}
-                          fullWidth
-                          onClick={() => setFocusEditorImagePage((page) => Math.max(0, page - 1))}
-                          shape="pill"
-                          variant="pager"
-                        >
-                          ←
-                        </Button>
-                        <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
-                          {safeFocusEditorImagePage + 1} / {focusEditorImagePageCount}
-                        </div>
-                        <Button
-                          aria-label="Nächste User-Bildseite"
-                          className="flex-1"
-                          disabled={safeFocusEditorImagePage >= focusEditorImagePageCount - 1}
-                          fullWidth
-                          onClick={() => setFocusEditorImagePage((page) => Math.min(focusEditorImagePageCount - 1, page + 1))}
-                          shape="pill"
-                          variant="pager"
-                        >
-                          →
-                        </Button>
+                    ) : focusListMode === 'images' && filteredFocusEditorImages.length > 0 ? (
+                      <div className="min-[900px]:col-span-2">
+                        <SelectableTileGrid
+                          getKey={(image) => image.id}
+                          isSelected={(image) => image.id === selectedFocusEditorImage?.id}
+                          items={pagedFocusEditorImages}
+                          onSelect={(image) => {
+                            setSelectedFocusEditorImageId(image.id);
+                            setFocusPreviewSource('editor');
+                          }}
+                          renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
+                          variant="four"
+                        />
                       </div>
-                    ) : null}
-                  </div>
-
-                  {filteredFocusEditorImages.length > 0 ? (
-                    <SelectableTileGrid
-                      getKey={(image) => image.id}
-                      isSelected={(image) => image.id === selectedFocusEditorImage?.id}
-                      items={pagedFocusEditorImages}
-                      onSelect={(image) => {
-                        setSelectedFocusEditorImageId(image.id);
-                        setFocusPreviewSource('editor');
-                      }}
-                      renderTile={(image) => <ImageTile image={image} imageUrl={getPreviewImageUrl(image.url)} />}
-                      variant="four"
-                    />
-                  ) : (
-                    <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                      <p className="text-sm text-muted">In deiner Sammlung passen keine Bilder zu diesem Filter.</p>
-                    </div>
-                  )}
-                </section>
-
-                <section className="space-y-4">
-                  <div>
-                    {filteredFocusEditorSayings.length > 0 ? (
-                      <div className="flex w-full items-center gap-3">
-                        <Button
-                          aria-label="Vorherige User-Spruchseite"
-                          className="flex-1"
-                          disabled={safeFocusEditorSayingPage === 0}
-                          fullWidth
-                          onClick={() => setFocusEditorSayingPage((page) => Math.max(0, page - 1))}
-                          shape="pill"
-                          variant="pager"
-                        >
-                          ←
-                        </Button>
-                        <div className="min-w-[5.5rem] text-center text-base font-semibold text-muted">
-                          {safeFocusEditorSayingPage + 1} / {focusEditorSayingPageCount}
-                        </div>
-                        <Button
-                          aria-label="Nächste User-Spruchseite"
-                          className="flex-1"
-                          disabled={safeFocusEditorSayingPage >= focusEditorSayingPageCount - 1}
-                          fullWidth
-                          onClick={() => setFocusEditorSayingPage((page) => Math.min(focusEditorSayingPageCount - 1, page + 1))}
-                          shape="pill"
-                          variant="pager"
-                        >
-                          →
-                        </Button>
+                    ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
+                      <div className="min-[900px]:col-span-2">
+                        <CollectionSayingList
+                          onSelect={(saying) => {
+                            setSelectedFocusEditorSayingId(saying.id);
+                            setFocusPreviewSource('editor');
+                          }}
+                          onSetRating={handleSetSayingRating}
+                          sayings={pagedFocusEditorSayings}
+                          selectedSayingId={selectedFocusEditorSaying?.id ?? null}
+                        />
                       </div>
-                    ) : null}
+                    ) : (
+                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2">
+                        <p className="text-sm text-muted">
+                          {focusListMode === 'foci'
+                            ? 'Keine Fokusse passen zu diesem Kategorienfilter.'
+                            : focusListMode === 'images'
+                              ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
+                              : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
+                        </p>
+                      </div>
+                    )}
                   </div>
-
-                  {filteredFocusEditorSayings.length > 0 ? (
-                    <CollectionSayingList
-                      onSelect={(saying) => {
-                        setSelectedFocusEditorSayingId(saying.id);
-                        setFocusPreviewSource('editor');
-                      }}
-                      onSetRating={handleSetSayingRating}
-                      sayings={pagedFocusEditorSayings}
-                      selectedSayingId={selectedFocusEditorSaying?.id ?? null}
-                    />
-                  ) : (
-                    <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                      <p className="text-sm text-muted">In deiner Sammlung passen keine Sprüche zu diesem Filter.</p>
-                    </div>
-                  )}
                 </section>
               </div>
             </div>
