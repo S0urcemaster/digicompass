@@ -19,7 +19,7 @@ import {
 const COLLECTION_TABS = [
   { label: 'Bilder', value: 'images' },
   { label: 'Sprüche', value: 'sayings' },
-  { label: 'Foki', value: 'foci' },
+  { label: 'Fokusse', value: 'foci' },
   { label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
@@ -1040,7 +1040,7 @@ export function CollectionView({
                     </div>
                   ) : (
                     <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                      <p className="text-sm text-muted">Keine Foki passen zu diesem Kategorienfilter.</p>
+                      <p className="text-sm text-muted">Keine Fokusse passen zu diesem Kategorienfilter.</p>
                     </div>
                   )}
                 </section>
@@ -1173,7 +1173,7 @@ export function CollectionView({
             </div>
           ) : (
             <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-              <p className="text-sm text-muted">In deiner Sammlung sind noch keine Foki verfügbar.</p>
+              <p className="text-sm text-muted">In deiner Sammlung sind noch keine Fokusse verfügbar.</p>
             </div>
           )
         ) : activeTab === 'mindsets' ? (
@@ -1191,7 +1191,7 @@ export function CollectionView({
                         onChange={(event) => handleDraftMindsetNameChange(event.target.value)}
                       />
                       <p className="mt-2 text-sm text-muted">
-                        {activeMindsetDraftCategories.join(' / ') || 'Wähle unten Foki und fülle damit die Slots.'}
+                        {activeMindsetDraftCategories.join(' / ') || 'Wähle unten Fokusse und fülle damit die Slots.'}
                       </p>
                     </>
                   ) : selectedCollectionMindset ? (
@@ -1249,7 +1249,7 @@ export function CollectionView({
                 )}
                 {!isEditingMindsetDraft && !selectedCollectionMindset ? (
                   <div className="flex min-h-[12rem] w-full items-center justify-center border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 text-center text-sm text-muted">
-                    Noch keine Foki im aktiven Mindset.
+                    Noch keine Fokusse im aktiven Mindset.
                   </div>
                 ) : null}
               </div>
@@ -1262,14 +1262,14 @@ export function CollectionView({
                   className="grid grid-cols-2 gap-2"
                   items={[
                     { label: 'Mindsets', value: 'mindsets' },
-                    { label: 'Foki', value: 'foci' },
+                    { label: 'Fokusse', value: 'foci' },
                   ]}
                   onChange={setMindsetListMode}
                 />
 
                 <div className="flex items-center gap-3">
                   <Button
-                    aria-label={`Vorherige ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Foki-'}Seite`}
+                    aria-label={`Vorherige ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Fokusse-'}Seite`}
                     className="flex-1"
                     disabled={safeCollectionMindsetPage === 0}
                     fullWidth
@@ -1287,7 +1287,7 @@ export function CollectionView({
                     {safeCollectionMindsetPage + 1} / {collectionMindsetPageCount}
                   </div>
                   <Button
-                    aria-label={`Nächste ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Foki-'}Seite`}
+                    aria-label={`Nächste ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Fokusse-'}Seite`}
                     className="flex-1"
                     disabled={safeCollectionMindsetPage >= collectionMindsetPageCount - 1}
                     fullWidth

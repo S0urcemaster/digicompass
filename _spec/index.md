@@ -200,7 +200,7 @@ Planned purpose:
 
 Current note:
 
-- focus preview and selection currently happen inside the `Collection` view under `Foci`
+- focus preview and selection currently happen inside the `Collection` view under `Fokusse`
 
 ## Collection View
 
@@ -227,7 +227,7 @@ Current note:
 - Rating a saying adds it to the collection and sets its rating
 - The current UI uses a compact list instead of a large detail card
 
-### Foci
+### Fokusse
 
 - Browse collected foci and filter them by category text
 - Show a large focus preview with saying and image combined
