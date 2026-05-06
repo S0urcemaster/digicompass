@@ -847,6 +847,7 @@ export function CollectionView({
 
                   <div className="min-[900px]:col-span-2">
                     <SelectableTileGrid
+                      desktopColumns={2}
                       getKey={(image) => image.id}
                       items={topPagedCollectionImages}
                       onSelect={(image) => setSelectedCollectionImageId(image.id)}
@@ -869,6 +870,7 @@ export function CollectionView({
 
                   <div className="min-[900px]:col-span-4">
                     <SelectableTileGrid
+                      desktopColumns={4}
                       getKey={(image) => image.id}
                       items={bottomPagedCollectionImages}
                       onSelect={(image) => setSelectedCollectionImageId(image.id)}
