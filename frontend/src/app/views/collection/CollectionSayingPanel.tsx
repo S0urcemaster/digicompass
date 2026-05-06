@@ -9,17 +9,22 @@ type CollectionSayingPanelProps = {
   saying: Saying;
   selected?: boolean;
   showSayingId?: boolean;
-  variant?: 'main' | 'preview';
+  variant?: 'main' | 'preview' | 'compact';
 };
 
-const getSayingFontSize = (fontSize: number, variant: 'main' | 'preview'): CSSProperties =>
+const getSayingFontSize = (fontSize: number, variant: 'main' | 'preview' | 'compact'): CSSProperties =>
   variant === 'main'
     ? {
         fontSize: `clamp(1.85rem, ${fontSize / 14}vw, ${fontSize * 1.12}px)`,
         lineHeight: 1.08,
       }
-    : {
-        fontSize: `clamp(1rem, ${fontSize / 20}vw, ${Math.max(20, fontSize * 0.56)}px)`,
+    : variant === 'preview'
+      ? {
+          fontSize: `clamp(1rem, ${fontSize / 20}vw, ${Math.max(20, fontSize * 0.56)}px)`,
+          lineHeight: 1.1,
+        }
+      : {
+        fontSize: `clamp(0.82rem, ${fontSize / 28}vw, ${Math.max(16, fontSize * 0.44)}px)`,
         lineHeight: 1.1,
       };
 
@@ -33,6 +38,7 @@ export function CollectionSayingPanel({
   variant = 'main',
 }: CollectionSayingPanelProps) {
   const isMain = variant === 'main';
+  const isCompact = variant === 'compact';
 
   return (
     <article
@@ -48,20 +54,41 @@ export function CollectionSayingPanel({
           type="button"
         />
       ) : null}
-      <div className={`flex flex-col ${isMain ? 'min-h-[26rem] px-6 pb-6 pt-6 sm:px-7 sm:pb-7 sm:pt-7' : 'min-h-[11.75rem] px-4 py-4'}`}>
+      <div
+        className={`flex flex-col ${
+          isMain
+            ? 'min-h-[26rem] px-6 pb-6 pt-6 sm:px-7 sm:pb-7 sm:pt-7'
+            : isCompact
+              ? 'h-full px-4 py-3'
+              : 'min-h-[11.75rem] px-4 py-4'
+        }`}
+      >
         <div className="flex items-start justify-between gap-4">
-          <p className={`inline-flex bg-[#fff7ed]/92 font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.12)] ${isMain ? 'px-3 py-2 text-[0.8rem]' : 'px-2.5 py-1 text-[0.68rem]'}`}>
+          <p
+            className={`inline-flex bg-[#fff7ed]/92 font-semibold uppercase tracking-[0.16em] text-[#1f1712] shadow-[0_8px_24px_rgba(0,0,0,0.12)] ${
+              isMain ? 'px-3 py-2 text-[0.8rem]' : isCompact ? 'px-2 py-1 text-[0.6rem]' : 'px-2.5 py-1 text-[0.68rem]'
+            }`}
+          >
             {saying.categories[0]?.text ?? 'Unsortiert'}
           </p>
           {showSayingId ? (
-            <div className={`shrink-0 border border-[#fff7ed]/16 bg-[#fff7ed]/92 font-semibold text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.12)] ${isMain ? 'px-5 py-2 text-3xl' : 'px-3 py-1 text-lg'}`}>
+            <div
+              className={`shrink-0 border border-[#fff7ed]/16 bg-[#fff7ed]/92 font-semibold text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.12)] ${
+                isMain ? 'px-5 py-2 text-3xl' : isCompact ? 'px-2.5 py-1 text-sm' : 'px-3 py-1 text-lg'
+              }`}
+            >
               {saying.id}
             </div>
           ) : null}
         </div>
 
-        <div className={`flex flex-1 items-center justify-center text-center ${isMain ? 'py-12' : 'py-6'}`}>
-          <p className={`font-semibold tracking-[-0.04em] text-[#1f1712] ${isMain ? 'max-w-[12ch]' : 'max-w-[16ch]'}`} style={getSayingFontSize(saying.fontSize, variant)}>
+        <div className={`flex flex-1 items-center justify-center text-center ${isMain ? 'py-12' : isCompact ? 'py-3' : 'py-6'}`}>
+          <p
+            className={`font-semibold tracking-[-0.04em] text-[#1f1712] ${
+              isMain ? 'max-w-[12ch]' : isCompact ? 'max-w-[22ch]' : 'max-w-[16ch]'
+            }`}
+            style={getSayingFontSize(saying.fontSize, variant)}
+          >
             {saying.text}
           </p>
         </div>

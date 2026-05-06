@@ -1197,6 +1197,7 @@ export function CollectionView({
                       />
                     ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <CollectionSayingList
+                        layout="focus-eight"
                         onSelect={(saying) => {
                           setSelectedFocusEditorSayingId(saying.id);
                           setFocusPreviewSource('editor');
@@ -1329,6 +1330,7 @@ export function CollectionView({
                     ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
                         <CollectionSayingList
+                          layout="focus-eight"
                           onSelect={(saying) => {
                             setSelectedFocusEditorSayingId(saying.id);
                             setFocusPreviewSource('editor');
