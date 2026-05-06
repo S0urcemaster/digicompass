@@ -971,50 +971,50 @@ export function CollectionView({
                   ) : null}
                 </div>
 
-                {previewFocus ? (
-                  <div className="relative">
-                    <FocusTile
-                      focus={{ ...previewFocus, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
-                      onSetRating={
-                        focusPreviewSource === 'editor'
-                          ? handleSetEditorFocusRating
-                          : storedPreviewFocus
-                            ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
-                            : undefined
-                      }
-                      variant="main"
-                    />
-                    <Button
-                      aria-label="Vergrößertes Bild öffnen"
-                      className={`absolute right-6 top-6 z-20 h-[5.25rem] w-[5.25rem] ${getImageIdBadgeClassName(
-                        getImageOverlayTone(previewFocus.image.color)
-                      )}`}
-                      onClick={() => setZoomedImageId(previewFocus.image.id)}
-                      shape="round"
-                      tone={getImageOverlayTone(previewFocus.image.color)}
-                      variant="overlay-action"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="h-9 w-9"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
-                        <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-                      </svg>
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                    <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
-                  </div>
-                )}
+                <section className="flex min-h-0 flex-col min-[900px]:col-span-2">
+                  <div className="space-y-3 min-[900px]:hidden">
+                    {previewFocus ? (
+                      <div className="relative">
+                        <FocusTile
+                          focus={{ ...previewFocus, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
+                          onSetRating={
+                            focusPreviewSource === 'editor'
+                              ? handleSetEditorFocusRating
+                              : storedPreviewFocus
+                                ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
+                                : undefined
+                          }
+                          variant="main"
+                        />
+                        <Button
+                          aria-label="Vergrößertes Bild öffnen"
+                          className={`absolute right-6 top-6 z-20 h-[5.25rem] w-[5.25rem] ${getImageIdBadgeClassName(
+                            getImageOverlayTone(previewFocus.image.color)
+                          )}`}
+                          onClick={() => setZoomedImageId(previewFocus.image.id)}
+                          shape="round"
+                          tone={getImageOverlayTone(previewFocus.image.color)}
+                          variant="overlay-action"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="h-9 w-9"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+                            <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                          </svg>
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                        <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
+                      </div>
+                    )}
 
-                <section className="flex min-h-0 flex-col">
-                  {filteredCollectionFoci.length > 0 ? (
-                    <div className="pr-1">
+                    {filteredCollectionFoci.length > 0 ? (
                       <div className="grid grid-cols-2 gap-3">
                         {pagedCollectionFoci.map((focus) => {
                           const focusKey = getFocusKey(focus);
@@ -1037,12 +1037,78 @@ export function CollectionView({
                           );
                         })}
                       </div>
-                    </div>
-                  ) : (
-                    <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                      <p className="text-sm text-muted">Keine Fokusse passen zu diesem Kategorienfilter.</p>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
+                        <p className="text-sm text-muted">Keine Fokusse passen zu diesem Kategorienfilter.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:grid-rows-2 min-[900px]:gap-3">
+                    {previewFocus ? (
+                      <div className="relative min-[900px]:col-span-2 min-[900px]:row-span-2">
+                        <FocusTile
+                          focus={{ ...previewFocus, rating: storedPreviewFocus?.rating ?? previewFocus.rating }}
+                          onSetRating={
+                            focusPreviewSource === 'editor'
+                              ? handleSetEditorFocusRating
+                              : storedPreviewFocus
+                                ? (rating) => handleSetFocusRating(storedPreviewFocus, rating)
+                                : undefined
+                          }
+                          variant="main"
+                        />
+                        <Button
+                          aria-label="Vergrößertes Bild öffnen"
+                          className={`absolute right-6 top-6 z-20 h-[5.25rem] w-[5.25rem] ${getImageIdBadgeClassName(
+                            getImageOverlayTone(previewFocus.image.color)
+                          )}`}
+                          onClick={() => setZoomedImageId(previewFocus.image.id)}
+                          shape="round"
+                          tone={getImageOverlayTone(previewFocus.image.color)}
+                          variant="overlay-action"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="h-9 w-9"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+                            <path d="M16 16L21 21" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+                          </svg>
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2 min-[900px]:row-span-2">
+                        <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
+                      </div>
+                    )}
+
+                    {filteredCollectionFoci.length > 0 ? (
+                      pagedCollectionFoci.map((focus) => {
+                        const focusKey = getFocusKey(focus);
+                        const isSelected = focusKey === (selectedCollectionFocus ? getFocusKey(selectedCollectionFocus) : null);
+
+                        return (
+                          <Button
+                            align="left"
+                            key={focusKey}
+                            className="group relative overflow-hidden"
+                            onClick={() => {
+                              setSelectedCollectionFocusKey(focusKey);
+                              setFocusPreviewSource('focus');
+                            }}
+                            selected={isSelected}
+                            variant="surface"
+                          >
+                            <FocusTile focus={{ ...focus, image: { ...focus.image, url: getPreviewImageUrl(focus.image.url) } }} />
+                          </Button>
+                        );
+                      })
+                    ) : null}
+                  </div>
                 </section>
               </div>
 
