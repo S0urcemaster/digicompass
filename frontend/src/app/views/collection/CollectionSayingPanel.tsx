@@ -24,9 +24,9 @@ const getSayingFontSize = (fontSize: number, variant: 'main' | 'preview' | 'comp
           lineHeight: 1.1,
         }
       : {
-        fontSize: `clamp(0.82rem, ${fontSize / 28}vw, ${Math.max(16, fontSize * 0.44)}px)`,
-        lineHeight: 1.1,
-      };
+          fontSize: `clamp(0.98rem, ${fontSize / 26}vw, ${Math.max(18.7, fontSize * 0.5)}px)`,
+          lineHeight: 1.1,
+        };
 
 export function CollectionSayingPanel({
   onSelect,
@@ -59,7 +59,7 @@ export function CollectionSayingPanel({
           isMain
             ? 'min-h-[26rem] px-6 pb-6 pt-6 sm:px-7 sm:pb-7 sm:pt-7'
             : isCompact
-              ? 'h-full px-4 py-3'
+              ? 'h-full pl-[5px] pr-[5px] py-3'
               : 'min-h-[11.75rem] px-4 py-4'
         }`}
       >
@@ -82,11 +82,11 @@ export function CollectionSayingPanel({
           ) : null}
         </div>
 
-        <div className={`flex flex-1 items-center justify-center text-center ${isMain ? 'py-12' : isCompact ? 'py-3' : 'py-6'}`}>
+        <div className={`flex flex-1 justify-center text-center ${isMain ? 'items-center py-12' : isCompact ? 'items-start pt-[5px] pb-3' : 'items-center py-6'}`}>
           <p
             className={`font-semibold tracking-[-0.04em] text-[#1f1712] ${
-              isMain ? 'max-w-[12ch]' : isCompact ? 'max-w-[22ch]' : 'max-w-[16ch]'
-            }`}
+              isMain ? 'max-w-[12ch]' : isCompact ? 'w-full px-[10px]' : 'max-w-[16ch]'
+            } ${isCompact ? 'mt-1' : ''}`}
             style={getSayingFontSize(saying.fontSize, variant)}
           >
             {saying.text}

@@ -7,6 +7,7 @@ import { preloadImages } from '../../../lib/imageCache';
 import type { CompassImage, Focus, Mindset, Saying } from '../../../types/domain';
 import { CollectionImagePanel } from './CollectionImagePanel';
 import { CollectionSayingList } from './CollectionSayingList';
+import { CollectionSayingPanel } from './CollectionSayingPanel';
 import { FocusTile } from '../shared/FocusTile';
 import { ImageTile } from '../shared/ImageTile';
 import { MindsetTile } from '../shared/MindsetTile';
@@ -29,7 +30,7 @@ const COLLECTION_FOCUS_PAGE_SIZE = 8;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 7;
 const FOCUS_EDITOR_IMAGE_PAGE_SIZE = 8;
-const FOCUS_EDITOR_SAYING_PAGE_SIZE = 6;
+const FOCUS_EDITOR_SAYING_PAGE_SIZE = 8;
 
 const getPreviewImageUrl = (url: string) => url.replace('/images/', '/images/preview/');
 const getFocusKey = (focus: Focus) => `${focus.saying.id}:${focus.image.id}`;
@@ -192,6 +193,8 @@ export function CollectionView({
     safeFocusEditorSayingPage * FOCUS_EDITOR_SAYING_PAGE_SIZE,
     (safeFocusEditorSayingPage + 1) * FOCUS_EDITOR_SAYING_PAGE_SIZE
   );
+  const topPagedFocusEditorSayings = pagedFocusEditorSayings.slice(0, 4);
+  const bottomPagedFocusEditorSayings = pagedFocusEditorSayings.slice(4, 8);
   const selectedFocusEditorSaying =
     filteredFocusEditorSayings.find((saying) => saying.id === selectedFocusEditorSayingId) ?? filteredFocusEditorSayings[0] ?? null;
   const selectedEditorFocusKey =
@@ -1327,18 +1330,47 @@ export function CollectionView({
                           variant="four"
                         />
                       </div>
-                    ) : focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
+                    ) : null}
+
+                    {focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
-                        <CollectionSayingList
-                          layout="focus-eight"
-                          onSelect={(saying) => {
-                            setSelectedFocusEditorSayingId(saying.id);
-                            setFocusPreviewSource('editor');
-                          }}
-                          onSetRating={handleSetSayingRating}
-                          sayings={pagedFocusEditorSayings}
-                          selectedSayingId={selectedFocusEditorSaying?.id ?? null}
-                        />
+                        <div className="grid grid-cols-1 gap-3">
+                          {topPagedFocusEditorSayings.map((saying) => (
+                            <CollectionSayingPanel
+                              key={saying.id}
+                              onSelect={() => {
+                                setSelectedFocusEditorSayingId(saying.id);
+                                setFocusPreviewSource('editor');
+                              }}
+                              onSetRating={(rating) => handleSetSayingRating(saying, rating)}
+                              panelClassName="aspect-[20/7] shadow-none"
+                              saying={saying}
+                              selected={selectedFocusEditorSaying?.id === saying.id}
+                              variant="compact"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
+                      <div className="min-[900px]:col-span-4">
+                        <div className="grid grid-cols-2 gap-3">
+                          {bottomPagedFocusEditorSayings.map((saying) => (
+                            <CollectionSayingPanel
+                              key={saying.id}
+                              onSelect={() => {
+                                setSelectedFocusEditorSayingId(saying.id);
+                                setFocusPreviewSource('editor');
+                              }}
+                              onSetRating={(rating) => handleSetSayingRating(saying, rating)}
+                              panelClassName="aspect-[20/7] shadow-none"
+                              saying={saying}
+                              selected={selectedFocusEditorSaying?.id === saying.id}
+                              variant="compact"
+                            />
+                          ))}
+                        </div>
                       </div>
                     ) : focusListMode === 'foci' ? null : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2">
