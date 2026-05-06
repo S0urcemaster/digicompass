@@ -147,7 +147,7 @@ export function App() {
       <footer className="px-4 pb-8 pt-10 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-3 border-t border-amber-950/10 pt-6">
           <Button
-            className="min-h-[3rem] rounded-[1.1rem] px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
+            className="min-h-[3rem] px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
             onClick={handleFactoryReset}
             variant="surface"
           >

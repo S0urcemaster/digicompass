@@ -921,11 +921,7 @@ export function CollectionView({
                 </div>
               </section>
             </div>
-          ) : (
-            <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-              <p className="text-sm text-muted">Für diesen Filter sind keine Bilder verfügbar.</p>
-            </div>
-          )
+          ) : null
         ) : activeTab === 'sayings' ? (
           selectedCollectionSaying && selectedCollectionSayingDetails ? (
             <div className="space-y-4">
@@ -1062,11 +1058,7 @@ export function CollectionView({
                 </div>
               </section>
             </div>
-          ) : (
-            <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-              <p className="text-sm text-muted">Für diesen Filter sind keine Sprüche verfügbar.</p>
-            </div>
-          )
+          ) : null
         ) : activeTab === 'foci' ? (
           previewFocus || filteredCollectionFoci.length > 0 || filteredFocusEditorImages.length > 0 || filteredFocusEditorSayings.length > 0 ? (
             <div className="space-y-8">
@@ -1261,11 +1253,7 @@ export function CollectionView({
                           </svg>
                         </Button>
                       </div>
-                    ) : (
-                      <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
-                      </div>
-                    )}
+                    ) : null}
 
                     {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
                       <SelectableTileGrid
@@ -1304,15 +1292,7 @@ export function CollectionView({
                         sayings={pagedFocusEditorSayings}
                         selectedSayingId={selectedFocusEditorSaying?.id ?? null}
                       />
-                    ) : focusListMode === 'foci' ? null : (
-                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-                        <p className="text-sm text-muted">
-                          {focusListMode === 'images'
-                              ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
-                              : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
-                        </p>
-                      </div>
-                    )}
+                    ) : null}
                   </div>
 
                   <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-3">
@@ -1351,11 +1331,7 @@ export function CollectionView({
                           </svg>
                         </Button>
                       </div>
-                    ) : (
-                      <div className="rounded-[28px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2 min-[900px]:row-span-2">
-                        <p className="text-sm text-muted">Wähle unten ein Bild und einen Spruch oder rechts einen bestehenden Fokus.</p>
-                      </div>
-                    )}
+                    ) : null}
 
                     {focusListMode === 'foci' && filteredCollectionFoci.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
@@ -1467,24 +1443,12 @@ export function CollectionView({
                           ))}
                         </div>
                       </div>
-                    ) : focusListMode === 'foci' ? null : (
-                      <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2">
-                        <p className="text-sm text-muted">
-                          {focusListMode === 'images'
-                              ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
-                              : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
-                        </p>
-                      </div>
-                    )}
+                    ) : null}
                   </div>
                 </section>
               </div>
             </div>
-          ) : (
-            <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-              <p className="text-sm text-muted">In deiner Sammlung sind noch keine Fokusse verfügbar.</p>
-            </div>
-          )
+          ) : null
         ) : activeTab === 'mindsets' ? (
           <div className="space-y-6">
             <section>
@@ -1690,11 +1654,7 @@ export function CollectionView({
               </div>
             </section>
           </div>
-        ) : (
-          <div className="mt-5 rounded-[22px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
-            <p className="text-sm text-muted">In deiner Sammlung sind noch keine Mindsets verfügbar.</p>
-          </div>
-        )}
+        ) : null}
 
         {activeTab === 'images' || activeTab === 'sayings' ? (
           <form className="mt-5">
