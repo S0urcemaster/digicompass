@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { CollectionView } from './views/collection/CollectionView';
 import { PrimaryView } from './views/primary/PrimaryView';
+import { Button } from '../components/Button';
 import { Tabs } from '../components/Tabs';
 import { useCompassStore } from '../store/compassStore';
 
 const VIEW_LABELS = {
+  navigator: 'Navigator',
   primary: 'Kompass',
   collection: 'Sammlung',
 } as const;
@@ -24,6 +26,7 @@ export function App() {
     data,
     removeMindset,
     removeCollectionFocus,
+    resetToFactoryState,
     selectedFocusIndex,
     selectedMindsetIndex,
     setCollectionFocusRating,
@@ -49,6 +52,15 @@ export function App() {
     }
   }, [activeView, setActiveView]);
 
+  const handleFactoryReset = () => {
+    if (!window.confirm('Lokalen Nutzerstand auf den Factory-State zurücksetzen?')) {
+      return;
+    }
+
+    useCompassStore.persist.clearStorage();
+    resetToFactoryState();
+  };
+
   return (
     <main className="min-h-screen">
       <header className="flex flex-col gap-5 border-b border-amber-950/10 px-4 py-5 sm:px-6 sm:py-8">
@@ -62,7 +74,7 @@ export function App() {
 
         <Tabs
           activeValue={activeView}
-          className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+          className="grid grid-cols-1 gap-2 sm:grid-cols-3"
           items={VIEW_TABS}
           onChange={setActiveView}
           variant="nav"
@@ -70,7 +82,17 @@ export function App() {
       </header>
 
       <div className="app-content app-content--flush">
-        {activeView === 'primary' ? (
+        {activeView === 'navigator' ? (
+          <section className="px-4 py-8 sm:px-6 sm:py-10">
+            <div className="mx-auto max-w-6xl rounded-[1.8rem] border border-amber-950/10 bg-[rgba(255,250,242,0.72)] p-6 shadow-[0_20px_50px_rgba(32,26,24,0.08)] backdrop-blur">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-accent">Navigator</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-ink">Navigator folgt als eigener Hauptbereich.</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-muted">
+                Kompass bleibt die voreingestellte Hauptansicht. Dieser Tab ist jetzt bereits im Shell-Navigationsbereich angelegt.
+              </p>
+            </div>
+          </section>
+        ) : activeView === 'primary' ? (
           <PrimaryView
             currentFocus={currentFocus}
             currentMindset={currentMindset}
@@ -125,6 +147,22 @@ export function App() {
           />
         )}
       </div>
+
+      <footer className="px-4 pb-8 pt-10 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-3 border-t border-amber-950/10 pt-6">
+          <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-muted">Factory Reset</p>
+          <p className="max-w-2xl text-sm leading-6 text-muted">
+            Setzt den lokalen User-Store auf den aktuellen Auslieferungsstand zurueck.
+          </p>
+          <Button
+            className="min-h-[3rem] rounded-[1.1rem] border border-[#7f1d1d]/20 px-4 py-2 text-sm font-semibold text-[#7f1d1d]"
+            onClick={handleFactoryReset}
+            variant="surface"
+          >
+            User-Store zuruecksetzen
+          </Button>
+        </div>
+      </footer>
     </main>
   );
 }

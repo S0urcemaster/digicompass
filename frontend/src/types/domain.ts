@@ -1,5 +1,5 @@
 export type Rating = number;
-export type ImageColor = 'hell' | 'dunkel' | 'hell dunkel' | 'dunkel hell' | 'neutral';
+export type ImageColor = 'hell' | 'dunkel' | 'mix' | 'neutral';
 
 export interface Category {
   id: number

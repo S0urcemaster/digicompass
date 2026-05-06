@@ -60,22 +60,29 @@ const collectionSayingIds = [
   57, 64, 71, 80, 92, 103, 117, 131, 152, 180,
 ];
 
-const collectionImageIds = [
-  0, 1, 3, 5, 8, 12, 13, 16, 20, 24,
-  30, 32, 35, 41, 44, 48, 53, 57, 63, 71,
-];
+const collectionImageIds = IMAGES.map((image) => image.id);
+
+const getAvailableImageId = (index: number) => {
+  const imageId = collectionImageIds[index];
+
+  if (imageId === undefined) {
+    throw new Error(`Factory state could not resolve image at collection index ${index}.`);
+  }
+
+  return imageId;
+};
 
 const collectionFocusSpecs: Array<[number, number, number, string]> = [
-  [0, 57, 0.81, "A sharp saying on a bright freedom image keeps the tension useful."],
-  [15, 13, 0.78, "Doubt and dark atmosphere work well together here."],
-  [23, 3, 0.84, "Small causes and large effects fit this open scene."],
-  [38, 41, 0.76, "The short line gives the image room to breathe."],
-  [52, 30, 0.82, "This pairing feels strange on purpose and works as a prompt."],
-  [71, 8, 0.73, "Time and shadow create a steady, reflective focus."],
-  [92, 63, 0.88, "Action-first language fits the lighter upward image."],
-  [103, 24, 0.79, "Learning through pain fits a darker, more compressed frame."],
-  [131, 5, 0.85, "Reason and courage land well on a clean autonomy image."],
-  [180, 48, 0.8, "Doubt-driven knowledge benefits from the heavier freedom tone."],
+  [0, getAvailableImageId(0), 0.81, "A sharp saying on a dark image keeps the tension useful."],
+  [15, getAvailableImageId(1), 0.78, "Doubt and atmosphere work well together here."],
+  [23, getAvailableImageId(3), 0.84, "Small causes and large effects fit this open scene."],
+  [38, getAvailableImageId(5), 0.76, "The short line gives the image room to breathe."],
+  [52, getAvailableImageId(8), 0.82, "This pairing feels strange on purpose and works as a prompt."],
+  [71, getAvailableImageId(9), 0.73, "Time and shadow create a steady, reflective focus."],
+  [92, getAvailableImageId(12), 0.88, "Action-first language fits the image well."],
+  [103, getAvailableImageId(14), 0.79, "Learning through pain fits a more compressed frame."],
+  [131, getAvailableImageId(17), 0.85, "Reason and courage land well on this pairing."],
+  [180, getAvailableImageId(20), 0.8, "Doubt-driven knowledge benefits from the heavier tone."],
 ];
 
 const collectionSayings = collectionSayingIds.map(getSayingById);

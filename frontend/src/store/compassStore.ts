@@ -3,13 +3,14 @@ import { persist } from 'zustand/middleware';
 import type { Category, Collection, CompassImage, DigiCompass, Focus, Mindset, Rating, Saying } from '../types/domain';
 import factoryState from './factoryState';
 
-export type CompassView = 'primary' | 'focus-editor' | 'collection';
+export type CompassView = 'navigator' | 'primary' | 'focus-editor' | 'collection';
 
 interface CompassState {
   data: DigiCompass;
   activeView: CompassView;
   selectedMindsetIndex: number;
   selectedFocusIndex: number;
+  resetToFactoryState: () => void;
   setUsername: (username: string) => void;
   setActiveView: (view: CompassView) => void;
   selectMindset: (index: number) => void;
@@ -98,6 +99,13 @@ export const useCompassStore = create<CompassState>()(
       activeView: 'primary',
       selectedMindsetIndex: 0,
       selectedFocusIndex: 0,
+      resetToFactoryState: () =>
+        set({
+          data: cloneDigiCompass(factoryState),
+          activeView: 'primary',
+          selectedMindsetIndex: 0,
+          selectedFocusIndex: 0,
+        }),
       setUsername: (username) => set((state) => ({ data: { ...state.data, username } })),
       setActiveView: (activeView) => set({ activeView }),
       selectMindset: (index) =>
