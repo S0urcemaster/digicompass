@@ -47,7 +47,7 @@ export const CATEGORIES: Record<string, Category> = {
   phantasie: { id: 39, text: 'Phantasie' },
   schicksal: { id: 40, text: 'Schicksal' },
   spektrum: { id: 41, text: 'Spektrum' },
-  spiegel: { id: 42, text: 'Spiegel' },
+  spiegel: { id: 42, text: 'Spiegel' }, //
   staerke: { id: 43, text: 'Stärke' },
   theorie: { id: 44, text: 'Theorie' },
   tod: { id: 45, text: 'Tod' },
