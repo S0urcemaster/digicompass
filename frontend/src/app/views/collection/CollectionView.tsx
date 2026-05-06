@@ -1205,12 +1205,10 @@ export function CollectionView({
                         sayings={pagedFocusEditorSayings}
                         selectedSayingId={selectedFocusEditorSaying?.id ?? null}
                       />
-                    ) : (
+                    ) : focusListMode === 'foci' ? null : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center">
                         <p className="text-sm text-muted">
-                          {focusListMode === 'foci'
-                            ? 'Keine Fokusse passen zu diesem Kategorienfilter.'
-                            : focusListMode === 'images'
+                          {focusListMode === 'images'
                               ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
                               : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
                         </p>
@@ -1340,12 +1338,10 @@ export function CollectionView({
                           selectedSayingId={selectedFocusEditorSaying?.id ?? null}
                         />
                       </div>
-                    ) : (
+                    ) : focusListMode === 'foci' ? null : (
                       <div className="rounded-[20px] border border-dashed border-amber-950/14 bg-[#fbf6ec] px-4 py-10 text-center min-[900px]:col-span-2">
                         <p className="text-sm text-muted">
-                          {focusListMode === 'foci'
-                            ? 'Keine Fokusse passen zu diesem Kategorienfilter.'
-                            : focusListMode === 'images'
+                          {focusListMode === 'images'
                               ? 'In deiner Sammlung passen keine Bilder zu diesem Filter.'
                               : 'In deiner Sammlung passen keine Sprüche zu diesem Filter.'}
                         </p>
