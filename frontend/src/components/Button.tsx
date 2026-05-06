@@ -38,10 +38,21 @@ const getButtonStateClassName = ({
   disabled,
   selected,
   tone,
-}: Pick<ButtonProps, 'active' | 'disabled' | 'selected' | 'tone'>) => {
+  variant,
+}: Pick<ButtonProps, 'active' | 'disabled' | 'selected' | 'tone' | 'variant'>) => {
   const defaultBg = tone === 'light' ? 'bg-[var(--button-bg-light)]' : 'bg-[var(--button-bg-dark)]';
   const activeBg = tone === 'light' ? 'bg-[var(--button-bg-light-active)]' : 'bg-[var(--button-bg-dark-active)]';
   const defaultText = tone === 'light' ? 'text-ink' : 'text-[#fff7ed]';
+
+  if (variant === 'star') {
+    if (disabled) {
+      return active ? 'border-transparent bg-transparent text-[#d4af37]/45' : 'border-transparent bg-transparent text-[#8d7d55]/40';
+    }
+
+    return active
+      ? 'border-transparent bg-transparent text-[#d4af37]'
+      : 'border-transparent bg-transparent text-[#8d7d55]';
+  }
 
   if (disabled) {
     return `${defaultBg} ${defaultText} opacity-45`;
@@ -82,7 +93,7 @@ export function Button({
     fullWidth && 'w-full',
     align === 'left' && 'text-left',
     getShapeClassName(shape),
-    getButtonStateClassName({ active, disabled, selected, tone }),
+    getButtonStateClassName({ active, disabled, selected, tone, variant }),
     className
   );
 

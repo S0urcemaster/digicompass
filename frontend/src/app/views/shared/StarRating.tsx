@@ -26,22 +26,22 @@ const STAR_RATING_VARIANTS: Record<
   }
 > = {
   'image-main': {
-    buttonClassName: 'flex-1 text-center',
+    buttonClassName: 'flex h-[3.5rem] w-[3.5rem] items-center justify-center p-0 text-center',
     className: 'w-full justify-between rounded-full px-2 py-2',
     starClassName: 'text-[3.25rem]',
   },
   'image-preview': {
-    buttonClassName: 'flex-1 text-center',
+    buttonClassName: 'flex h-[1.2rem] w-[1.2rem] items-center justify-center p-0 text-center',
     className: 'w-full justify-center gap-0.5 rounded-full px-1.5 py-1',
     starClassName: 'text-[0.9rem]',
   },
   'saying-main': {
-    buttonClassName: 'flex-1 text-center',
+    buttonClassName: 'flex h-[3.5rem] w-[3.5rem] items-center justify-center p-0 text-center',
     className: 'w-full justify-between bg-[#fff7ed]/92 px-2 py-2 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.12)]',
     starClassName: 'text-[3.25rem]',
   },
   'saying-preview': {
-    buttonClassName: 'flex-1 text-center',
+    buttonClassName: 'flex h-[2.1rem] w-[2.1rem] items-center justify-center p-0 text-center',
     className: 'w-full justify-between bg-[#fff7ed]/92 px-1.5 py-1.5 text-[#1f1712] shadow-[0_12px_28px_rgba(0,0,0,0.12)]',
     starClassName: 'text-[1.9rem]',
   },
