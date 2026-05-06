@@ -90,10 +90,12 @@ export function PrimaryView({
         </div>
       </div>
 
-      <section className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
-        <FocusTile focus={currentFocus} onSetRating={onSetFocusRating} variant="main" />
+      <section className="grid gap-4 min-[900px]:grid-cols-4 min-[900px]:grid-rows-2 min-[900px]:gap-3">
+        <div className="min-[900px]:col-span-2 min-[900px]:row-span-2">
+          <FocusTile focus={currentFocus} onSetRating={onSetFocusRating} variant="main" />
+        </div>
 
-        <section className="grid gap-3 sm:grid-cols-2 sm:grid-rows-2 lg:auto-rows-[minmax(0,0.88fr)]">
+        <section className="grid gap-3 sm:grid-cols-2 min-[900px]:col-span-2 min-[900px]:grid-cols-2 min-[900px]:grid-rows-2">
           {remainingFoci.map((focus) => {
             const nextIndex = currentMindset.foci.indexOf(focus);
 
