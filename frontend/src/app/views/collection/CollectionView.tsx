@@ -75,13 +75,14 @@ export function CollectionView({
   const emptyDraftSlots = () => Array.from({ length: 5 }, () => null as Focus | null);
   const shouldSyncFocusPageRef = useRef(false);
   const [activeTab, setActiveTab] = useState<CollectionTabValue>('foci');
-  const [collectionFocusFilter, setCollectionFocusFilter] = useState('');
   const [collectionFocusPage, setCollectionFocusPage] = useState(0);
   const [focusPreviewSource, setFocusPreviewSource] = useState<FocusPreviewSource>('focus');
   const [focusEditorImagePage, setFocusEditorImagePage] = useState(0);
   const [focusEditorSayingPage, setFocusEditorSayingPage] = useState(0);
   const [selectedCollectionImageCategoryIndex, setSelectedCollectionImageCategoryIndex] = useState(0);
   const [isCollectionImageCategoryFilterActive, setIsCollectionImageCategoryFilterActive] = useState(false);
+  const [selectedCollectionFocusCategoryIndex, setSelectedCollectionFocusCategoryIndex] = useState(0);
+  const [isCollectionFocusCategoryFilterActive, setIsCollectionFocusCategoryFilterActive] = useState(false);
   const [collectionImagePage, setCollectionImagePage] = useState(0);
   const [lastVisibleCollectionImages, setLastVisibleCollectionImages] = useState<CompassImage[]>(IMAGES);
   const [selectedCollectionFocusKey, setSelectedCollectionFocusKey] = useState<string | null>(null);
@@ -105,7 +106,6 @@ export function CollectionView({
   const [selectedCollectionSayingId, setSelectedCollectionSayingId] = useState<number | null>(SAYINGS[0]?.id ?? null);
   const [showCollectionSayingIds, setShowCollectionSayingIds] = useState(true);
 
-  const normalizedFocusFilter = collectionFocusFilter.trim().toLowerCase();
   const normalizedSayingFilter = collectionSayingFilter.trim().toLowerCase();
   const availableImageCategories = useMemo(
     () =>
@@ -120,6 +120,30 @@ export function CollectionView({
     availableImageCategories[
       Math.min(selectedCollectionImageCategoryIndex, Math.max(availableImageCategories.length - 1, 0))
     ] ?? '';
+  const availableFocusCategories = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          [
+            ...collectionFoci.flatMap((focus) => [
+              ...focus.image.categories.map((category) => category.text.trim()),
+              ...focus.saying.categories.map((category) => category.text.trim()),
+            ]),
+            ...collectionImages.flatMap((image) => image.categories.map((category) => category.text.trim())),
+            ...collectionSayings.flatMap((saying) => saying.categories.map((category) => category.text.trim())),
+          ].filter(Boolean)
+        )
+      ).sort((left, right) => left.localeCompare(right, 'de')),
+    [collectionFoci, collectionImages, collectionSayings]
+  );
+  const selectedCollectionFocusCategory =
+    availableFocusCategories[
+      Math.min(selectedCollectionFocusCategoryIndex, Math.max(availableFocusCategories.length - 1, 0))
+    ] ?? '';
+  const normalizedFocusFilter =
+    isCollectionFocusCategoryFilterActive && selectedCollectionFocusCategory
+      ? selectedCollectionFocusCategory.trim().toLowerCase()
+      : '';
 
   const filteredCollectionFoci = collectionFoci.filter((focus) =>
     normalizedFocusFilter.length === 0
@@ -929,17 +953,53 @@ export function CollectionView({
           previewFocus || filteredCollectionFoci.length > 0 || filteredFocusEditorImages.length > 0 || filteredFocusEditorSayings.length > 0 ? (
             <div className="space-y-8">
               <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
-                <label className="block" htmlFor="collection-focus-filter">
-                  <input
-                    id="collection-focus-filter"
-                    className="min-h-[3.75rem] w-full border border-amber-950/10 bg-white/90 px-4 py-3 text-lg font-semibold tracking-tight text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
-                    placeholder="Kategorie"
-                    value={collectionFocusFilter}
-                    onChange={(event) => setCollectionFocusFilter(event.target.value)}
-                  />
-                </label>
+                <div className="space-y-3 min-[900px]:col-span-2">
+                  <div className="grid grid-cols-3 gap-3">
+                    <Button
+                      aria-label="Vorherige Fokuskategorie"
+                      className="px-4 py-2 font-semibold tracking-tight"
+                      disabled={availableFocusCategories.length <= 1}
+                      fullWidth
+                      onClick={() =>
+                        setSelectedCollectionFocusCategoryIndex((currentIndex) =>
+                          availableFocusCategories.length === 0
+                            ? 0
+                            : (currentIndex - 1 + availableFocusCategories.length) % availableFocusCategories.length
+                        )
+                      }
+                      shape="pill"
+                      variant="pager"
+                    >
+                      ←
+                    </Button>
+                    <Button
+                      active={isCollectionFocusCategoryFilterActive}
+                      aria-label={`Fokuskategorie ${selectedCollectionFocusCategory || 'Unsortiert'} umschalten`}
+                      className="truncate px-4 py-2 text-lg font-semibold tracking-tight"
+                      fullWidth
+                      onClick={() => setIsCollectionFocusCategoryFilterActive((current) => !current)}
+                      shape="pill"
+                      variant="tab"
+                    >
+                      {selectedCollectionFocusCategory || 'Unsortiert'}
+                    </Button>
+                    <Button
+                      aria-label="Nächste Fokuskategorie"
+                      className="px-4 py-2 font-semibold tracking-tight"
+                      disabled={availableFocusCategories.length <= 1}
+                      fullWidth
+                      onClick={() =>
+                        setSelectedCollectionFocusCategoryIndex((currentIndex) =>
+                          availableFocusCategories.length === 0 ? 0 : (currentIndex + 1) % availableFocusCategories.length
+                        )
+                      }
+                      shape="pill"
+                      variant="pager"
+                    >
+                      →
+                    </Button>
+                  </div>
 
-                <div>
                   {filteredCollectionFoci.length > 0 ? (
                     <div className="flex items-center gap-3">
                       <Button
