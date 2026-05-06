@@ -23,7 +23,7 @@ const COLLECTION_TABS = [
   { label: 'Mindsets', value: 'mindsets' },
 ] as const satisfies ReadonlyArray<{ disabled?: boolean; label: string; value: string }>;
 
-const COLLECTION_IMAGE_PAGE_SIZE = 6;
+const COLLECTION_IMAGE_PAGE_SIZE = 8;
 const COLLECTION_FOCUS_PAGE_SIZE = 4;
 const COLLECTION_MINDSET_PAGE_SIZE = 5;
 const COLLECTION_SAYING_PAGE_SIZE = 7;
@@ -194,16 +194,21 @@ export function CollectionView({
       : image.categories.some((category) => category.text === selectedCollectionImageCategory)
   );
   const visibleCollectionImages = filteredCollectionImages.length > 0 ? filteredCollectionImages : lastVisibleCollectionImages;
-  const collectionImagePageCount = Math.max(1, Math.ceil(visibleCollectionImages.length / COLLECTION_IMAGE_PAGE_SIZE));
-  const safeCollectionImagePage = Math.min(collectionImagePage, collectionImagePageCount - 1);
-  const pagedCollectionImages = visibleCollectionImages.slice(
-    safeCollectionImagePage * COLLECTION_IMAGE_PAGE_SIZE,
-    (safeCollectionImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
-  );
   const selectedCollectionImage =
     visibleCollectionImages.find((image) => image.id === selectedCollectionImageId) ?? visibleCollectionImages[0] ?? null;
   const collectedImage = selectedCollectionImage ? collectionImageById.get(selectedCollectionImage.id) ?? null : null;
   const selectedImageDetails = collectedImage ?? selectedCollectionImage;
+  const collectionImagePreviews = selectedCollectionImage
+    ? visibleCollectionImages.filter((image) => image.id !== selectedCollectionImage.id)
+    : visibleCollectionImages;
+  const collectionImagePageCount = Math.max(1, Math.ceil(collectionImagePreviews.length / COLLECTION_IMAGE_PAGE_SIZE));
+  const safeCollectionImagePage = Math.min(collectionImagePage, collectionImagePageCount - 1);
+  const pagedCollectionImages = collectionImagePreviews.slice(
+    safeCollectionImagePage * COLLECTION_IMAGE_PAGE_SIZE,
+    (safeCollectionImagePage + 1) * COLLECTION_IMAGE_PAGE_SIZE
+  );
+  const topPagedCollectionImages = pagedCollectionImages.slice(0, 4);
+  const bottomPagedCollectionImages = pagedCollectionImages.slice(4, 8);
   const zoomedImage = zoomedImageId === null ? null : IMAGES.find((image) => image.id === zoomedImageId) ?? null;
 
   const collectionSayingById = new Map(collectionSayings.map((saying) => [saying.id, saying] as const));
@@ -748,19 +753,18 @@ export function CollectionView({
                 </div>
               </div>
 
-              <CollectionImagePanel
-                image={selectedImageDetails}
-                onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
-                onSetRating={handleSetSelectedImageRating}
-                showImageId={showCollectionImageIds}
-              />
+              <section className="flex min-h-0 flex-col min-[900px]:col-span-2">
+                <div className="space-y-3 min-[900px]:hidden">
+                  <CollectionImagePanel
+                    image={selectedImageDetails}
+                    onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
+                    onSetRating={handleSetSelectedImageRating}
+                    showImageId={showCollectionImageIds}
+                  />
 
-              <section className="flex min-h-0 flex-col">
-                {visibleCollectionImages.length > 0 ? (
-                  <div className="pr-1">
+                  {pagedCollectionImages.length > 0 ? (
                     <div className="grid grid-cols-2 gap-3">
                       {pagedCollectionImages.map((image) => {
-                        const isSelected = image.id === selectedCollectionImage.id;
                         const collectedListImage = collectionImageById.get(image.id) ?? null;
                         const previewRating = collectedListImage?.rating ?? 0;
 
@@ -770,7 +774,6 @@ export function CollectionView({
                             key={image.id}
                             className="group relative overflow-hidden"
                             onClick={() => setSelectedCollectionImageId(image.id)}
-                            selected={isSelected}
                             variant="surface"
                           >
                             <ImageTile
@@ -783,8 +786,64 @@ export function CollectionView({
                         );
                       })}
                     </div>
+                  ) : null}
+                </div>
+
+                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-3">
+                  <div className="min-[900px]:col-span-2 min-[900px]:row-span-2">
+                    <CollectionImagePanel
+                      image={selectedImageDetails}
+                      onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
+                      onSetRating={handleSetSelectedImageRating}
+                      panelClassName="h-full"
+                      showImageId={showCollectionImageIds}
+                    />
                   </div>
-                ) : null}
+
+                  {topPagedCollectionImages.map((image) => {
+                    const collectedListImage = collectionImageById.get(image.id) ?? null;
+                    const previewRating = collectedListImage?.rating ?? 0;
+
+                    return (
+                      <Button
+                        align="left"
+                        key={image.id}
+                        className="group relative overflow-hidden"
+                        onClick={() => setSelectedCollectionImageId(image.id)}
+                        variant="surface"
+                      >
+                        <ImageTile
+                          image={{ ...image, rating: previewRating }}
+                          imageUrl={getPreviewImageUrl(image.url)}
+                          rating={previewRating}
+                          showImageId={showCollectionImageIds}
+                        />
+                      </Button>
+                    );
+                  })}
+
+                  {bottomPagedCollectionImages.map((image) => {
+                    const collectedListImage = collectionImageById.get(image.id) ?? null;
+                    const previewRating = collectedListImage?.rating ?? 0;
+
+                    return (
+                      <Button
+                        align="left"
+                        key={image.id}
+                        className="group relative overflow-hidden"
+                        onClick={() => setSelectedCollectionImageId(image.id)}
+                        variant="surface"
+                      >
+                        <ImageTile
+                          image={{ ...image, rating: previewRating }}
+                          imageUrl={getPreviewImageUrl(image.url)}
+                          rating={previewRating}
+                          showImageId={showCollectionImageIds}
+                        />
+                      </Button>
+                    );
+                  })}
+                </div>
               </section>
             </div>
           ) : (
