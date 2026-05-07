@@ -238,3 +238,31 @@ Current note:
 ### Mindsets
 
 - Pending
+
+
+## Implementation
+
+Implement the next planned task . When finished : put the planned task to the closed tasks section and put the next task in open tasks to the planned tasks section
+
+
+### Planned Tasks
+
+- Propose the frontend toolchain (framework, state management, styling, and test setup), then implement it
+
+
+### Open Tasks
+
+- Ensure data files are present and consistent with the spec
+- Set up `/frontend` with the chosen toolchain and base project structure.
+- Update the model description in _spec/index.md with my changes in domain.ts
+- Update compassStore with the _spec and domain.ts changes . Leave the factoryMindsets alone for now
+- Redesing the frontend towards the new "## Frontend" -section in _spec/index.md
+- Write to the spec that a user always works on his collection / never on the whole data - so Foci are created from images/sayings the user must previously choose into his collection . Mindsets also only use Foci from the collection
+- Update the images.ts data with the updated files in public/images . use opposite text color to file name
+- Create a factory collection in store/factoryState.ts : 20 sayings, 20 images, 10 Foci and 3 mindsets . make random combinations and dont stick to categories right now as I will hand-taylor that later . This will be the dummy data for the next task
+- Implement the "## Collection view" / Images section of the spec
+
+
+### Finished Tasks
+
+
