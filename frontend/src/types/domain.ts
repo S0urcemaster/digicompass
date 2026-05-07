@@ -1,10 +1,6 @@
 export type Rating = number;
 export type ImageColor = 'hell' | 'dunkel' | 'mix' | 'neutral';
-
-export interface Category {
-  id: number
-  text: string;
-}
+export type Category = string;
 
 export interface Saying {
   id: number

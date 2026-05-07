@@ -1,238 +1,61 @@
 [
-  {
-    "id": 0,
-    "text": "Angst"
-  },
-  {
-    "id": 1,
-    "text": "Autonomie"
-  },
-  {
-    "id": 2,
-    "text": "Bewusstsein"
-  },
-  {
-    "id": 3,
-    "text": "Denken"
-  },
-  {
-    "id": 4,
-    "text": "Dimension"
-  },
-  {
-    "id": 5,
-    "text": "Dummheit"
-  },
-  {
-    "id": 6,
-    "text": "Entscheidung"
-  },
-  {
-    "id": 7,
-    "text": "Erfahrung"
-  },
-  {
-    "id": 8,
-    "text": "Erfolg"
-  },
-  {
-    "id": 9,
-    "text": "Erkenntnis"
-  },
-  {
-    "id": 10,
-    "text": "Fortschritt"
-  },
-  {
-    "id": 11,
-    "text": "Freiheit"
-  },
-  {
-    "id": 12,
-    "text": "Frieden"
-  },
-  {
-    "id": 13,
-    "text": "Geduld"
-  },
-  {
-    "id": 14,
-    "text": "Gelassenheit"
-  },
-  {
-    "id": 15,
-    "text": "Gerechtigkeit"
-  },
-  {
-    "id": 16,
-    "text": "Gier"
-  },
-  {
-    "id": 17,
-    "text": "Glaube"
-  },
-  {
-    "id": 18,
-    "text": "Glück"
-  },
-  {
-    "id": 19,
-    "text": "Gott"
-  },
-  {
-    "id": 20,
-    "text": "Gut und Böse"
-  },
-  {
-    "id": 21,
-    "text": "Handeln"
-  },
-  {
-    "id": 22,
-    "text": "Hass"
-  },
-  {
-    "id": 23,
-    "text": "Humor"
-  },
-  {
-    "id": 24,
-    "text": "Identität"
-  },
-  {
-    "id": 25,
-    "text": "Intuition"
-  },
-  {
-    "id": 26,
-    "text": "Kunst"
-  },
-  {
-    "id": 27,
-    "text": "Klugheit"
-  },
-  {
-    "id": 28,
-    "text": "Leben"
-  },
-  {
-    "id": 29,
-    "text": "Leid"
-  },
-  {
-    "id": 30,
-    "text": "Lernen"
-  },
-  {
-    "id": 31,
-    "text": "Liebe"
-  },
-  {
-    "id": 32,
-    "text": "Logik"
-  },
-  {
-    "id": 33,
-    "text": "Lüge"
-  },
-  {
-    "id": 34,
-    "text": "Macht"
-  },
-  {
-    "id": 35,
-    "text": "Meditation"
-  },
-  {
-    "id": 36,
-    "text": "Mensch"
-  },
-  {
-    "id": 37,
-    "text": "Mut"
-  },
-  {
-    "id": 38,
-    "text": "Natur"
-  },
-  {
-    "id": 39,
-    "text": "Phantasie"
-  },
-  {
-    "id": 40,
-    "text": "Schicksal"
-  },
-  {
-    "id": 41,
-    "text": "Spektrum"
-  },
-  {
-    "id": 42,
-    "text": "Spiegel"
-  },
-  {
-    "id": 43,
-    "text": "Stärke"
-  },
-  {
-    "id": 44,
-    "text": "Theorie"
-  },
-  {
-    "id": 45,
-    "text": "Tod"
-  },
-  {
-    "id": 46,
-    "text": "Trauer"
-  },
-  {
-    "id": 47,
-    "text": "Tugend"
-  },
-  {
-    "id": 48,
-    "text": "Verantwortung"
-  },
-  {
-    "id": 49,
-    "text": "Vertrauen"
-  },
-  {
-    "id": 50,
-    "text": "Vorstellungskraft"
-  },
-  {
-    "id": 51,
-    "text": "Wahrheit"
-  },
-  {
-    "id": 52,
-    "text": "Wille"
-  },
-  {
-    "id": 53,
-    "text": "Wissen"
-  },
-  {
-    "id": 54,
-    "text": "Zeit"
-  },
-  {
-    "id": 55,
-    "text": "Ziel"
-  },
-  {
-    "id": 56,
-    "text": "Zukunft"
-  },
-  {
-    "id": 57,
-    "text": "Abhängigkeit"
-  },
-  {
-    "id": 58,
-    "text": "Egoismus"
-  }
+  "Angst",
+  "Autonomie",
+  "Bewusstsein",
+  "Denken",
+  "Dimension",
+  "Dummheit",
+  "Entscheidung",
+  "Erfahrung",
+  "Erfolg",
+  "Erkenntnis",
+  "Fortschritt",
+  "Freiheit",
+  "Frieden",
+  "Geduld",
+  "Gelassenheit",
+  "Gerechtigkeit",
+  "Gier",
+  "Glaube",
+  "Glück",
+  "Gott",
+  "Gut und Böse",
+  "Handeln",
+  "Hass",
+  "Humor",
+  "Identität",
+  "Intuition",
+  "Kunst",
+  "Klugheit",
+  "Leben",
+  "Leid",
+  "Lernen",
+  "Liebe",
+  "Logik",
+  "Lüge",
+  "Macht",
+  "Meditation",
+  "Mensch",
+  "Mut",
+  "Natur",
+  "Phantasie",
+  "Schicksal",
+  "Spektrum",
+  "Spiegel",
+  "Stärke",
+  "Theorie",
+  "Tod",
+  "Trauer",
+  "Tugend",
+  "Verantwortung",
+  "Vertrauen",
+  "Vorstellungskraft",
+  "Wahrheit",
+  "Wille",
+  "Wissen",
+  "Zeit",
+  "Ziel",
+  "Zukunft",
+  "Abhängigkeit",
+  "Egoismus"
 ]

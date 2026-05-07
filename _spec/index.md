@@ -1,167 +1,6 @@
 # Digi Compass Agent Specification
 
-Digi Compass is a web application for building personal mindset collections from short sayings paired with AI images.
-
-Users browse a base library of sayings and images, add selected items to their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
-
-## Project Structure
-
-- `_spec/`: This specification
-- `frontend/`: Web frontend (React + TypeScript + Vite)
-- `frontend/src/types/domain.ts`: Base domain model types
-- `frontend/src/store/compassStore.ts`: Client state store (Zustand + persist)
-- `frontend/src/app/` and `frontend/src/components/`: Application shell and UI components
-
-## Technology
-
-- Framework: React 18 + TypeScript
-- Build tool: Vite
-- State management: Zustand for local editing and session state
-- Persistence: Zustand `persist` with browser localStorage
-- Data fetching/cache: TanStack Query is installed and provided at app root, but not yet used for remote data
-- Styling: Tailwind CSS with CSS variables
-- Linting: ESLint (TypeScript + React hooks)
-
-## Base Data
-
-- Categories
-- Sayings
-- AI images
-
-## Model
-
-### DigiCompass
-
-- username
-- mindsets: Mindset[]
-- collection: Collection
-
-### Mindset
-
-- name
-- foci: Focus[] (currently intended to be limited to 5)
-- rating: Rating
-- notes
-
-### Focus
-
-- saying: Saying
-- image: CompassImage
-- rating: Rating
-- notes
-
-### Saying
-
-- id
-- text
-- fontSize
-- categories: Category[]
-- rating: Rating
-
-### CompassImage
-
-- id
-- url
-- color
-- category: Category
-- rating: Rating
-
-`color` stores the image tone from the filename such as `hell`, `dunkel`, `mix`
-
-### Category
-
-- id
-- text
-
-### Collection
-
-- sayings: Saying[]
-- images: CompassImage[]
-- foci: Focus[]
-- mindsets: Mindset[]
-
-The collection is the user's working set. Users do not work directly on the whole base library when creating higher-level objects.
-
-Creation rules:
-
-- A focus may only be created from a saying that is already in `collection.sayings`.
-- A focus may only be created from an image that is already in `collection.images`.
-- A mindset may only be created from foci that are already in `collection.foci`.
-- `collection.mindsets` contains only mindsets assembled from collected foci.
-
-### Rating
-
-- decimal from 0 to 1
-
-## Store Shape
-
-The persisted CompassStore currently contains both domain data and UI state:
-
-- `data: DigiCompass`
-- `activeView: 'primary' | 'focus-editor' | 'collection'`
-- `selectedMindsetIndex: number`
-- `selectedFocusIndex: number`
-
-The store currently supports:
-
-- changing username
-- switching the active top-level view
-- selecting the current mindset
-- selecting the current focus
-- adding, removing, and updating mindsets
-- adding, removing, and updating foci within a mindset
-
-## Functions Overview
-
-### Implemented now
-
-- Display username
-- Change username
-- Display current mindset
-- Display list of other mindsets
-- Select current mindset
-- Select current focus within the mindset
-- Switch between top-level views
-
-### Planned next
-
-#### Edit Mindset
-
-- Change mindset name
-- Display list of set foci
-- Add focus from the personal collection only
-- Remove focus
-- Rate mindset
-
-#### Edit Focus
-
-- Select saying from the personal collection
-- Change saying categories
-- Change saying rating
-- Select image from the personal collection
-- Change image category
-- Change image rating
-
-#### Collection Management
-
-- Add and remove sayings from the personal collection
-- Add and remove images from the personal collection
-- Add and remove foci from the personal collection
-- Add and remove whole mindsets from the personal collection
-- Create foci only from collected sayings and collected images
-- Create mindsets only from collected foci
-
-## Frontend
-
-Mobile first.
-
-### Local Storage
-
-For a new user, a localStorage-backed CompassStore is created. For a returning user, the persisted store is reused.
-
-Autosave happens through Zustand persistence after each state change.
-
-In development mode, the app reloads `factoryState` on browser refresh instead of reusing persisted localStorage data.
+Digi Compass is a web application for building personal mindset collections from short sayings paired with images
 
 ### Views
 
@@ -240,6 +79,255 @@ Current note:
 - Pending
 
 
+
+## Layout und Komponenten
+
+Hochformat . Die App ist schmal und passt am besten für Smartphones . Auf dem Desktop hat sie dasselbe Seitenverhältnis mit entsprechenden Seitenrändern
+Grundsätzlich gibt es keine Ränder oder Zwischenräume zwischen den unten definierten App- Komponenten
+
+### Komponenten
+
+
+
+#### Button
+
+Es gibt eine Basisklasse für Buttons / die überall verwendet wird
+
+
+#### StarRating
+
+Horizontale Anordnung von 5 Buttons mit Stern -Zeichen / mit denen die Bewertung des zugeordneten Elements gemacht werden kann
+Die Sterne sind konfigurierbar aktiv oder inaktiv / ohne ihr aussehen zu verändern
+
+
+#### Card (abstract)
+
+Eine Karte wird verwendet für Bilder oder Fokusse . Seitenformat 5:7
+Eigenschaften (je optional) : Anzeige
+- der zugeordneten Kategorien von oben links
+- eines Textes (wenn verfügbar) / möglichst groß im mittleren Bereich
+- StarRating Komponente unten auf der ganzen Breite
+
+Cards gibt es in 2 Größen :
+
+- Selected Card : 1/2 Contentbreite
+- Preview Card  : 1/4 Contentbreite
+
+#### CategoryPaginator
+
+3 Buttons in horizontaler Anordnung / gleiche Verteilung :
+- "<-" (vorheriges Element)
+- CurrentCategory
+- "->" (nächstes Element)
+
+Die Komponente setzt den Kategoriefilter der Angebundenen Liste
+
+
+#### Paginator
+
+Paginators sind immer horizontal . Inhaltselemente sind gleich über die Breite verteilt
+
+
+#### CardBrowser
+
+Eine Anordnung von Cards bzw deren Subkomponenten CompassImage oder Fokus
+Es enthält eine SelectedCard links oben mit einer umlaufenden Liste von 4 Preview Cards (row2x2col) rechts und 4 weiteren unten (row1x4col)
+Die SelectedCard kann durch Klick auf eine PreviewCard geändert werden
+
+
+### Singleton Komponenten
+
+#### MainTab
+
+- "Navigator" | "Kompass" | "Sammlung"
+
+
+### Header
+
+Vertikal angeordnet je Zeile :
+
+- App title : "Digi Compass"
+- Subtitle : "Mindsets für reale Situationen"
+- Primary Tabs : MainTab Komponente
+
+### Primary Tabs
+
+#### Navigator
+
+- noch nicht bestimmt
+
+
+#### Kompass
+
+Vertikale Anordnung :
+
+- Horizontaler Paginator / Filter für Category
+
+#### Sammlung
+
+
+## Functions
+
+### Primary Tabs
+
+#### Navigator
+
+#### Kompass
+
+#### Sammlung
+
+
+
+Users browse a base library of sayings and images, add selected items to their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
+
+## Project Structure
+
+- `_spec/`: This specification
+- `frontend/`: Web frontend
+- `frontend/src/data` : Sayings, Categories and Images references
+
+## Base Data
+
+- Categories
+- Sayings
+- AI images
+
+## Model
+
+### DigiCompass
+
+- username
+- mindsets: Mindset[]
+- collection: Collection
+
+### Mindset
+
+- name
+- foci: Focus[] (currently intended to be limited to 5)
+- rating: Rating
+- notes
+
+### Focus
+
+- saying: Saying
+- image: CompassImage
+- rating: Rating
+- notes
+
+### Saying
+
+- id
+- text
+- fontSize
+- categories: string[]
+- rating: Rating
+
+### CompassImage
+
+- id
+- url
+- color
+- category: string
+- rating: Rating
+
+`color` stores the image tone from the filename such as `hell`, `dunkel`, `mix`
+
+### Category
+
+- plain string
+
+### Collection
+
+- sayings: Saying[]
+- images: CompassImage[]
+- foci: Focus[]
+- mindsets: Mindset[]
+
+The collection is the user's working set. Users do not work directly on the whole base library when creating higher-level objects.
+
+Creation rules:
+
+- A focus may only be created from a saying that is already in `collection.sayings`.
+- A focus may only be created from an image that is already in `collection.images`.
+- A mindset may only be created from foci that are already in `collection.foci`.
+- `collection.mindsets` contains only mindsets assembled from collected foci.
+
+### Rating
+
+- decimal from 0 to 1
+
+## Store Shape
+
+The persisted CompassStore contains both domain data and UI state:
+
+- `data: DigiCompass`
+- `activeView: 'navigator' | 'compass' | 'collection'`
+- `selectedMindsetIndex: number`
+- `selectedFocusIndex: number`
+
+The store currently supports:
+
+- changing username
+- switching the active top-level view
+- selecting the current mindset
+- selecting the current focus
+- adding, removing, and updating mindsets
+- adding, removing, and updating foci within a mindset
+
+## Functions Overview
+
+### Implemented now
+
+- Display username
+- Change username
+- Display current mindset
+- Display list of other mindsets
+- Select current mindset
+- Select current focus within the mindset
+- Switch between top-level views
+
+### Planned next
+
+#### Edit Mindset
+
+- Change mindset name
+- Display list of set foci
+- Add focus from the personal collection only
+- Remove focus
+- Rate mindset
+
+#### Edit Focus
+
+- Select saying from the personal collection
+- Change saying categories
+- Change saying rating
+- Select image from the personal collection
+- Change image category
+- Change image rating
+
+#### Collection Management
+
+- Add and remove sayings from the personal collection
+- Add and remove images from the personal collection
+- Add and remove foci from the personal collection
+- Add and remove whole mindsets from the personal collection
+- Create foci only from collected sayings and collected images
+- Create mindsets only from collected foci
+
+## Frontend
+
+Mobile first.
+
+### Local Storage
+
+For a new user, a localStorage-backed CompassStore is created. For a returning user, the persisted store is reused.
+
+Autosave happens through Zustand persistence after each state change.
+
+In development mode, the app reloads `factoryState` on browser refresh instead of reusing persisted localStorage data.
+
+
+
 ## Implementation
 
 Implement the next planned task . When finished : put the planned task to the closed tasks section and put the next task in open tasks to the planned tasks section
@@ -264,4 +352,3 @@ Implement the next planned task . When finished : put the planned task to the cl
 
 
 ### Finished Tasks
-

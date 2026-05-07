@@ -29,7 +29,7 @@ const readCategories = async () => {
   const categories = JSON.parse(contents);
 
   return new Map(
-    categories.map((category) => [normalizeCategoryKey(category.text), category.text]),
+    categories.map((category) => [normalizeCategoryKey(category), category]),
   );
 };
 
