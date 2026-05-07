@@ -1,191 +1,149 @@
 [
   {
     "id": 0,
-    "url": "/images/angst dunkel 1.jpg",
+    "url": "angst dunkel 1.jpg",
     "color": "dunkel",
-    "categories": [
-      "Angst"
-    ],
+    "category": "Angst",
     "rating": 0
   },
   {
     "id": 1,
-    "url": "/images/angst hell 1.jpg",
+    "url": "angst hell 1.jpg",
     "color": "hell",
-    "categories": [
-      "Angst"
-    ],
+    "category": "Angst",
     "rating": 0
   },
   {
     "id": 2,
-    "url": "/images/angst hell 2.jpg",
+    "url": "angst hell 2.jpg",
     "color": "hell",
-    "categories": [
-      "Angst"
-    ],
+    "category": "Angst",
     "rating": 0
   },
   {
     "id": 3,
-    "url": "/images/autonomie dunkel 3.jpg",
+    "url": "autonomie dunkel 3.jpg",
     "color": "dunkel",
-    "categories": [
-      "Autonomie"
-    ],
+    "category": "Autonomie",
     "rating": 0
   },
   {
     "id": 4,
-    "url": "/images/autonomie hell 1.jpg",
+    "url": "autonomie hell 1.jpg",
     "color": "hell",
-    "categories": [
-      "Autonomie"
-    ],
+    "category": "Autonomie",
     "rating": 0
   },
   {
     "id": 5,
-    "url": "/images/autonomie hell 2.jpg",
+    "url": "autonomie hell 2.jpg",
     "color": "hell",
-    "categories": [
-      "Autonomie"
-    ],
+    "category": "Autonomie",
     "rating": 0
   },
   {
     "id": 6,
-    "url": "/images/bewusstsein hell 1.jpg",
+    "url": "bewusstsein hell 1.jpg",
     "color": "hell",
-    "categories": [
-      "Bewusstsein"
-    ],
+    "category": "Bewusstsein",
     "rating": 0
   },
   {
     "id": 7,
-    "url": "/images/bewusstsein hell 2.jpg",
+    "url": "bewusstsein hell 2.jpg",
     "color": "hell",
-    "categories": [
-      "Bewusstsein"
-    ],
+    "category": "Bewusstsein",
     "rating": 0
   },
   {
     "id": 8,
-    "url": "/images/bewusstsein mix 1.jpg",
+    "url": "bewusstsein mix 1.jpg",
     "color": "mix",
-    "categories": [
-      "Bewusstsein"
-    ],
+    "category": "Bewusstsein",
     "rating": 0
   },
   {
     "id": 9,
-    "url": "/images/denken dunkel 1.jpg",
+    "url": "denken dunkel 1.jpg",
     "color": "dunkel",
-    "categories": [
-      "Denken"
-    ],
+    "category": "Denken",
     "rating": 0
   },
   {
     "id": 10,
-    "url": "/images/denken dunkel 2.jpg",
+    "url": "denken dunkel 2.jpg",
     "color": "dunkel",
-    "categories": [
-      "Denken"
-    ],
+    "category": "Denken",
     "rating": 0
   },
   {
     "id": 11,
-    "url": "/images/denken dunkel 3.jpg",
+    "url": "denken dunkel 3.jpg",
     "color": "dunkel",
-    "categories": [
-      "Denken"
-    ],
+    "category": "Denken",
     "rating": 0
   },
   {
     "id": 12,
-    "url": "/images/spiegel dunkel 1.jpg",
+    "url": "spiegel dunkel 1.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 13,
-    "url": "/images/spiegel dunkel 2.jpg",
+    "url": "spiegel dunkel 2.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 14,
-    "url": "/images/spiegel dunkel 3.jpg",
+    "url": "spiegel dunkel 3.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 15,
-    "url": "/images/spiegel dunkel 4.jpg",
+    "url": "spiegel dunkel 4.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 16,
-    "url": "/images/spiegel dunkel 5.jpg",
+    "url": "spiegel dunkel 5.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 17,
-    "url": "/images/spiegel dunkel 6.jpg",
+    "url": "spiegel dunkel 6.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 18,
-    "url": "/images/spiegel dunkel 7.jpg",
+    "url": "spiegel dunkel 7.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 19,
-    "url": "/images/spiegel dunkel 8.jpg",
+    "url": "spiegel dunkel 8.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   },
   {
     "id": 20,
-    "url": "/images/spiegel dunkel 9.jpg",
+    "url": "spiegel dunkel 9.jpg",
     "color": "dunkel",
-    "categories": [
-      "Spiegel"
-    ],
+    "category": "Spiegel",
     "rating": 0
   }
 ]

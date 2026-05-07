@@ -63,10 +63,10 @@ Users browse a base library of sayings and images, add selected items to their o
 - id
 - url
 - color
-- categories: Category[]
+- category: Category
 - rating: Rating
 
-`color` stores the image tone from the filename such as `hell`, `dunkel`, `hell dunkel`, or `dunkel hell`.
+`color` stores the image tone from the filename such as `hell`, `dunkel`, `mix`
 
 ### Category
 
@@ -139,7 +139,7 @@ The store currently supports:
 - Change saying categories
 - Change saying rating
 - Select image from the personal collection
-- Change image categories
+- Change image category
 - Change image rating
 
 #### Collection Management
@@ -264,5 +264,4 @@ Implement the next planned task . When finished : put the planned task to the cl
 
 
 ### Finished Tasks
-
 

@@ -18,7 +18,7 @@ export interface CompassImage {
   id: number
   url: string;
   color: ImageColor;
-  categories: Category[];
+  category: Category;
   rating: Rating;
 }
 

@@ -72,9 +72,9 @@ const createFileContents = (images) =>
   JSON.stringify(
     images.map((image, index) => ({
       id: index,
-      url: `/images/${image.fileName}`,
+      url: image.fileName,
       color: image.color,
-      categories: [image.categoryText],
+      category: image.categoryText,
       rating: 0,
     })),
     null,
