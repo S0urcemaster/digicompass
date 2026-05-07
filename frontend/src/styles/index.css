@@ -129,35 +129,3 @@ body::before {
     right: 0;
   }
 }
-
-.app-content--flush {
-  width: 100%;
-}
-
-.app-content--flush,
-.app-content--flush :where(section, article, div, form, label) {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.app-content--flush :where(section, article, div, form, label) {
-  gap: 0 !important;
-  row-gap: 0 !important;
-  column-gap: 0 !important;
-}
-
-.app-content--flush :where(section, article, div, form, label, button, input, textarea, p, h2, h3, h4, img) {
-  margin-left: 0.01rem !important;
-  margin-right: 0.01rem !important;
-  margin-bottom: 0.01rem !important;
-}
-
-.app-content--flush > section > .collection-tabs {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-.app-content--flush > section > .collection-tabs > button {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}

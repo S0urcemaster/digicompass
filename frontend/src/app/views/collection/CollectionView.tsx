@@ -741,7 +741,7 @@ export function CollectionView({
     <section className="mt-6 space-y-5">
       <Tabs
         activeValue={activeTab}
-        className="collection-tabs grid grid-cols-2 gap-2 sm:grid-cols-4"
+        className="grid grid-cols-2 gap-2 sm:grid-cols-4"
         items={[...COLLECTION_TABS]}
         onChange={setActiveTab}
       />

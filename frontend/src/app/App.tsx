@@ -81,7 +81,7 @@ export function App() {
         />
       </header>
 
-      <div className="app-content app-content--flush">
+      <div className="app-content">
         {activeView === 'navigator' ? (
           <section className="px-4 py-8 sm:px-6 sm:py-10">
             <div className="mx-auto max-w-6xl rounded-[1.8rem] border border-amber-950/10 bg-[rgba(255,250,242,0.72)] p-6 shadow-[0_20px_50px_rgba(32,26,24,0.08)] backdrop-blur">
