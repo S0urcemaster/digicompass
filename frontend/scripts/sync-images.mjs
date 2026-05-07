@@ -6,8 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendRoot = path.resolve(__dirname, "..");
 const imagesDir = path.join(frontendRoot, "public", "images");
-const categoriesFile = path.join(frontendRoot, "src", "data", "categories.ts");
-const outputFile = path.join(frontendRoot, "src", "data", "images.ts");
+const categoriesFile = path.join(frontendRoot, "src", "data", "categories.json");
+const outputFile = path.join(frontendRoot, "src", "data", "images.json");
 
 const SUPPORTED_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 const COLOR_TOKENS = new Set(["hell", "dunkel", "mix"]);
@@ -24,14 +24,16 @@ const normalizeCategoryKey = (value) =>
 const compareNaturally = (left, right) =>
   left.localeCompare(right, "de", { numeric: true, sensitivity: "base" });
 
-const readCategoryKeys = async () => {
+const readCategories = async () => {
   const contents = await readFile(categoriesFile, "utf8");
-  const matches = contents.matchAll(/^\s*([a-zA-Z0-9_äöüÄÖÜß]+):\s*\{/gm);
+  const categories = JSON.parse(contents);
 
-  return new Set(Array.from(matches, ([, key]) => key));
+  return new Map(
+    categories.map((category) => [normalizeCategoryKey(category.text), category.text]),
+  );
 };
 
-const parseImageFile = (fileName, categoryKeys) => {
+const parseImageFile = (fileName, categoriesByKey) => {
   const extension = path.extname(fileName).toLowerCase();
 
   if (!SUPPORTED_EXTENSIONS.has(extension)) {
@@ -51,54 +53,40 @@ const parseImageFile = (fileName, categoryKeys) => {
   const sequence = parts.slice(colorIndex + 1).join(" ");
   const categoryKey = normalizeCategoryKey(categoryName);
 
-  if (!categoryKeys.has(categoryKey)) {
+  const categoryText = categoriesByKey.get(categoryKey);
+
+  if (!categoryText) {
     throw new Error(`No category key found for image "${fileName}" -> "${categoryKey}"`);
   }
 
   return {
+    id: -1,
     fileName,
-    categoryKey,
+    categoryText,
     color,
     sortKey: `${categoryKey} ${color} ${sequence}`,
   };
 };
 
-const createFileContents = (images) => {
-  const items = images
-    .map(
-      (image, index) =>
-        `  createImage(${index}, "/images/${image.fileName}", "${image.color}", CATEGORIES.${image.categoryKey}),`,
-    )
-    .join("\n");
-
-  return `import type { CompassImage } from "../types/domain";
-import { CATEGORIES } from "./categories";
-
-const createImage = (
-  id: number,
-  url: string,
-  color: CompassImage["color"],
-  category: CompassImage["categories"][number]
-): CompassImage => ({
-  id,
-  url,
-  color,
-  categories: [category],
-  rating: 0,
-});
-
-export const IMAGES: CompassImage[] = [
-${items}
-];
-`;
-};
+const createFileContents = (images) =>
+  JSON.stringify(
+    images.map((image, index) => ({
+      id: index,
+      url: `/images/${image.fileName}`,
+      color: image.color,
+      categories: [image.categoryText],
+      rating: 0,
+    })),
+    null,
+    2,
+  ) + "\n";
 
 const main = async () => {
-  const categoryKeys = await readCategoryKeys();
+  const categoriesByKey = await readCategories();
   const entries = await readdir(imagesDir, { withFileTypes: true });
   const images = entries
     .filter((entry) => entry.isFile())
-    .map((entry) => parseImageFile(entry.name, categoryKeys))
+    .map((entry) => parseImageFile(entry.name, categoriesByKey))
     .filter(Boolean)
     .sort((left, right) => compareNaturally(left.sortKey, right.sortKey));
 
