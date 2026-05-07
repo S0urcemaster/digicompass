@@ -17,6 +17,7 @@
   --app-blueprint-overlay:
     radial-gradient(circle at center, rgba(255, 249, 240, 0.12) 0%, rgba(255, 249, 240, 0) 54%),
     url('/compass-blueprint.svg');
+  --app-blueprint-opacity: 0.3;
   --button-bg-light: rgba(243, 229, 229, 0.8);
   --button-bg-light-active: #875656;
   --button-bg-dark: rgb(31 23 18 / 0.88);
@@ -63,7 +64,7 @@ body::before {
   background-size:
     72rem 72rem,
     min(92vw, 78rem) auto;
-  opacity: 0.94;
+  opacity: var(--app-blueprint-opacity);
   mix-blend-mode: multiply;
   z-index: 0;
 }
@@ -76,11 +77,38 @@ body::before {
 }
 
 .app-shell {
+  position: relative;
   width: min(100%, var(--app-shell-width));
   margin-inline: auto;
 }
 
 @media (min-width: 1024px) {
+  body::before {
+    display: none;
+  }
+
+  .app-shell::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: min(100vw, var(--app-shell-width));
+    transform: translateX(-50%);
+    pointer-events: none;
+    background-image: var(--app-blueprint-overlay);
+    background-position:
+      center,
+      center -100px;
+    background-repeat: no-repeat;
+    background-size:
+      72rem 72rem,
+      min(var(--app-shell-width), 78rem) auto;
+    opacity: var(--app-blueprint-opacity);
+    mix-blend-mode: multiply;
+    z-index: 0;
+  }
+
   #root::before,
   #root::after {
     content: '';
@@ -122,4 +150,14 @@ body::before {
   margin-left: 0.01rem !important;
   margin-right: 0.01rem !important;
   margin-bottom: 0.01rem !important;
+}
+
+.app-content--flush > section > .collection-tabs {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.app-content--flush > section > .collection-tabs > button {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
