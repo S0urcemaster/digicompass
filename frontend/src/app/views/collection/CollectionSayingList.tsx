@@ -21,7 +21,7 @@ export function CollectionSayingList({
   if (layout === 'collection-twelve') {
     return (
       <>
-        <div className="grid grid-cols-1 gap-3 min-[900px]:hidden">
+        <div className="grid grid-cols-1 gap-0 min-[900px]:hidden">
           {sayings.map((saying) => (
             <CollectionSayingPanel
               key={saying.id}
@@ -36,7 +36,7 @@ export function CollectionSayingList({
           ))}
         </div>
 
-        <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-3">
+        <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-0">
           {sayings.map((saying) => (
             <CollectionSayingPanel
               key={saying.id}
@@ -60,7 +60,7 @@ export function CollectionSayingList({
 
     return (
       <>
-        <div className="grid grid-cols-1 gap-3 min-[900px]:hidden">
+        <div className="grid grid-cols-1 gap-0 min-[900px]:hidden">
           {sayings.map((saying) => (
             <CollectionSayingPanel
               key={saying.id}
@@ -76,7 +76,7 @@ export function CollectionSayingList({
         </div>
 
         <div className="hidden min-[900px]:block">
-          <div className="grid grid-cols-1 gap-3">
+          <div className="grid grid-cols-1 gap-0">
             {topSayings.map((saying) => (
               <CollectionSayingPanel
                 key={saying.id}
@@ -91,7 +91,7 @@ export function CollectionSayingList({
             ))}
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-3">
+          <div className="mt-0 grid grid-cols-2 gap-0">
             {bottomSayings.map((saying) => (
               <CollectionSayingPanel
                 key={saying.id}
@@ -111,7 +111,7 @@ export function CollectionSayingList({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3">
+    <div className="grid grid-cols-1 gap-0">
       {sayings.map((saying) => (
         <CollectionSayingPanel
           key={saying.id}

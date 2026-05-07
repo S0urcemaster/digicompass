@@ -738,10 +738,10 @@ export function CollectionView({
   }, [safeSelectedCollectionMindsetIndex, selectedCollectionMindsetIndex]);
 
   return (
-    <section className="mt-6 space-y-5">
+    <section className="mt-6 space-y-0">
       <Tabs
         activeValue={activeTab}
-        className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+        className="grid grid-cols-2 gap-0 sm:grid-cols-4"
         items={[...COLLECTION_TABS]}
         onChange={setActiveTab}
       />
@@ -749,9 +749,9 @@ export function CollectionView({
       <section>
         {activeTab === 'images' ? (
           selectedCollectionImage && selectedImageDetails ? (
-            <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
-              <div className="min-[900px]:col-span-2 space-y-3">
-                <div className="grid grid-cols-3 gap-3">
+            <div className="grid gap-x-0 gap-y-0 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
+              <div className="min-[900px]:col-span-2 space-y-0">
+                <div className="grid grid-cols-3 gap-0">
                   <Button
                     aria-label="Vorherige Bildkategorie"
                     className="px-4 py-2 font-semibold tracking-tight"
@@ -799,7 +799,7 @@ export function CollectionView({
 
                 <div>
                   {visibleCollectionImages.length > 0 ? (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-0">
                       <Button
                         aria-label="Vorherige Bildseite"
                         className="flex-1"
@@ -831,7 +831,7 @@ export function CollectionView({
               </div>
 
               <section className="flex min-h-0 flex-col min-[900px]:col-span-2">
-                <div className="space-y-3 min-[900px]:hidden">
+                <div className="space-y-0 min-[900px]:hidden">
                   <CollectionImagePanel
                     image={selectedImageDetails}
                     onOpenModal={() => setZoomedImageId(selectedCollectionImage.id)}
@@ -862,7 +862,7 @@ export function CollectionView({
                   ) : null}
                 </div>
 
-                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-3">
+                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-0">
                   <div className="min-[900px]:col-span-2 min-[900px]:row-span-2">
                     <CollectionImagePanel
                       image={selectedImageDetails}
@@ -924,9 +924,9 @@ export function CollectionView({
           ) : null
         ) : activeTab === 'sayings' ? (
           selectedCollectionSaying && selectedCollectionSayingDetails ? (
-            <div className="space-y-4">
-              <div className="space-y-3">
-                <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-0">
+              <div className="space-y-0">
+                <div className="grid grid-cols-3 gap-0">
                   <Button
                     aria-label="Vorherige Spruchkategorie"
                     className="px-4 py-2 font-semibold tracking-tight"
@@ -973,7 +973,7 @@ export function CollectionView({
                 </div>
 
                 {filteredCollectionSayings.length > 0 ? (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-0">
                     <Button
                       aria-label="Vorherige Spruchseite"
                       className="flex-1"
@@ -1004,7 +1004,7 @@ export function CollectionView({
               </div>
 
               <section className="flex min-h-0 flex-col">
-                <div className="space-y-3 min-[900px]:hidden">
+                <div className="space-y-0 min-[900px]:hidden">
                   <CollectionSayingPanel
                     onSetRating={(rating) => handleSetSayingRating(selectedCollectionSayingDetails, rating)}
                     panelClassName="shadow-none"
@@ -1027,7 +1027,7 @@ export function CollectionView({
                   />
                 </div>
 
-                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-3">
+                <div className="hidden min-[900px]:grid min-[900px]:grid-cols-2 min-[900px]:gap-0">
                   <div className="min-[900px]:col-span-2">
                     <CollectionSayingPanel
                       onSetRating={(rating) => handleSetSayingRating(selectedCollectionSayingDetails, rating)}
@@ -1061,10 +1061,10 @@ export function CollectionView({
           ) : null
         ) : activeTab === 'foci' ? (
           previewFocus || filteredCollectionFoci.length > 0 || filteredFocusEditorImages.length > 0 || filteredFocusEditorSayings.length > 0 ? (
-            <div className="space-y-8">
-              <div className="grid gap-x-5 gap-y-4 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
-                <div className="space-y-3 min-[900px]:col-span-2">
-                  <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-0">
+              <div className="grid gap-x-0 gap-y-0 min-[900px]:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] min-[900px]:items-start">
+                <div className="space-y-0 min-[900px]:col-span-2">
+                  <div className="grid grid-cols-3 gap-0">
                     <Button
                       aria-label="Vorherige Fokuskategorie"
                       className="px-4 py-2 font-semibold tracking-tight"
@@ -1110,7 +1110,7 @@ export function CollectionView({
                     </Button>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-0">
                     <Button
                       aria-label={isFocusEditorMode ? 'Zur Fokussliste wechseln' : 'Editor aktivieren'}
                       className="px-4 py-2 text-lg font-semibold tracking-tight"
@@ -1150,7 +1150,7 @@ export function CollectionView({
                   {((focusListMode === 'foci' && filteredCollectionFoci.length > 0) ||
                     (focusListMode === 'images' && filteredFocusEditorImages.length > 0) ||
                     (focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0)) ? (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-0">
                       <Button
                         aria-label={
                           focusListMode === 'foci'
@@ -1217,7 +1217,7 @@ export function CollectionView({
                 </div>
 
                 <section className="flex min-h-0 flex-col min-[900px]:col-span-2">
-                  <div className="space-y-3 min-[900px]:hidden">
+                  <div className="space-y-0 min-[900px]:hidden">
                     {previewFocus ? (
                       <div className="relative">
                         <FocusTile
@@ -1295,7 +1295,7 @@ export function CollectionView({
                     ) : null}
                   </div>
 
-                  <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-3">
+                  <div className="hidden min-[900px]:grid min-[900px]:grid-cols-4 min-[900px]:gap-0">
                     {previewFocus ? (
                       <div className="relative min-[900px]:col-span-2 min-[900px]:row-span-2">
                         <FocusTile
@@ -1405,7 +1405,7 @@ export function CollectionView({
 
                     {focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <div className="min-[900px]:col-span-2">
-                        <div className="grid grid-cols-1 gap-3">
+                        <div className="grid grid-cols-1 gap-0">
                           {topPagedFocusEditorSayings.map((saying) => (
                             <CollectionSayingPanel
                               key={saying.id}
@@ -1426,7 +1426,7 @@ export function CollectionView({
 
                     {focusListMode === 'sayings' && filteredFocusEditorSayings.length > 0 ? (
                       <div className="min-[900px]:col-span-4">
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-0">
                           {bottomPagedFocusEditorSayings.map((saying) => (
                             <CollectionSayingPanel
                               key={saying.id}
@@ -1450,9 +1450,9 @@ export function CollectionView({
             </div>
           ) : null
         ) : activeTab === 'mindsets' ? (
-          <div className="space-y-6">
+          <div className="space-y-0">
             <section>
-              <div className="mb-4 flex items-center justify-between gap-3">
+              <div className="mb-0 flex items-center justify-between gap-0">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-muted">Aktives Mindset</p>
                   {isEditingMindsetDraft ? (
@@ -1489,7 +1489,7 @@ export function CollectionView({
                 />
               </div>
 
-              <div className="flex gap-3 overflow-x-auto pb-2">
+              <div className="flex gap-0 overflow-x-auto pb-0">
                 {visibleMindsetEditorSlots.map((focus, index) =>
                   focus ? (
                     <Button
@@ -1513,7 +1513,7 @@ export function CollectionView({
                       selected={selectedDraftMindsetSlot === index}
                       variant="surface"
                     >
-                      <div className="flex aspect-[733/1024] flex-col items-center justify-center gap-3 border border-dashed border-amber-950/12 bg-[#fbf6ec] px-4 text-center">
+                      <div className="flex aspect-[733/1024] flex-col items-center justify-center gap-0 border border-dashed border-amber-950/12 bg-[#fbf6ec] px-4 text-center">
                         <p className="text-sm font-semibold text-ink">Leeres Feld</p>
                         <p className="text-xs text-muted">Slot aktivieren und unten einen Fokus anklicken.</p>
                       </div>
@@ -1529,10 +1529,10 @@ export function CollectionView({
             </section>
 
             <section>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
+              <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 sm:items-center">
                 <Tabs
                   activeValue={mindsetListMode}
-                  className="grid grid-cols-2 gap-2"
+                  className="grid grid-cols-2 gap-0"
                   items={[
                     { label: 'Mindsets', value: 'mindsets' },
                     { label: 'Fokusse', value: 'foci' },
@@ -1540,7 +1540,7 @@ export function CollectionView({
                   onChange={setMindsetListMode}
                 />
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-0">
                   <Button
                     aria-label={`Vorherige ${mindsetListMode === 'mindsets' ? 'Mindset-' : 'Fokusse-'}Seite`}
                     className="flex-1"
@@ -1577,7 +1577,7 @@ export function CollectionView({
                 </div>
               </div>
 
-              <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
+              <div className="mt-0 flex gap-0 overflow-x-auto pb-0">
                 {visibleCollectionMindsetSlots.map((entry, slotIndex) => {
                   const absoluteIndex = safeCollectionMindsetPage * COLLECTION_MINDSET_PAGE_SIZE + slotIndex;
 

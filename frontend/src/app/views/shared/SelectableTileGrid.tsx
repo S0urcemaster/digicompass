@@ -25,7 +25,7 @@ export function SelectableTileGrid<T>({
     resolvedDesktopColumns === 4 ? 'min-[900px]:grid-cols-4' : 'min-[900px]:grid-cols-2';
 
   return (
-    <div className={`grid grid-cols-2 gap-3 ${desktopGridClassName}`}>
+    <div className={`grid grid-cols-2 gap-0 ${desktopGridClassName}`}>
       {items.map((item) => (
         <Button
           align="left"

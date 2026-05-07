@@ -27,7 +27,7 @@ type ButtonProps = ComponentPropsWithoutRef<'button'> & {
 
 const cn = (...parts: Array<string | false | null | undefined>) => parts.filter(Boolean).join(' ');
 const ARROW_BUTTON_LABELS = new Set(['←', '→', '↑', '↓']);
-const BORDER_CLASS_NAME = 'border border-[#504a48]';
+const BORDER_CLASS_NAME = 'border border-white/50';
 
 const getShapeClassName = (_shape: ButtonShape) => {
   return '';
@@ -46,12 +46,10 @@ const getButtonStateClassName = ({
 
   if (variant === 'star') {
     if (disabled) {
-      return active ? 'border-transparent bg-transparent text-[#d4af37]/45' : 'border-transparent bg-transparent text-[#8d7d55]/40';
+      return active ? 'bg-transparent text-[#d4af37]/45' : 'bg-transparent text-[#8d7d55]/40';
     }
 
-    return active
-      ? 'border-transparent bg-transparent text-[#d4af37]'
-      : 'border-transparent bg-transparent text-[#8d7d55]';
+    return active ? 'bg-transparent text-[#d4af37]' : 'bg-transparent text-[#8d7d55]';
   }
 
   if (disabled) {
