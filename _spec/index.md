@@ -308,43 +308,87 @@ Current note:
 
 ## Functions Overview
 
-### Implemented Now
+### Implemented
+
+#### App Shell
 
 - Display username
 - Change username
-- Display current mindset
-- Display list of other mindsets
-- Select current mindset
-- Select current focus within the mindset
 - Switch between top-level views
 
-### Planned Next
+#### Compass View
 
-#### Edit Mindset
+- Display the current mindset
+- Display the current focus of the current mindset
+- Select the active mindset
+- Select the active focus within the current mindset
+- Edit mindset notes through the textarea
+- Rate the currently selected focus
 
+#### Collection: Images
+
+- Browse all base images
+- Filter images by category
+- Page through image previews
+- Select an image
+- Open the selected image in a larger modal view
+- Add an image to the collection by rating it
+- Change the rating of a collected image
+
+#### Collection: Sayings
+
+- Browse all base sayings
+- Filter sayings by category
+- Page through saying results
+- Select a saying
+- Add a saying to the collection by rating it
+- Change the rating of a collected saying
+
+#### Collection: Foci
+
+- Browse collected foci
+- Filter foci by category
+- Page through focus results
+- Select an existing focus
+- Switch between focus list mode, image mode, and saying mode
+- Select collected images for focus assembly
+- Select collected sayings for focus assembly
+- Preview the assembled focus
+- Add a new focus to the collection by rating it
+- Change the rating of an existing collected focus
+- Remove a collected focus by setting its rating to `0`
+
+#### Collection: Mindsets
+
+- Browse collection mindsets
+- Browse collected foci for mindset assignment
+- Page through both mindset and focus lists
+- Create a new mindset draft
+- Load an existing mindset into the editor
 - Change mindset name
-- Display list of set foci
-- Add focus from the personal collection only
-- Remove focus
-- Rate mindset
+- Assign collected foci into up to 5 mindset slots
+- Create a mindset from the current draft by rating it
+- Change the rating of an existing mindset
+- Remove a mindset by setting its rating to `0`
 
-#### Edit Focus
+### Partially Implemented
 
-- Select saying from the personal collection
-- Change saying categories
-- Change saying rating
-- Select image from the personal collection
-- Change image category
-- Change image rating
+#### Focus Editing
 
-#### Collection Management
+- Focus creation already works inside `Collection > Foci`
+- Focus editing is currently split across list selection, preview, and rating interactions
+- There is no separate finalized `Focus Editor View` screen yet
 
-- Add and remove sayings from the personal collection
-- Add and remove images from the personal collection
-- Add and remove foci from the personal collection
-- Add and remove whole mindsets from the personal collection
-- Create foci only from collected sayings and collected images
-- Create mindsets only from collected foci
+#### Mindset Editing
+
+- Mindset creation and editing already work inside `Collection > Mindsets`
+- The current flow is editor-like, but not yet formalized into a separate dedicated component architecture
+
+### Not Defined Yet
+
+- `Navigator` view behavior
+- Final save flow and finalized UX rules for focus creation
+- Finalized standalone `Focus Editor View`
 
 ## Data Sources
 
@@ -365,6 +409,7 @@ Current note:
 - For a returning user, the persisted store is reused
 - Autosave happens through Zustand persistence after each state change
 - In development mode, the app reloads `factoryState` on browser refresh instead of reusing persisted localStorage data
+
 
 ## Implementation Notes
 
@@ -393,21 +438,3 @@ Implement the next planned task. When finished:
 
 - none recorded here yet
 
-## Revision Notes / Legacy Draft
-
-This section keeps duplicate, outdated, or still unresolved material for later review instead of mixing it into the current working spec.
-
-### Legacy Naming
-
-- Earlier drafts used the top-level views `Primary`, `Focus Editor`, and `Collection`
-- The current active naming is `navigator`, `compass`, and `collection`
-
-### Legacy Project Structure Notes
-
-- Earlier drafts referenced `data/images.ts`
-- Current data references should point to JSON-based files instead
-
-### Legacy Frontend Heading
-
-- Earlier drafts used a broader `Frontend` section with mixed technology and feature notes
-- The current file separates product structure, component layout, view behavior, and implementation notes more explicitly
