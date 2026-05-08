@@ -3412,5 +3412,16 @@
       "Denken"
     ],
     "rating": 0.5
+  },
+  {
+    "id": 334,
+    "text": "Die Menschen gehen - die Orte bleiben",
+    "fontSize": 50,
+    "categories": [
+      "Liebe",
+      "Zukunft",
+      "Zeit"
+    ],
+    "rating": 0.5
   }
 ]
