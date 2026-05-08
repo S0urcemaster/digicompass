@@ -17,6 +17,7 @@ echo "Running wipe1 in $ROOT_DIR"
 
 rm -rf frontend/dist
 rm -rf frontend/node_modules
+rm -rf frontend/.vite
 
 rm -f frontend/src/app/App.tsx
 rm -f frontend/src/app/views/collection/CollectionImagePanel.tsx
