@@ -4,6 +4,12 @@ Digi Compass is a web application for building personal mindset collections from
 
 Users browse a base library of sayings and images, add selected items to their own collection, combine collected sayings and collected images into foci, group collected foci into mindsets, and rate or annotate the result.
 
+## Architecture Rule
+
+- No local one-off components may be created inside other files
+- Every UI element must be implemented as its own reusable component or as a derived component based on an existing component
+- This rule also applies to views: every view is a component, not inline local composition
+
 ## Current Product Core
 
 - The user always works on their personal collection, never directly on the whole base library when creating higher-level objects.
@@ -95,6 +101,12 @@ Card sizes:
 - Contains 4 additional preview cards in one row below
 - Clicking a preview card replaces the selected card
 
+### MindsetPaginator
+
+- Horizontal paginator for switching the active mindset
+- Child elements are distributed evenly across the available width
+- The component changes the active mindset in the connected store or parent state
+
 ## Domain Model
 
 ### DigiCompass
@@ -182,14 +194,11 @@ The store currently supports:
 This is the main implemented view.
 
 - It shows the currently selected focus of the currently selected mindset from `CompassStore`
-- The main image uses a `733x1024` aspect ratio
-- The saying is rendered directly on top of the image near the top
-- The current focus is shown as the large image
-- Up to 4 other foci from the same mindset are shown as preview tiles
-- Clicking a preview tile makes it the current focus
-- A mindset selector above the image area switches the current mindset
-- Additional cards below the image area show focus rating, categories, and notes
-- The app shell also contains a username field and a top-level view switcher for `Navigator`, `Compass`, and `Collection`
+- It is composed of a `MindsetPaginator`, a `CardBrowser`, and a `textarea`
+- The `MindsetPaginator` switches the active mindset
+- The `CardBrowser` displays the current focus as the selected card and the other focus options of the same mindset as preview cards
+- Clicking a preview card changes the selected focus
+- The `textarea` displays or edits the notes of the active mindset
 
 Current implementation note:
 
@@ -198,7 +207,9 @@ Current implementation note:
 ### Compass Layout Draft
 
 - Vertical layout
-- Horizontal paginator or filter for category
+- `MindsetPaginator` at the top
+- `CardBrowser` below it
+- `textarea` below the `CardBrowser`
 
 ### Collection View
 

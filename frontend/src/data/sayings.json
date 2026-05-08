@@ -3423,5 +3423,27 @@
       "Zeit"
     ],
     "rating": 0.5
+  },
+  {
+    "id": 335,
+    "text": "Destiny is playing with us",
+    "fontSize": 50,
+    "categories": [
+      "Schicksal",
+      "Gelassenheit",
+      "Achtsamkeit"
+    ],
+    "rating": 0.5
+  },
+  {
+    "id": 336,
+    "text": "Wer selten in den Spiegel sieht : beginnt : sein Spiegelbild zu fürchten",
+    "fontSize": 50,
+    "categories": [
+      "Spiegel",
+      "Angst",
+      "Vorstellungskraft"
+    ],
+    "rating": 0.5
   }
 ]
