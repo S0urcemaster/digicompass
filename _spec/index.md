@@ -413,16 +413,70 @@ Current note:
 
 ## Implementation Notes
 
+Use this order when rebuilding or extending the project:
+
+1. Treat this spec as the primary source of truth for structure, behavior, and composition.
+2. Treat `frontend/src/data/*.json` and `frontend/public/images/**` as source data, not UI implementation.
+3. Prefer rebuilding thin, explicit components from the spec over preserving inconsistent legacy code.
+4. Follow the component rule strictly: no local one-off components inside other files.
+5. Build shared components first, then compose views from those components.
+6. Keep data loading, state transitions, and presentation separable.
+7. When the current implementation differs from the spec, update the spec first if the new behavior is intentional.
+8. Use the current implementation only as extraction material, not as a hard constraint.
+9. Move outdated planning notes downward instead of deleting them immediately when they may still be useful for revision.
+
+### Current Build Priorities
+
+- Keep the JSON data model and image assets stable
+- Align `compassStore` and domain types with the current spec
+- Rebuild collection-related browsers from reusable shared components
+- Preserve the current visual structure where the spec already defines it
+- Defer `Navigator` until the existing collection and compass workflows are clean again
+
+### Working Rule For Open Tasks
+
+- Keep only the next genuinely actionable items in the active task list
+- Move completed items to `Finished Tasks`
+- Move obsolete or already-covered items into a legacy subsection instead of mixing them with active tasks
+
+### Planned Tasks
+
+- Complete the first reusable component drafts from the current spec
+- Align the remaining implementation with the JSON-based data model
+
+### Open Tasks
+
+- Update the remaining implementation from category objects to string categories
+- Update the remaining implementation from image category lists to single image categories
+- Replace remaining TypeScript data imports with JSON-based loading or adapters
+- Extract the first reusable component set from the existing views
+- Rebuild `Compass View` from `MindsetPaginator`, `CardBrowser`, and `textarea`
+- Rebuild `Collection View` sections from the currently specified browser components
+
+### Finished Tasks
+
+- Restructured `_spec/index.md` so the active specification is at the top and legacy material is separated below
+- Converted data files from TypeScript data modules to JSON
+- Reduced categories to plain strings
+- Reduced image category data to a single category field
+- Updated major parts of the spec to match the current implementation behavior
+
+### Legacy Copy
+
+The following block is kept as a verbatim planning snapshot for later comparison and revision.
+
+#### Legacy Implementation Notes
+
 Implement the next planned task. When finished:
 
 - move the planned task to the closed tasks section
 - move the next open task into the planned tasks section
 
-### Planned Tasks
+#### Legacy Planned Tasks
 
 - Propose the frontend toolchain (framework, state management, styling, and test setup), then implement it
 
-### Open Tasks
+#### Legacy Open Tasks
 
 - Ensure data files are present and consistent with the spec
 - Set up `/frontend` with the chosen toolchain and base project structure
@@ -434,7 +488,6 @@ Implement the next planned task. When finished:
 - Create a factory collection in `store/factoryState.ts`: 20 sayings, 20 images, 10 foci, and 3 mindsets. Use random combinations for now without sticking to categories. This is dummy data for the next task
 - Implement the `Collection View / Images` section of the spec
 
-### Finished Tasks
+#### Legacy Finished Tasks
 
 - none recorded here yet
-
