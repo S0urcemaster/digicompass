@@ -79,7 +79,7 @@ Card sizes:
 - `Selected Card`: `1/2` of content width
 - `Preview Card`: `1/4` of content width
 
-### CategoryPaginator
+### CategoryFilter
 
 - Horizontal row of 3 evenly distributed buttons
 - Buttons:
@@ -101,11 +101,26 @@ Card sizes:
 - Contains 4 additional preview cards in one row below
 - Clicking a preview card replaces the selected card
 
+### SayingsBrowser
+
+- A browser component for sayings derived from the same interaction model as `CardBrowser`
+- It displays one selected saying and multiple preview sayings
+- Clicking a preview saying replaces the selected saying
+- It may use saying-specific subcomponents instead of image or focus cards
+
 ### MindsetPaginator
 
 - Horizontal paginator for switching the active mindset
 - Child elements are distributed evenly across the available width
 - The component changes the active mindset in the connected store or parent state
+
+### HorizontalBrowser
+
+- A horizontal browser component for paged item lists
+- Items are arranged in one horizontal row
+- The browser is used for selectable lists of cards or tiles
+- Paging controls belong to the browser
+- Clicking an item selects it or assigns it, depending on the connected workflow
 
 ## Domain Model
 
@@ -222,31 +237,55 @@ Current implementation note:
 ### Images
 
 - Browse all available images from `src/data/images.json`
-- Split layout: selected image on the left, paged 3-column preview grid on the right
+- It is composed of a `CategoryFilter` and a `CardBrowser`
+- The `CategoryFilter` filters the image set by category
+- The `CardBrowser` shows the selected image and the paged preview images
 - Use preview assets from `public/images/preview` in the grid
-- Filter the image list by category text
-- No separate add button
-- The 5-star control on the large image adds the image to the collection and sets its rating
-- The image can be opened in a larger modal view for closer inspection
 
 ### Sayings
 
 - Browse all available sayings from the base data
-- Filter the list by category text
+- It is composed of a `CategoryFilter` and a `SayingsBrowser`
+- The `CategoryFilter` filters the saying set by category
+- The `SayingsBrowser` shows the selected saying and the available preview sayings
 - Rating a saying adds it to the collection and sets its rating
 - The current UI uses a compact list instead of a large detail card
 
 ### Foci
 
-- Browse collected foci and filter them by category text
-- Show a large focus preview with saying and image combined
+- It is composed of 3 `CardBrowser` components and one dedicated button row to toggle between
+- The button row switches which `CardBrowser` is currently active
+- Initially, the focus list browser is active
+- The first button shows the focus list and allows the user to choose an existing focus
+- After switching away from the focus list mode, 2 additional buttons become active
+- One additional button shows image cards
+- One additional button shows saying cards
+- The image browser and saying browser are used to assemble or inspect focus parts
+- The focus-related browsers operate only on collected items
 - Allow rating existing collected foci
-- Allow assembling a focus preview from collected images and collected sayings only
-- A dedicated save/create flow for new foci is still pending
 
 ### Mindsets
 
-- Pending
+- The upper area shows the active mindset
+- The active mindset contains:
+- a name field
+- a `StarRating`
+- up to 5 focus slots
+- Each focus slot can hold one focus from the collection
+- Existing mindsets are shown through a representative focus preview with the mindset name overlaid
+- The lower area switches between 2 list modes:
+- `Mindsets`
+- `Foci`
+- The lower area contains 2 `HorizontalBrowser` instances
+- One `HorizontalBrowser` is for existing collection mindsets
+- One `HorizontalBrowser` is for collected foci
+- Only one of those 2 `HorizontalBrowser` instances is active at a time
+- In `Mindsets` mode, the user browses existing collection mindsets
+- In `Foci` mode, the user browses collected foci and assigns them into the currently active mindset slots
+- A dedicated `+` tile creates a new mindset draft
+- Selecting an existing mindset loads it into the editor
+- Creating or editing a mindset works only with collected foci
+
 
 ### Navigator View
 
