@@ -2,6 +2,8 @@
 
 Start here. This file is the entry point for the specification and points to the current source files.
 
+Ignore translated specification in _spec/de except when explicitly working on it
+
 ## Reading Order
 
 1. [Config](./config.yaml)

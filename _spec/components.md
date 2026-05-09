@@ -14,13 +14,14 @@
 
 - Abstract base for images or foci
 - Aspect ratio: `5:7`
-- Internal vertical layout is divided into 5 equal parts
+- Internal vertical layout has a fixed header and a fixed footer
+- The text/content area in the middle takes the remaining vertical space between header and footer
 
 Card area mapping:
 
-- top `1/5`: categories
-- middle `3/5`: saying text
-- bottom `1/5`: `StarRating`
+- header: categories
+- middle: saying text or other card content
+- footer: `StarRating`
 
 Width behavior:
 
@@ -29,12 +30,12 @@ Width behavior:
 
 Optional card content:
 
-- assigned categories in the top area, visually aligned toward the top-left
-- text content, when available, fills the middle `3/5` area
+- assigned categories in the header area, visually aligned toward the top-left
+- text content, when available, fills the remaining middle area
 - saying text is intended for a 3-line layout
 - saying text should be rendered as large as practical within that middle area
 - large and small card variants should scale from the same layout rules
-- `StarRating` across the full width at the bottom
+- `StarRating` across the full width in the footer
 
 Card sizes:
 
