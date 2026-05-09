@@ -35,13 +35,41 @@ This file is the small working surface for the next implementation-oriented AI r
 - `Card` spec now uses fixed header and footer with remaining middle space.
 - Card text behavior in the spec is top-left and uses stored `Saying.fontSize`.
 - `StarRating` is specified as 5 `StarButton` elements distributed across available width.
+- `views.md` now uses explicit view/component structure instead of only prose sections.
 - The frontend scaffold, store, and first collection/compass flows exist, but some UI behavior still drifts from the latest spec decisions.
+
+## Known Drift
+
+- The current code still renders `StarRating` through generic `Button` instances and does not yet define an explicit `StarButton` component.
+- Card body rendering in code is not yet fully aligned with the top-left text placement rule from the latest spec revision.
+- `Collection > Foci` in code is looser than the currently specified 3-browser composition.
+- `Collection > Mindsets` in code still leaves draft-vs-persisted behavior underspecified.
+
+## Misread Risks For A Fresh Run
+
+- Do not treat `StarButton` as a spec-only naming detail. The current code still drifts here, and that drift is not considered close enough.
+- Do not assume draft-vs-persisted behavior for `Collection > Foci` or `Collection > Mindsets` is already settled. If changed, make the behavior explicit in code and spec or worksheet notes.
+- Do not treat partial browser/toggle similarity in `Collection > Foci` as automatically satisfying the current view spec. The structural composition still matters.
+
+## Touched Files
+
+- `frontend/src/components/Button.tsx`
+- `frontend/src/components/Card.tsx`
+- `frontend/src/components/CardBrowser.tsx`
+- `frontend/src/components/FocusCard.tsx`
+- `frontend/src/components/HorizontalBrowser.tsx`
+- `frontend/src/components/StarRating.tsx`
+- `frontend/src/store/compassStore.ts`
+- `frontend/src/styles.css`
+- `frontend/src/views/CollectionFociSection.tsx`
+- `frontend/src/views/CollectionMindsetsSection.tsx`
+- `frontend/src/views/CollectionView.tsx`
+- `frontend/src/views/CompassView.tsx`
 
 ## Open Decisions
 
 - Decide whether `StarButton` should exist only as a visual specialization or as a separately named code component.
 - Decide how strictly `Collection > Foci` should keep the 3-browser composition described in `views.md`.
-- Decide whether view specs should be rewritten into the same structured format now used in `components.md`.
 
 ## Completed Recently
 
