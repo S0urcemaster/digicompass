@@ -1,0 +1,5 @@
+build:
+  optional:
+    navigator: false
+    collection: false
+    light_dark_mode: false
