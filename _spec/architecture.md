@@ -6,6 +6,15 @@
 - Every UI element must be implemented as its own reusable component or as a derived component based on an existing component
 - This rule also applies to views: every view is a component, not inline local composition
 
+## Specification Rule For AI Runs
+
+- The specification must preserve implementation-critical intent, not only domain intent or visual intent
+- Assumptions that human implementers may treat as obvious must still be written explicitly when they affect structure, state ownership, data scope, composition, or interaction behavior
+- Components must be classified explicitly as `Reusable Component`, `Content Component`, or `View Component`
+- If a component is intended for one specific workflow only, that limitation must be stated explicitly
+- If a component is intended for reuse across views, that reuse intent must be stated explicitly
+- Architecturally relevant decisions should be written as explicit rules, not left as implied convention
+
 ## App Layout
 
 - Portrait-first layout
