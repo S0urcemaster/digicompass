@@ -3,4 +3,5 @@ build:
     navigator: false
     collection: false
     light_dark_mode: false
+  switches:
     round_corners: false

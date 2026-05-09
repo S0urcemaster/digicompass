@@ -2,9 +2,10 @@
 
 ## Architekturregel
 
-- Es dürfen keine lokalen Einweg-Komponenten innerhalb anderer Dateien erstellt werden
-- Jedes UI-Element muss als eigene wiederverwendbare Komponente oder als abgeleitete Komponente auf Basis einer bestehenden Komponente umgesetzt werden
-- Diese Regel gilt auch für Views: jede View ist eine Komponente und keine lokale Inline-Komposition
+- Jedes UI Element ist als Komponente generalisiert und wird wiederverwendet wo möglich
+- Wo keine Generalisierung möglich ist : wird eine Ableitung erzeugt
+- Es gibt Content- Komponenten für Komposition - und wiederverwendbare Komponenten
+- Wiederverwendbare Komponenten sind hierarchisch gegliedert
 
 ## App-Layout
 
@@ -30,3 +31,4 @@ Verfügbare Tabs:
 - `Navigator`
 - `Compass`
 - `Collection`
+

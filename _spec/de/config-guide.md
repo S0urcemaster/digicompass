@@ -1,10 +1,11 @@
 # Config Guide
 
-`config.yaml` vor den anderen Spec-Dateien lesen.
+Die zentrale `config.yaml` in `/_spec/` vor den anderen Spec-Dateien lesen.
 
 ## Zweck
 
 - `config.yaml` definiert optionale Build-Scope-Flags
+- die Datei liegt zentral in `/_spec/config.yaml`
 - deaktivierte Teile oder Features sind im aktuellen Build nicht erforderlich
 
 ## Struktur
@@ -15,6 +16,7 @@ build:
     navigator: false
     collection: false
     light_dark_mode: false
+  switches:
     round_corners: false
 ```
 
@@ -25,9 +27,14 @@ build:
 - `navigator`: boolean
 - `collection`: boolean
 - `light_dark_mode`: boolean
+
+Diese Flags steuern optionale App-Teile und optionale Build-Bereiche.
+
+### `build.switches`
+
 - `round_corners`: boolean
 
-Diese Flags steuern optionale App-Teile und optionale Build-Features.
+Diese Schalter steuern app-weite Verhaltens- oder Darstellungsoptionen.
 
 ## Regel
 

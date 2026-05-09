@@ -4,7 +4,7 @@ Hier beginnen. Diese Datei ist der Einstiegspunkt in die Spezifikation und verwe
 
 ## Lesereihenfolge
 
-1. [Config](./config.yaml)
+1. [Config](../config.yaml)
 2. [Config Guide](./config-guide.md)
 3. [Überblick](./overview.md)
 4. [Architektur](./architecture.md)
@@ -22,7 +22,7 @@ Hier beginnen. Diese Datei ist der Einstiegspunkt in die Spezifikation und verwe
 
 ## Bereichsübersicht
 
-- Build-Scope-Schalter und optionale Features: [config.yaml](./config.yaml)
+- Build-Scope-Schalter und optionale Features: [../config.yaml](../config.yaml)
 - Konfigurationsformat, Leseregeln und erlaubte Optionen: [config-guide.md](./config-guide.md)
 - Produktzweck und aktuelle Kernregeln: [overview.md](./overview.md)
 - Regeln zur UI-Komposition und wiederverwendbare Komponentendefinitionen: [architecture.md](./architecture.md), [components.md](./components.md)

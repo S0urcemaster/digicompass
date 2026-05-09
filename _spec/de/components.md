@@ -4,6 +4,8 @@
 
 - Es gibt eine gemeinsame Basis-Button-Klasse, die in der gesamten Anwendung verwendet wird
 
+## StarButton:Button
+
 ## StarRating
 
 - Horizontale Reihe aus 5 Stern-Buttons
