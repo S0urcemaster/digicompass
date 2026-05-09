@@ -1,9 +1,13 @@
-import type { PropsWithChildren } from 'react';
+import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 
-interface CardProps extends PropsWithChildren {
+interface CardProps
+  extends PropsWithChildren,
+    Omit<ComponentPropsWithoutRef<'article'>, 'children'> {
   className?: string;
 }
 
-export const Card = ({ children, className = '' }: CardProps) => (
-  <article className={`card ${className}`.trim()}>{children}</article>
+export const Card = ({ children, className = '', ...props }: CardProps) => (
+  <article className={`card ${className}`.trim()} {...props}>
+    {children}
+  </article>
 );

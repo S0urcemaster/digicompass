@@ -15,6 +15,7 @@ build:
     navigator: false
     collection: false
     light_dark_mode: false
+    round_corners: false
 ```
 
 ## Keys
@@ -24,6 +25,7 @@ build:
 - `navigator`: boolean
 - `collection`: boolean
 - `light_dark_mode`: boolean
+- `round_corners`: boolean
 
 These flags control optional app parts and optional build features.
 

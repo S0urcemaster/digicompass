@@ -14,11 +14,26 @@
 
 - Abstract base for images or foci
 - Aspect ratio: `5:7`
+- Internal vertical layout is divided into 5 equal parts
+
+Card area mapping:
+
+- top `1/5`: categories
+- middle `3/5`: saying text
+- bottom `1/5`: `StarRating`
+
+Width behavior:
+
+- categories distribute themselves across the available card width
+- `StarRating` distributes its stars across the available card width
 
 Optional card content:
 
-- assigned categories in the top-left corner
-- text content, when available, rendered as large as practical in the central area
+- assigned categories in the top area, visually aligned toward the top-left
+- text content, when available, fills the middle `3/5` area
+- saying text is intended for a 3-line layout
+- saying text should be rendered as large as practical within that middle area
+- large and small card variants should scale from the same layout rules
 - `StarRating` across the full width at the bottom
 
 Card sizes:
