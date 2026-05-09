@@ -1,94 +1,173 @@
 # Components
 
+This file defines reusable and content-level UI components. Every component entry should state only the decisions that matter for implementation, but those decisions must be explicit.
+
 ## Button
 
-- There is one shared base button class used throughout the application
-
-## StarRating
-
-- Horizontal row of 5 star buttons
-- `StarRating` consists of 5 `StarButton` elements
-- Used to assign the rating of the related element
-- Stars can be configured as active or inactive without changing their visual shape
-- `StarRating` distributes its 5 `StarButton` elements evenly across the available width
+- Kind: `Reusable Component`
+- Purpose: shared base button component for interaction across the application
+- Reuse Intent: base component for other buttons and button-derived controls
+- Composition: no required child components
+- State Ownership: stateless; receives interaction state from props or parent
+- Layout Rules:
+- shared base button class used throughout the application
+- may be visually specialized by derived components
+- Non-Goals:
+- does not define the final appearance of all derived button components
 
 ## StarButton
 
-- Derived button component specialized for star rating
-- Built from the shared `Button` base, but rendered as a star-specific control
+- Kind: `Reusable Component`
+- Purpose: specialized button for one star in a rating row
+- Reuse Intent: used by `StarRating`; not intended as a general application button
+- Composition:
+- derived from `Button`
+- rendered as a star-specific control
+- State Ownership: stateless; active or inactive state is provided by parent
+- Layout Rules:
+- visual shape remains star-specific in active and inactive states
+- Non-Goals:
+- not rendered as an unchanged default `Button`
+
+## StarRating
+
+- Kind: `Reusable Component`
+- Purpose: assign a rating to the related element
+- Reuse Intent: reusable rating control for sayings, images, foci, and mindsets where needed
+- Composition:
+- horizontal row of 5 `StarButton` elements
+- State Ownership: stateless; current rating value is provided by parent or store-connected wrapper
+- Layout Rules:
+- distributes its 5 `StarButton` elements evenly across the available width
+- remains a horizontal row
+- Interaction Rules:
+- selecting a star assigns the related rating value
+- stars can be configured as active or inactive without changing their visual shape
 
 ## Card
 
-- Abstract base for images or foci
-- Aspect ratio: `5:7`
-- Internal vertical layout has a fixed header and a fixed footer
-- The text/content area in the middle takes the remaining vertical space between header and footer
-
-Card area mapping:
-
-- header: categories
-- middle: saying text or other card content
-- footer: `StarRating`
-
-Width behavior:
-
+- Kind: `Reusable Component`
+- Purpose: abstract base card for images, foci, or other card-based content
+- Reuse Intent: base layout for concrete card variants
+- Composition:
+- header area
+- middle content area
+- footer area
+- may include categories in the header
+- may include text or other content in the middle
+- footer contains `StarRating`
+- State Ownership: stateless; content and rating are supplied from parent or store-connected wrapper
+- Layout Rules:
+- aspect ratio: `5:7`
+- internal vertical layout has a fixed header and a fixed footer
+- the text/content area in the middle takes the remaining vertical space between header and footer
 - categories distribute themselves across the available card width
 - `StarRating` distributes its stars across the available card width
-
-Optional card content:
-
-- assigned categories in the header area, visually aligned toward the top-left
-- text content, when available, fills the remaining middle area
-- saying text is aligned toward the top-left inside the middle area
+- header content is visually aligned toward the top-left
+- text content fills the remaining middle area
+- text in the middle area is aligned toward the top-left
+- `StarRating` spans the full footer width
+- Data Rules:
 - saying text uses the configured `Saying.fontSize` instead of automatic text fitting
 - saying text is intended for a 3-line layout
-- large and small card variants should scale from the same layout rules
-- `StarRating` across the full width in the footer
-
-Card sizes:
-
+- large and small card variants scale from the same layout rules
+- Card Sizes:
 - `Selected Card`: `1/2` of content width
 - `Preview Card`: `1/4` of content width
+- Non-Goals:
+- no automatic layout-based text size fitting
 
 ## CategoryFilter
 
-- Horizontal row of 3 evenly distributed buttons
-- Buttons:
-- `<-` for previous category
-- current category label
-- `->` for next category
-- The component sets the category filter of the connected list
+- Kind: `Reusable Component`
+- Purpose: switch the active category filter for a connected list
+- Reuse Intent: reusable filter control for image and saying browser sections
+- Composition:
+- horizontal row of 3 buttons
+- previous category button: `<-`
+- current category label button
+- next category button: `->`
+- State Ownership: may keep current index in parent or connected store; the component itself only changes the connected category filter
+- Layout Rules:
+- horizontal row of 3 evenly distributed buttons
+- Interaction Rules:
+- previous button selects the previous category
+- next button selects the next category
+- label reflects the currently active category
 
 ## Paginator
 
-- Always horizontal
-- Child elements are distributed evenly across the available width
+- Kind: `Reusable Component`
+- Purpose: switch between pages in a paged item set
+- Reuse Intent: reusable paging control for browsers and list components
+- Composition: horizontal control row with page actions and current position display as needed
+- State Ownership: current page is owned by parent or connected component
+- Layout Rules:
+- always horizontal
+- child elements are distributed evenly across the available width
 
 ## CardBrowser
 
-- Arrangement of cards or the concrete card subtypes for `CompassImage` or `Focus`
-- Contains one `SelectedCard` in the top-left
-- Contains 4 preview cards in a `2x2` block to the right of the selected card
-- Contains 4 additional preview cards in one row below
-- Clicking a preview card replaces the selected card
+- Kind: `Reusable Component`
+- Purpose: browse a paged set of card-like items while keeping one selected item prominent
+- Reuse Intent: reusable browser for `CompassImage`, `Focus`, or concrete card-derived item sets
+- Composition:
+- one `SelectedCard` in the top-left
+- 4 preview cards in a `2x2` block to the right of the selected card
+- 4 additional preview cards in one row below
+- includes paging behavior for preview sets
+- State Ownership:
+- selected item is owned by parent or connected store
+- current browser page may be owned internally or by parent
+- Layout Rules:
+- uses card-based arrangement rather than a plain list
+- preview cards replace the selected card when chosen
+- Interaction Rules:
+- clicking a preview card replaces the selected card
 
 ## SayingsBrowser
 
-- A browser component for sayings derived from the same interaction model as `CardBrowser`
-- It displays one selected saying and multiple preview sayings
-- Clicking a preview saying replaces the selected saying
-- It may use saying-specific subcomponents instead of image or focus cards
+- Kind: `Content Component`
+- Purpose: browse sayings with one selected saying and multiple preview sayings
+- Reuse Intent: saying-specific browser derived from the interaction model of `CardBrowser`
+- Composition:
+- one selected saying view
+- multiple preview saying views
+- may use saying-specific subcomponents instead of image or focus cards
+- State Ownership:
+- selected saying is owned by parent or connected store
+- browser page may be owned internally or by parent
+- Layout Rules:
+- follows the same selection-and-preview interaction model as `CardBrowser`
+- Interaction Rules:
+- clicking a preview saying replaces the selected saying
 
 ## MindsetPaginator
 
-- Horizontal paginator for switching the active mindset
-- Child elements are distributed evenly across the available width
-- The component changes the active mindset in the connected store or parent state
+- Kind: `Reusable Component`
+- Purpose: switch the active mindset
+- Reuse Intent: reusable mindset-switching control for `Compass View` or other mindset contexts
+- Composition: horizontal row of mindset selection elements
+- State Ownership: active mindset is owned by the connected store or parent state
+- Layout Rules:
+- horizontal paginator
+- child elements are distributed evenly across the available width
+- Interaction Rules:
+- changes the active mindset in the connected store or parent state
 
 ## HorizontalBrowser
 
-- A horizontal browser component for paged item lists
-- Items are arranged in one horizontal row
-- The browser is used for selectable lists of cards or tiles
-- Paging controls belong to the browser
-- Clicking an item selects it or assigns it, depending on the connected workflow
+- Kind: `Reusable Component`
+- Purpose: browse selectable items arranged in one horizontal row with paging
+- Reuse Intent: reusable browser for card tiles, focus tiles, mindset tiles, or similar item rows
+- Composition:
+- horizontal item row
+- paging controls belong to the browser
+- State Ownership:
+- selected or assigned item is determined by the connected workflow
+- current browser page may be owned internally or by parent
+- Layout Rules:
+- items are arranged in one horizontal row
+- used for selectable lists of cards or tiles
+- Interaction Rules:
+- clicking an item selects it or assigns it, depending on the connected workflow
