@@ -14,6 +14,7 @@ Ignore translated specification in _spec/de except when explicitly working on it
 6. [Domain And Store](./domain-store.md)
 7. [Views](./views.md)
 8. [Implementation Notes](./implementation-notes.md)
+9. [AI Worksheet](./ai-worksheet.md)
 
 ## Intent
 
@@ -30,4 +31,5 @@ Ignore translated specification in _spec/de except when explicitly working on it
 - UI composition rules and reusable component definitions: [architecture.md](./architecture.md), [components.md](./components.md)
 - Types, persisted state, and data boundaries: [domain-store.md](./domain-store.md)
 - Screen behavior and workflows: [views.md](./views.md)
-- Build guidance, priorities, and task lists: [implementation-notes.md](./implementation-notes.md)
+- Build guidance and execution rules: [implementation-notes.md](./implementation-notes.md)
+- Current implementation status and active work packet: [ai-worksheet.md](./ai-worksheet.md)
