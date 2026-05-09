@@ -34,6 +34,11 @@ Current intention:
 - categories: `string[]`
 - rating: `Rating`
 
+Notes:
+
+- `fontSize` is the explicit display size used when the saying is rendered on cards or in saying-focused views
+- saying text sizing currently comes from stored data, not from automatic layout-based fitting
+
 ### CompassImage
 
 - id

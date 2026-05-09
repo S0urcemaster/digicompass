@@ -14,6 +14,7 @@ This is the main implemented view.
 Current implementation note:
 
 - `image.color` matches the filename tone, and the saying text color in the views is rendered as the opposite tone
+- saying text placement in cards is aligned toward the top-left of the card body
 
 ## Compass Layout Draft
 
@@ -96,6 +97,7 @@ Planned purpose:
 
 - join an image with a saying into a focus
 - edit focus-level metadata
+- later add a small editor for saying text presentation such as font size and text color
 
 Current note:
 

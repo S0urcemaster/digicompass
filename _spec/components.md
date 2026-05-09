@@ -7,8 +7,15 @@
 ## StarRating
 
 - Horizontal row of 5 star buttons
+- `StarRating` consists of 5 `StarButton` elements
 - Used to assign the rating of the related element
 - Stars can be configured as active or inactive without changing their visual shape
+- `StarRating` distributes its 5 `StarButton` elements evenly across the available width
+
+## StarButton
+
+- Derived button component specialized for star rating
+- Built from the shared `Button` base, but rendered as a star-specific control
 
 ## Card
 
@@ -32,8 +39,9 @@ Optional card content:
 
 - assigned categories in the header area, visually aligned toward the top-left
 - text content, when available, fills the remaining middle area
+- saying text is aligned toward the top-left inside the middle area
+- saying text uses the configured `Saying.fontSize` instead of automatic text fitting
 - saying text is intended for a 3-line layout
-- saying text should be rendered as large as practical within that middle area
 - large and small card variants should scale from the same layout rules
 - `StarRating` across the full width in the footer
 
