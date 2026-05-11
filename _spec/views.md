@@ -26,7 +26,9 @@ This file defines top-level and planned view components. Each entry should make 
 - `textarea` below the `CardBrowser`
 - Interaction Rules:
 - `MindsetPaginator` switches the active mindset
-- `CardBrowser` displays the current focus as the selected card and the other focus options of the same mindset as preview cards
+- `CardBrowser` displays the current focus as a selected `FocusCard`
+- preview items in the same browser are rendered as `PreviewCard` variants of `FocusCard`
+- preview ratings in this browser are display-only unless a workflow explicitly enables rating interaction there
 - clicking a preview card changes the selected focus
 - `textarea` displays or edits the notes of the active mindset
 - Display Rules:
@@ -72,7 +74,9 @@ This file defines top-level and planned view components. Each entry should make 
 - the middle button toggles whether category filtering is currently applied
 - when category filtering is enabled, `CategoryFilter` filters the image set by the category at the current index
 - when category filtering is disabled, the image set is shown without category filtering
-- `CardBrowser` shows the selected image and the paged preview images
+- `CardBrowser` shows the selected image as a `CompassImageCard`
+- preview items in the same browser are rendered as `PreviewCard` variants of `CompassImageCard`
+- preview ratings in this browser are display-only
 - rating an image adds it to the collection or updates its collected rating
 
 ### Collection Sayings Section
@@ -121,8 +125,10 @@ This file defines top-level and planned view components. Each entry should make 
 - initially, the focus list browser is active
 - the first button shows the focus list and allows the user to choose an existing focus
 - after switching away from the focus list mode, 2 additional buttons become active
-- one additional button shows image cards
+- one additional button shows image cards as `CompassImageCard` and `PreviewCard` variants
 - one additional button shows saying cards
+- the focus list browser shows collected foci as `FocusCard` and `PreviewCard` variants
+- preview ratings in these browsers are display-only unless a workflow explicitly enables rating interaction there
 - the image browser and saying browser are used to assemble or inspect focus parts
 - allow rating existing collected foci
 - Open Clarification:
@@ -153,11 +159,11 @@ This file defines top-level and planned view components. Each entry should make 
 - a `StarRating`
 - up to 5 focus slots
 - each focus slot can hold one focus from the collection
-- existing mindsets are shown through a representative focus preview with the mindset name overlaid
+- existing mindsets are shown through a representative `PreviewCard` variant of one focus with the mindset name overlaid
 - only one of the 2 lower `HorizontalBrowser` instances is active at a time
 - Interaction Rules:
 - in `Mindsets` mode, the user browses existing collection mindsets
-- in `Foci` mode, the user browses collected foci and assigns them into the currently active mindset slots
+- in `Foci` mode, the user browses collected foci through `FocusCard` or `PreviewCard` variants and assigns them into the currently active mindset slots
 - a dedicated `+` tile creates a new mindset draft
 - selecting an existing mindset loads it into the editor
 - creating or editing a mindset works only with collected foci
