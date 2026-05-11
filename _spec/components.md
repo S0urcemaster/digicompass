@@ -36,12 +36,13 @@ This file defines reusable and content-level UI components. Every component entr
 - Reuse Intent: reusable rating control for sayings, images, foci, and mindsets where needed
 - Composition:
 - horizontal row of 5 `StarButton` elements
-- State Ownership: stateless; current rating value is provided by parent or store-connected wrapper
+- State Ownership: stateless; current rating value and interaction mode are provided by parent or store-connected wrapper
 - Layout Rules:
 - distributes its 5 `StarButton` elements evenly across the available width
 - remains a horizontal row
 - Interaction Rules:
-- selecting a star assigns the related rating value
+- when interaction is enabled, selecting a star assigns the related rating value
+- when interaction is disabled, the current rating is shown but selecting a star does not change the related value
 - stars can be configured as active or inactive without changing their visual shape
 
 ## Card
@@ -76,6 +77,65 @@ This file defines reusable and content-level UI components. Every component entr
 - `Preview Card`: `1/4` of content width
 - Non-Goals:
 - no automatic layout-based text size fitting
+
+## PreviewCard
+
+- Kind: `Reusable Component`
+- Purpose: render the preview-sized card variant used inside preview areas of `CardBrowser`
+- Reuse Intent: reusable preview wrapper for concrete card variants such as `CompassImageCard` and `FocusCard`
+- Composition:
+- derived from `Card`
+- uses the `Preview Card` size rules from `Card`
+- footer still contains `StarRating`
+- State Ownership: stateless; content, rating, and rating interaction mode are supplied from parent or store-connected wrapper
+- Layout Rules:
+- uses the preview-size card layout from `Card`
+- keeps the same header, middle, and footer structure as `Card`
+- preview space is intentionally tighter than the selected card space
+- preview text layout may require explicit manual adjustment by the concrete card variant when usual saying font sizes do not fit cleanly
+- Interaction Rules:
+- may be configured either as rating-display-only or rating-interactive depending on the connected workflow
+
+## CompassImageCard
+
+- Kind: `Content Component`
+- Purpose: render one `CompassImage` as a concrete card variant
+- Reuse Intent: used for image browsing in collection or other image-based workflows
+- Composition:
+- derived from `Card` or `PreviewCard`, depending on the current browser context
+- shows the image asset from `CompassImage.url`
+- footer contains `StarRating`
+- State Ownership: stateless; image content, rating, and rating interaction mode are supplied from parent or store-connected wrapper
+- Data Rules:
+- full-size rendering uses assets from `frontend/public/images`
+- preview rendering uses assets from `frontend/public/images/preview`
+- the image tone comes from `CompassImage.color`
+- Layout Rules:
+- uses the image itself as the visual base of the card
+- if category text is shown, it follows the shared card header rules
+- Interaction Rules:
+- when used as a preview card, selection behavior belongs to the surrounding browser
+
+## FocusCard
+
+- Kind: `Content Component`
+- Purpose: render one `Focus` as a concrete card variant
+- Reuse Intent: used for focus browsing in `Compass View`, `Collection > Foci`, and mindset-related workflows
+- Composition:
+- derived from `Card` or `PreviewCard`, depending on the current browser context
+- shows the focus image from `Focus.image`
+- shows the focus saying from `Focus.saying`
+- footer contains `StarRating`
+- State Ownership: stateless; focus content, rating, and rating interaction mode are supplied from parent or store-connected wrapper
+- Data Rules:
+- saying text uses `Focus.saying.fontSize`
+- saying text color follows the opposite-tone rule derived from `Focus.image.color`
+- Layout Rules:
+- uses the focus image as the visual base of the card
+- saying text remains aligned toward the top-left of the middle card area
+- preview rendering inherits the tighter text constraints of `PreviewCard`
+- Interaction Rules:
+- when used as a preview card, selection behavior belongs to the surrounding browser
 
 ## CategoryFilter
 
