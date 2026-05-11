@@ -148,6 +148,9 @@ button {
 .star-button {
   font-size: 1.15rem;
   color: rgba(16, 34, 41, 0.32);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .star-button-active {
@@ -221,6 +224,7 @@ button {
   gap: 0.35rem;
   padding: 0.4rem;
   flex-wrap: wrap;
+  background: transparent;
 }
 
 .card-body {
@@ -232,7 +236,9 @@ button {
 }
 
 .card-chip {
-  background: rgba(255, 255, 255, 0.78);
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 0.15rem 0.35rem;
   font-size: 0.68rem;
 }
@@ -250,6 +256,10 @@ button {
   position: relative;
   max-width: 80%;
   white-space: pre-wrap;
+  padding: 0.25rem 0.35rem;
+  background: transparent;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .focus-text-light {

@@ -36,6 +36,14 @@ function replaceById<T extends { id: number }>(items: T[], next: T): T[] {
   return copy;
 }
 
+function removeById<T extends { id: number }>(items: T[], id: number): T[] {
+  return items.filter((item) => item.id !== id);
+}
+
+function isSameRating(left: number, right: number): boolean {
+  return Math.abs(left - right) < 0.0001;
+}
+
 function clampIndex(index: number, size: number): number {
   if (size <= 0) {
     return 0;
@@ -83,26 +91,36 @@ const storeImpl = (set: (fn: (state: CompassStore) => Partial<CompassStore>) => 
     }),
   rateLibraryImage: (image, rating) =>
     set((state) => {
-      const nextImage = { ...image, rating: clampRating(rating) };
+      const nextRating = clampRating(rating);
+      const existingImage = state.data.collection.images.find((item) => item.id === image.id);
+      const nextImages =
+        existingImage && isSameRating(existingImage.rating, nextRating)
+          ? removeById(state.data.collection.images, image.id)
+          : replaceById(state.data.collection.images, { ...image, rating: nextRating });
       return {
         data: {
           ...state.data,
           collection: {
             ...state.data.collection,
-            images: replaceById(state.data.collection.images, nextImage),
+            images: nextImages,
           },
         },
       };
     }),
   rateLibrarySaying: (saying, rating) =>
     set((state) => {
-      const nextSaying = { ...saying, rating: clampRating(rating) };
+      const nextRating = clampRating(rating);
+      const existingSaying = state.data.collection.sayings.find((item) => item.id === saying.id);
+      const nextSayings =
+        existingSaying && isSameRating(existingSaying.rating, nextRating)
+          ? removeById(state.data.collection.sayings, saying.id)
+          : replaceById(state.data.collection.sayings, { ...saying, rating: nextRating });
       return {
         data: {
           ...state.data,
           collection: {
             ...state.data.collection,
-            sayings: replaceById(state.data.collection.sayings, nextSaying),
+            sayings: nextSayings,
           },
         },
       };
@@ -121,17 +139,41 @@ const storeImpl = (set: (fn: (state: CompassStore) => Partial<CompassStore>) => 
       };
     }),
   rateCollectedFocus: (focusId, rating) =>
-    set((state) => ({
-      data: {
-        ...state.data,
-        collection: {
-          ...state.data.collection,
-          foci: state.data.collection.foci.map((focus) =>
-            focus.id === focusId ? { ...focus, rating: clampRating(rating) } : focus,
-          ),
+    set((state) => {
+      const nextRating = clampRating(rating);
+      const existingFocus = state.data.collection.foci.find((focus) => focus.id === focusId);
+      if (!existingFocus) {
+        return {};
+      }
+
+      const shouldRemove = isSameRating(existingFocus.rating, nextRating);
+      const nextCollectionFoci = shouldRemove
+        ? removeById(state.data.collection.foci, focusId)
+        : state.data.collection.foci.map((focus) =>
+            focus.id === focusId ? { ...focus, rating: nextRating } : focus,
+          );
+      const pruneMindsetFoci = (mindset: Mindset) => ({
+        ...mindset,
+        foci: mindset.foci.filter((focus) => focus.id !== focusId),
+      });
+
+      return {
+        selectedFocusIndex: shouldRemove
+          ? clampIndex(state.selectedFocusIndex, Math.max(0, nextCollectionFoci.length - 1))
+          : state.selectedFocusIndex,
+        data: {
+          ...state.data,
+          mindsets: shouldRemove ? state.data.mindsets.map(pruneMindsetFoci) : state.data.mindsets,
+          collection: {
+            ...state.data.collection,
+            foci: nextCollectionFoci,
+            mindsets: shouldRemove
+              ? state.data.collection.mindsets.map(pruneMindsetFoci)
+              : state.data.collection.mindsets,
+          },
         },
-      },
-    })),
+      };
+    }),
   saveMindset: (mindset) =>
     set((state) => {
       const nextMindset = { ...mindset, rating: clampRating(mindset.rating) };

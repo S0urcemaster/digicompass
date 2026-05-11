@@ -54,6 +54,9 @@ This file defines top-level and planned view components. Each entry should make 
 - Interaction Rules:
 - supports selecting items from the base library into the collection
 - provides separate tabs for images, sayings, foci, and mindsets
+- editor-like save behavior in this view is represented through `StarRating` state instead of separate save controls
+- active stars represent `contained`
+- inactive stars represent `not contained`
 
 ### Collection Images Section
 
@@ -81,6 +84,8 @@ This file defines top-level and planned view components. Each entry should make 
 - preview items in the same browser are rendered as `PreviewCard` variants of `CompassImageCard`
 - preview ratings in this browser are display-only
 - rating an image adds it to the collection or updates its collected rating
+- the first star interaction on the selected image adds that image to `collection.images`
+- clicking the currently active star value again on the selected image removes that image from `collection.images`
 
 ### Collection Sayings Section
 
@@ -105,6 +110,8 @@ This file defines top-level and planned view components. Each entry should make 
 - when category filtering is disabled, the saying set is shown without category filtering
 - `SayingsBrowser` shows the selected saying and the available preview sayings
 - rating a saying adds it to the collection and sets its rating
+- the first star interaction on the selected saying adds that saying to `collection.sayings`
+- clicking the currently active star value again on the selected saying removes that saying from `collection.sayings`
 - Display Rules:
 - the current UI uses a compact list instead of a large detail card
 
@@ -114,11 +121,15 @@ This file defines top-level and planned view components. Each entry should make 
 - Purpose: browse collected foci, inspect focus parts, and assemble focus candidates from collected items
 - Composition:
 - dedicated button row to toggle active browser mode
+- left-side toggle button: `Edit ->`
+- left-side return button: `<- Foci`
+- right-side source buttons: `Images` and `Sayings`
 - 3 browser contexts:
 - focus list browser
 - image browser
 - saying browser
 - State Ownership:
+- edit mode enabled state may be owned locally or by a section-level controller
 - active browser mode may be owned locally or by a section-level controller
 - selected focus, image, and saying may be owned locally or by a section-level controller
 - persistence behavior must be made explicit by the implementation or worksheet when changed
@@ -126,14 +137,21 @@ This file defines top-level and planned view components. Each entry should make 
 - focus-related browsers operate only on collected items
 - Interaction Rules:
 - initially, the focus list browser is active
-- the first button shows the focus list and allows the user to choose an existing focus
-- after switching away from the focus list mode, 2 additional buttons become active
-- one additional button shows image cards as `CompassImageCard` and `PreviewCard` variants
-- one additional button shows saying cards
+- `<- Foci` shows the focus list browser and exits edit mode
+- `Edit ->` toggles focus edit mode on or off
+- `Images` and `Sayings` are enabled only while `Edit ->` is active
+- when `Edit ->` is inactive, the active browser is the focus list browser
+- when `Edit ->` becomes active, the currently selected focus becomes the editable card
+- while edit mode is active, `Images` switches the `CardBrowser` to collected images rendered as `CompassImageCard` and `PreviewCard` variants
+- while edit mode is active, `Sayings` switches the `CardBrowser` to collected sayings
+- the currently selected item from the active source browser is applied to the editable selected focus card
 - the focus list browser shows collected foci as `FocusCard` and `PreviewCard` variants
 - preview ratings in these browsers are display-only unless a workflow explicitly enables rating interaction there
 - the image browser and saying browser are used to assemble or inspect focus parts
 - allow rating existing collected foci
+- clicking a star on the selected focus updates its rating while it remains in `collection.foci`
+- clicking the currently active star value again on the selected focus removes that focus from `collection.foci`
+- if focus editing is represented inside this section, saving that edited focus is expressed through stars rather than a separate save button
 - Open Clarification:
 - final save flow and finalized UX rules for focus creation are not fully defined yet
 
@@ -170,6 +188,7 @@ This file defines top-level and planned view components. Each entry should make 
 - a dedicated `+` tile creates a new mindset draft
 - selecting an existing mindset loads it into the editor
 - creating or editing a mindset works only with collected foci
+- if the active mindset editor persists a mindset into `collection.mindsets`, that persistence is represented through stars rather than a separate save button
 
 ## Navigator View
 

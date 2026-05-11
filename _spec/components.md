@@ -26,6 +26,7 @@ This file defines reusable and content-level UI components. Every component entr
 - State Ownership: stateless; active or inactive state is provided by parent
 - Layout Rules:
 - visual shape remains star-specific in active and inactive states
+- the button background stays transparent
 - Non-Goals:
 - not rendered as an unchanged default `Button`
 
@@ -42,6 +43,11 @@ This file defines reusable and content-level UI components. Every component entr
 - remains a horizontal row
 - Interaction Rules:
 - when interaction is enabled, selecting a star assigns the related rating value
+- in editor workflows, star interaction is also the save interaction
+- active stars mean the currently edited element is contained in the connected target list
+- inactive stars mean the currently edited element is not contained in the connected target list
+- when the connected workflow uses the selected element to add or remove entries in a target list, the first star selection adds the selected element to that target list with the chosen rating
+- when the user clicks the already active star value again in that add-or-remove workflow, the selected element is removed from the connected target list instead of keeping the same rating
 - when interaction is disabled, the current rating is shown but selecting a star does not change the related value
 - stars can be configured as active or inactive without changing their visual shape
 
@@ -68,6 +74,9 @@ This file defines reusable and content-level UI components. Every component entr
 - text content fills the remaining middle area
 - text in the middle area is aligned toward the top-left
 - `StarRating` spans the full footer width
+- the card header area itself has no background surface
+- the card footer area itself has no background surface
+- category labels and text panels rendered on top of the card use a fully transparent blurred background surface
 - Data Rules:
 - saying text uses the configured `Saying.fontSize` instead of automatic text fitting
 - saying text is intended for a 3-line layout
@@ -133,6 +142,7 @@ This file defines reusable and content-level UI components. Every component entr
 - Layout Rules:
 - uses the focus image as the visual base of the card
 - saying text remains aligned toward the top-left of the middle card area
+- the saying text panel uses a fully transparent blurred background surface
 - preview rendering inherits the tighter text constraints of `PreviewCard`
 - Interaction Rules:
 - when used as a preview card, selection behavior belongs to the surrounding browser
@@ -195,6 +205,7 @@ This file defines reusable and content-level UI components. Every component entr
 - preview cards replace the selected card when chosen
 - Interaction Rules:
 - clicking a preview card replaces the selected card
+- when the selected card uses interactive rating in an add-or-remove workflow, the rating interaction applies to the currently selected element only
 
 ## SayingsBrowser
 

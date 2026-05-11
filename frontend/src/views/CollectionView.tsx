@@ -25,17 +25,22 @@ function wrapIndex(index: number, size: number): number {
 }
 
 function CollectionImagesSection() {
+  const collectionImages = useCompassStore((state) => state.data.collection.images);
   const rateLibraryImage = useCompassStore((state) => state.rateLibraryImage);
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [filterEnabled, setFilterEnabled] = useState(false);
+  const visibleImages = libraryImages.map((image) => {
+    const collectedImage = collectionImages.find((item) => item.id === image.id);
+    return collectedImage ?? image;
+  });
   const filteredImages = (() => {
     if (!filterEnabled) {
-      return libraryImages;
+      return visibleImages;
     }
 
-    return libraryImages.filter((image) => image.category === allCategories[categoryIndex]);
+    return visibleImages.filter((image) => image.category === allCategories[categoryIndex]);
   })();
-  const [selectedImageId, setSelectedImageId] = useState(filteredImages[0]?.id ?? libraryImages[0]?.id ?? 0);
+  const [selectedImageId, setSelectedImageId] = useState(filteredImages[0]?.id ?? visibleImages[0]?.id ?? 0);
   const selectedImage =
     filteredImages.find((image) => image.id === selectedImageId) ?? filteredImages[0] ?? null;
 
@@ -68,17 +73,22 @@ function CollectionImagesSection() {
 }
 
 function CollectionSayingsSection() {
+  const collectionSayings = useCompassStore((state) => state.data.collection.sayings);
   const rateLibrarySaying = useCompassStore((state) => state.rateLibrarySaying);
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [filterEnabled, setFilterEnabled] = useState(false);
+  const visibleSayings = librarySayings.map((saying) => {
+    const collectedSaying = collectionSayings.find((item) => item.id === saying.id);
+    return collectedSaying ?? saying;
+  });
   const filteredSayings = (() => {
     if (!filterEnabled) {
-      return librarySayings;
+      return visibleSayings;
     }
 
-    return librarySayings.filter((saying) => saying.categories.includes(allCategories[categoryIndex]));
+    return visibleSayings.filter((saying) => saying.categories.includes(allCategories[categoryIndex]));
   })();
-  const [selectedSayingId, setSelectedSayingId] = useState(filteredSayings[0]?.id ?? librarySayings[0]?.id ?? 0);
+  const [selectedSayingId, setSelectedSayingId] = useState(filteredSayings[0]?.id ?? visibleSayings[0]?.id ?? 0);
   const selectedSaying =
     filteredSayings.find((saying) => saying.id === selectedSayingId) ?? filteredSayings[0] ?? null;
 
