@@ -13,6 +13,12 @@ This file is the stable execution guide for implementation work. It should remai
 
 - Treat this spec as the primary source of truth for structure, behavior, and composition.
 - Treat `frontend/src/data/*.json` and `frontend/public/images/**` as source data, not UI implementation.
+- Generate enough dummy user-store data for implementation runs to exercise the main flows.
+- Target dummy store size:
+- about 20 images
+- about 30 sayings
+- about 20 foci
+- about 5 mindsets
 - Prefer rebuilding thin, explicit components from the spec over preserving inconsistent legacy code.
 - Follow the component rule strictly: no local one-off components inside other files.
 - Build shared components first, then compose views from those components.
