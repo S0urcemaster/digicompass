@@ -12,6 +12,13 @@ This file is the stable execution guide for implementation work. It should remai
 ## Working Mode
 
 - Treat this spec as the primary source of truth for structure, behavior, and composition.
+- Treat the frontend implementation as disposable proof of the current spec, not as the durable project artifact.
+- The normal iteration loop is:
+- improve the spec
+- rebuild the frontend from the spec
+- inspect the result against product intent
+- feed discovered gaps or wrong assumptions back into the spec
+- wipe implementation when starting the next clean rebuild cycle
 - Treat `frontend/src/data/*.json` and `frontend/public/images/**` as source data, not UI implementation.
 - Generate enough dummy user-store data for implementation runs to exercise the main flows.
 - Target dummy store size:
@@ -25,6 +32,7 @@ This file is the stable execution guide for implementation work. It should remai
 - Keep data loading, state transitions, and presentation separable.
 - When the current implementation differs from the spec, update the spec first if the new behavior is intentional.
 - Use the current implementation only as extraction material, not as a hard constraint.
+- A missing or wiped frontend is not automatically a project problem; judge progress by whether the spec is strong enough to support the next rebuild.
 - Defer `Navigator` until the existing collection and compass workflows are clean again.
 
 ## Task Packaging Rule
@@ -47,7 +55,9 @@ This file is the stable execution guide for implementation work. It should remai
 - The current execution state for AI belongs in a separate worksheet file.
 - The worksheet is updated after meaningful progress so the next run does not restart from the original raw list.
 - The worksheet should be small enough that one run can track it without reconstructing the whole project history.
-- The worksheet may contain status, current packet details, open decisions, and recently completed items.
+- The worksheet may contain status, current packet details, open decisions, and recently completed items, but it must describe the current rebuild cycle accurately.
+- Do not let the worksheet imply that a wiped implementation still exists.
+- When a rebuild starts from an empty frontend, say so explicitly.
 - The worksheet should not replace the durable architectural or behavioral rules stored in the other spec files.
 
 ## Current Priorities
