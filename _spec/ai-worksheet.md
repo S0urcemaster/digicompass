@@ -5,15 +5,15 @@ This file is the small working surface for the next implementation-oriented AI r
 ## Current Work Packet
 
 - Goal:
-- bring the card, rating, and browser implementation into closer alignment with the current spec
+- establish a first runnable frontend implementation from the current spec baseline
 - Scope:
-- update card text placement to top-left behavior from the spec
-- introduce explicit `StarButton` implementation instead of treating star controls as generic buttons
-- make `StarRating` span and distribute across the available footer width as specified
-- review `CardBrowser` and saying/focus card rendering after those changes
+- scaffold the frontend app and build tooling
+- create explicit reusable, content, and view components instead of inline composition
+- load source data from `frontend/src/data` and image assets from `frontend/public/images`
+- provide a local-first store and initial flows for `Compass` and `Collection`
 - Done When:
-- `Card`, `StarButton`, and `StarRating` match the current component spec
-- the main card-based UI no longer relies on unchanged default button styling for star controls
+- the repo contains a runnable frontend app
+- shared components, views, and store boundaries exist in code
 - the build passes
 - Out Of Scope:
 - standalone `Navigator` definition
@@ -26,24 +26,25 @@ This file is the small working surface for the next implementation-oriented AI r
 - Scope:
 - reduce drift between current implementation and view definitions
 - clarify draft-vs-saved behavior in store or spec
+- review whether `CardBrowser` paging and preview composition should be store-owned or local
 - Done When:
 - the two collection sections have explicit matching rules in code and spec
 
 ## Current State
 
 - Spec structure has been upgraded to classify components explicitly.
-- `Card` spec now uses fixed header and footer with remaining middle space.
-- Card text behavior in the spec is top-left and uses stored `Saying.fontSize`.
-- `StarRating` is specified as 5 `StarButton` elements distributed across available width.
-- `views.md` now uses explicit view/component structure instead of only prose sections.
-- The frontend scaffold, store, and first collection/compass flows exist, but some UI behavior still drifts from the latest spec decisions.
+- A first Vite/React/Zustand frontend scaffold now exists under `frontend/`.
+- `Card` uses fixed header, middle, and footer regions with top-left text behavior.
+- `StarButton` now exists as an explicit specialized component and `StarRating` distributes 5 stars across the available width.
+- `Compass View` and all current `Collection View` sections exist as separate components.
+- The build passes, but some workflow details are still only approximated.
 
 ## Known Drift
 
-- The current code still renders `StarRating` through generic `Button` instances and does not yet define an explicit `StarButton` component.
-- Card body rendering in code is not yet fully aligned with the top-left text placement rule from the latest spec revision.
-- `Collection > Foci` in code is looser than the currently specified 3-browser composition.
-- `Collection > Mindsets` in code still leaves draft-vs-persisted behavior underspecified.
+- `Collection > Foci` currently switches between the 3 browser contexts, but the transition rules are still looser than the view spec wording.
+- `Collection > Mindsets` currently edits persisted store state directly; draft-vs-saved behavior is still underspecified.
+- `CardBrowser` selection and paging are implemented locally per instance and may need stronger store coordination if the spec is tightened.
+- The visual system is functional, but not yet refined against a finalized design pass.
 
 ## Misread Risks For A Fresh Run
 
@@ -53,29 +54,49 @@ This file is the small working surface for the next implementation-oriented AI r
 
 ## Touched Files
 
+- `frontend/index.html`
+- `frontend/package.json`
+- `frontend/tsconfig.app.json`
+- `frontend/tsconfig.json`
+- `frontend/vite.config.ts`
+- `frontend/src/App.tsx`
 - `frontend/src/components/Button.tsx`
 - `frontend/src/components/Card.tsx`
 - `frontend/src/components/CardBrowser.tsx`
+- `frontend/src/components/CategoryFilter.tsx`
 - `frontend/src/components/FocusCard.tsx`
+- `frontend/src/components/FocusSlot.tsx`
 - `frontend/src/components/HorizontalBrowser.tsx`
+- `frontend/src/components/MainTab.tsx`
+- `frontend/src/components/MindsetPaginator.tsx`
+- `frontend/src/components/Paginator.tsx`
+- `frontend/src/components/SayingsBrowser.tsx`
+- `frontend/src/components/StarButton.tsx`
 - `frontend/src/components/StarRating.tsx`
+- `frontend/src/main.tsx`
 - `frontend/src/store/compassStore.ts`
 - `frontend/src/styles.css`
+- `frontend/src/types/domain.ts`
+- `frontend/src/utils/data.ts`
+- `frontend/src/utils/factoryState.ts`
 - `frontend/src/views/CollectionFociSection.tsx`
+- `frontend/src/views/CollectionImagesSection.tsx`
 - `frontend/src/views/CollectionMindsetsSection.tsx`
+- `frontend/src/views/CollectionSayingsSection.tsx`
 - `frontend/src/views/CollectionView.tsx`
 - `frontend/src/views/CompassView.tsx`
+- `frontend/src/views/NavigatorView.tsx`
 
 ## Open Decisions
 
-- Decide whether `StarButton` should exist only as a visual specialization or as a separately named code component.
-- Decide how strictly `Collection > Foci` should keep the 3-browser composition described in `views.md`.
+- Decide whether mindset editing should use explicit draft objects instead of mutating persisted collection mindsets directly.
+- Decide how strictly `Collection > Foci` should keep the 3-browser composition and activation sequencing described in `views.md`.
 
 ## Completed Recently
 
-- Rebuilt `_spec/components.md` into a structured AI-oriented component specification.
-- Added architecture-level rules for explicit classification and implementation-critical intent.
-- Refined the card spec around fixed header/footer and explicit text placement.
+- Scaffolded the first runnable frontend implementation from the current spec.
+- Added reusable component files for tabs, buttons, cards, rating, paginators, and browsers.
+- Added a Zustand store with local persistence and dev-time factory reset behavior.
 
 ## Legacy Queue
 

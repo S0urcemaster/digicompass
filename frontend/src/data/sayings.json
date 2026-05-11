@@ -3438,11 +3438,32 @@
   {
     "id": 336,
     "text": "Wer selten in den Spiegel sieht : beginnt : sein Spiegelbild zu fürchten",
-    "fontSize": 50,
+    "fontSize": 44,
     "categories": [
       "Spiegel",
       "Angst",
       "Vorstellungskraft"
+    ],
+    "rating": 0.5
+  },
+  {
+    "id": 337,
+    "text": "Du denkst : du bist zu klein um etwas zu bewirken ? Du könntest der Tropfen sein : der das Meer zum Überlaufen bringt",
+    "fontSize": 38,
+    "categories": [
+      "Verantwortung",
+      "Bewusstsein",
+      "Dimension"
+    ],
+    "rating": 0.5
+  },
+  {
+    "id": 338,
+    "text": "Du spottest über meine Armut - und ich über deine Hilflosigkeit",
+    "fontSize": 44,
+    "categories": [
+      "Wille",
+      "Glaube"
     ],
     "rating": 0.5
   }
