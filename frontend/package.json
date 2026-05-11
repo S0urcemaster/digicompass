@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "reimage": "node ../ops/rebuild-images-json.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview"

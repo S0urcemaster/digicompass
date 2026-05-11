@@ -1,146 +1,181 @@
 [
   {
     "id": 0,
+    "url": "achtsamkeit dunkel 1.jpg",
+    "color": "dunkel",
+    "category": "Achtsamkeit",
+    "rating": 0
+  },
+  {
+    "id": 1,
+    "url": "achtsamkeit dunkel 2.jpg",
+    "color": "dunkel",
+    "category": "Achtsamkeit",
+    "rating": 0
+  },
+  {
+    "id": 2,
+    "url": "achtsamkeit dunkel 3.jpg",
+    "color": "dunkel",
+    "category": "Achtsamkeit",
+    "rating": 0
+  },
+  {
+    "id": 3,
+    "url": "achtsamkeit dunkel 4.jpg",
+    "color": "dunkel",
+    "category": "Achtsamkeit",
+    "rating": 0
+  },
+  {
+    "id": 4,
+    "url": "achtsamkeit hell 1.jpg",
+    "color": "hell",
+    "category": "Achtsamkeit",
+    "rating": 0
+  },
+  {
+    "id": 5,
     "url": "angst dunkel 1.jpg",
     "color": "dunkel",
     "category": "Angst",
     "rating": 0
   },
   {
-    "id": 1,
+    "id": 6,
     "url": "angst hell 1.jpg",
     "color": "hell",
     "category": "Angst",
     "rating": 0
   },
   {
-    "id": 2,
+    "id": 7,
     "url": "angst hell 2.jpg",
     "color": "hell",
     "category": "Angst",
     "rating": 0
   },
   {
-    "id": 3,
+    "id": 8,
     "url": "autonomie dunkel 3.jpg",
     "color": "dunkel",
     "category": "Autonomie",
     "rating": 0
   },
   {
-    "id": 4,
+    "id": 9,
     "url": "autonomie hell 1.jpg",
     "color": "hell",
     "category": "Autonomie",
     "rating": 0
   },
   {
-    "id": 5,
+    "id": 10,
     "url": "autonomie hell 2.jpg",
     "color": "hell",
     "category": "Autonomie",
     "rating": 0
   },
   {
-    "id": 6,
+    "id": 11,
     "url": "bewusstsein hell 1.jpg",
     "color": "hell",
     "category": "Bewusstsein",
     "rating": 0
   },
   {
-    "id": 7,
+    "id": 12,
     "url": "bewusstsein hell 2.jpg",
     "color": "hell",
     "category": "Bewusstsein",
     "rating": 0
   },
   {
-    "id": 8,
+    "id": 13,
     "url": "bewusstsein mix 1.jpg",
     "color": "mix",
     "category": "Bewusstsein",
     "rating": 0
   },
   {
-    "id": 9,
+    "id": 14,
     "url": "denken dunkel 1.jpg",
     "color": "dunkel",
     "category": "Denken",
     "rating": 0
   },
   {
-    "id": 10,
+    "id": 15,
     "url": "denken dunkel 2.jpg",
     "color": "dunkel",
     "category": "Denken",
     "rating": 0
   },
   {
-    "id": 11,
+    "id": 16,
     "url": "denken dunkel 3.jpg",
     "color": "dunkel",
     "category": "Denken",
     "rating": 0
   },
   {
-    "id": 12,
+    "id": 17,
     "url": "spiegel dunkel 1.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 13,
+    "id": 18,
     "url": "spiegel dunkel 2.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 14,
+    "id": 19,
     "url": "spiegel dunkel 3.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 15,
+    "id": 20,
     "url": "spiegel dunkel 4.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 16,
+    "id": 21,
     "url": "spiegel dunkel 5.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 17,
+    "id": 22,
     "url": "spiegel dunkel 6.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 18,
+    "id": 23,
     "url": "spiegel dunkel 7.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 19,
+    "id": 24,
     "url": "spiegel dunkel 8.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 20,
+    "id": 25,
     "url": "spiegel dunkel 9.jpg",
     "color": "dunkel",
     "category": "Spiegel",
