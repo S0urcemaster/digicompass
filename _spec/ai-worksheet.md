@@ -43,9 +43,9 @@ The spec is durable. The frontend implementation is disposable.
 ## Current State
 
 - Spec structure has been upgraded to classify components explicitly.
-- The frontend implementation has been intentionally wiped.
-- `frontend/` currently contains source data and image assets, but not the runnable app scaffold.
-- The next run should rebuild the app from spec instead of assuming surviving UI code.
+- The frontend implementation has been rebuilt into a runnable Vite + React + TypeScript app.
+- `frontend/` now contains the app scaffold, explicit reusable/content/view components, a Zustand-backed local-first store, and the existing source data and image assets.
+- The current rebuild covers `Compass` and `Collection` with a deferred placeholder for `Navigator`.
 
 ## Known Drift
 
@@ -62,6 +62,19 @@ The spec is durable. The frontend implementation is disposable.
 
 ## Touched Files
 
+- `frontend/package.json`
+- `frontend/tsconfig.json`
+- `frontend/tsconfig.app.json`
+- `frontend/tsconfig.node.json`
+- `frontend/vite.config.ts`
+- `frontend/index.html`
+- `frontend/src/app/**`
+- `frontend/src/components/**`
+- `frontend/src/store/**`
+- `frontend/src/types/**`
+- `frontend/src/utils/**`
+- `frontend/src/vite-env.d.ts`
+- `frontend/src/styles.css`
 - `frontend/src/data/categories.json`
 - `frontend/src/data/images.json`
 - `frontend/src/data/sayings.json`
@@ -72,11 +85,15 @@ The spec is durable. The frontend implementation is disposable.
 
 - Decide whether mindset editing should use explicit draft objects instead of mutating persisted collection mindsets directly.
 - Decide how strictly `Collection > Foci` should keep the 3-browser composition and activation sequencing described in `views.md`.
+- Decide whether the current `Collection > Foci` save button should create a new focus draft by default or continue treating the selected focus as the editable target.
 
 ## Completed Recently
 
 - Reframed the spec and worksheet around the intended rebuild loop.
 - Confirmed that the current cycle starts from a wiped frontend implementation.
+- Rebuilt a runnable frontend scaffold with explicit component boundaries and local-first store wiring.
+- Implemented baseline `Compass` and `Collection` flows against the source JSON data.
+- Verified that `npm run build` passes in `frontend/`.
 
 ## Legacy Queue
 

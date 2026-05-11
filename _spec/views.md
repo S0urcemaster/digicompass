@@ -48,6 +48,9 @@ This file defines top-level and planned view components. Each entry should make 
 - Data Scope:
 - base library data for images and sayings
 - collected items for foci and mindsets
+- Layout Rules:
+- in desktop view, the 4 top-level section tabs `Images`, `Sayings`, `Foci`, and `Mindsets` stay in one horizontal row across the available collection view width
+- these 4 tabs are not allowed to wrap into multiple rows in desktop view
 - Interaction Rules:
 - supports selecting items from the base library into the collection
 - provides separate tabs for images, sayings, foci, and mindsets
