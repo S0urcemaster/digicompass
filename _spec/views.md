@@ -58,14 +58,20 @@ This file defines top-level and planned view components. Each entry should make 
 - `CategoryFilter`
 - `CardBrowser`
 - State Ownership:
-- selected category may be owned locally or by a section-level controller
+- current category index may be owned locally or by a section-level controller
+- category filter enabled state may be owned locally or by a section-level controller
 - selected image may be owned locally or by a section-level controller
 - rating writes to collection-backed state
 - Data Scope:
 - browses all available images from `src/data/images.json`
+- category names come from `src/data/categories.json`
 - uses preview assets from `public/images/preview` in the grid
 - Interaction Rules:
-- `CategoryFilter` filters the image set by category
+- `CategoryFilter` always shows the category at the current index
+- the left and right buttons always change the current category index
+- the middle button toggles whether category filtering is currently applied
+- when category filtering is enabled, `CategoryFilter` filters the image set by the category at the current index
+- when category filtering is disabled, the image set is shown without category filtering
 - `CardBrowser` shows the selected image and the paged preview images
 - rating an image adds it to the collection or updates its collected rating
 
@@ -77,13 +83,19 @@ This file defines top-level and planned view components. Each entry should make 
 - `CategoryFilter`
 - `SayingsBrowser`
 - State Ownership:
-- selected category may be owned locally or by a section-level controller
+- current category index may be owned locally or by a section-level controller
+- category filter enabled state may be owned locally or by a section-level controller
 - selected saying may be owned locally or by a section-level controller
 - rating writes to collection-backed state
 - Data Scope:
 - browses all available sayings from the base data
+- category names come from `src/data/categories.json`
 - Interaction Rules:
-- `CategoryFilter` filters the saying set by category
+- `CategoryFilter` always shows the category at the current index
+- the left and right buttons always change the current category index
+- the middle button toggles whether category filtering is currently applied
+- when category filtering is enabled, `CategoryFilter` filters the saying set by the category at the current index
+- when category filtering is disabled, the saying set is shown without category filtering
 - `SayingsBrowser` shows the selected saying and the available preview sayings
 - rating a saying adds it to the collection and sets its rating
 - Display Rules:

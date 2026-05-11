@@ -80,20 +80,31 @@ This file defines reusable and content-level UI components. Every component entr
 ## CategoryFilter
 
 - Kind: `Reusable Component`
-- Purpose: switch the active category filter for a connected list
+- Purpose: toggle the connected category filter on or off and change the current category for a connected list
 - Reuse Intent: reusable filter control for image and saying browser sections
 - Composition:
 - horizontal row of 3 buttons
 - previous category button: `<-`
-- current category label button
+- current category toggle button
 - next category button: `->`
-- State Ownership: may keep current index in parent or connected store; the component itself only changes the connected category filter
+- Data Rules:
+- category names always come from `frontend/src/data/categories.json`
+- the category list is static and is not created dynamically from the currently visible items
+- State Ownership:
+- current category index is owned by parent or connected store
+- filter enabled state is owned by parent or connected store
+- the component itself does not own the category list
 - Layout Rules:
 - horizontal row of 3 evenly distributed buttons
+- the middle button always shows the category at the current index
+- the shown category does not depend on whether the filter is enabled
 - Interaction Rules:
-- previous button selects the previous category
-- next button selects the next category
-- label reflects the currently active category
+- previous button moves to the previous category index
+- next button moves to the next category index
+- previous and next remain active even when the filter is disabled
+- middle button toggles the connected category filter on or off
+- when the filter is enabled, the connected list is filtered by the category at the current index
+- when the filter is disabled, the connected list is shown without category filtering
 
 ## Paginator
 
