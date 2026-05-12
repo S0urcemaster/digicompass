@@ -25,5 +25,6 @@ Diese Orientierung entsteht durch Auswaehlen, Einordnen, Bewerten und Verbinden 
 
 1. [DNA](./dna.md)
 2. [Elements And Composition](./elements-and-composition.md)
+3. [Fachlogik](./fachlogik.md)
 
 Dieser Einstiegspunkt bleibt absichtlich knapp und trennt die Form der Spezifikation von ihrem Produktinhalt.
