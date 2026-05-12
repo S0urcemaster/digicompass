@@ -33,26 +33,42 @@ Die Basisdaten sind der gewachsene Ausgangsbestand des Produkts:
 
 - `Sayings`
 - `Images`
+- `Foci`
 
-Diese Daten werden durch die gleich benannten Entitaeten `Saying` und `Image` repraesentiert.
+Diese Daten werden durch die Entitaeten `Saying`, `Image` und `Focus` repraesentiert.
 
 Sie bilden den Factory-Bestand, aus dem der Benutzer fuer seine eigene Orientierung auswaehlt.
 
+Dabei gilt zusaetzlich:
+
+- bei Auslieferung der App ist dieser Factory-Bestand bereits vorhanden
+- der Factory-Bestand listet alle mitgelieferten `Sayings` und `Images`
+- der Factory-Bestand enthaelt zusaetzlich einige vom Developer vorgefertigte `Foci`
+- diese vorgefertigten `Foci` dienen unter anderem einem schnelleren und einfacheren Start
+- sie koennen spaeter auch vorbereitete Orientierung fuer den `Navigator` bereitstellen
+
 ## User-Pool
 
-Der User-Pool enthaelt die vom Benutzer gebildeten und lokal gespeicherten `Foci`.
+Der User-Pool enthaelt die vom Benutzer ausgewaehlten oder neu gebildeten und lokal gespeicherten `Sayings`, `Images` und `Foci`.
+
+Dabei gilt:
+
+- `Sayings` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
+- `Images` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
+- `Foci` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
+- `Foci` koennen zusaetzlich im Produkt neu aus je einem Saying und einem Image des User-Store gebildet werden
 
 Ein `Focus` entsteht nicht dadurch, dass ganze UI-Objekte verschoben werden.
 
-Ein `Focus` entsteht datenlogisch dadurch, dass die fuer den Focus benoetigten Daten aus dem Basisbestand in den User-Store uebernommen werden.
+Ein `Focus` entsteht datenlogisch entweder dadurch, dass ein vorkomponierter Factory-Focus in den User-Store uebernommen wird oder dadurch, dass die fuer einen neuen Focus benoetigten Daten aus dem User-Store zusammengefuehrt werden.
 
-Dazu gehoeren mindestens:
+Ein neu gebildeter Focus traegt im User-Store mindestens:
 
 - das gewaehlte `Saying`
 - die `url` des gewaehlten `Image`
 - die eigene `rating` des Focus
 
-Dieselbe Kombination kann aus dem User-Pool auch wieder entfernt werden.
+Dieselbe uebernommene oder neu gebildete Focus-Einheit kann aus dem User-Pool auch wieder entfernt werden.
 
 Der User-Pool referenziert damit nicht auf eine garantierte Konsistenz zum Factory-Bestand, sondern traegt seine fuer die Benutzung noetigen Daten eigenstaendig.
 
@@ -98,12 +114,14 @@ Aktuell traegt ein `Image` mindestens:
 
 Aktuell traegt ein `Focus` mindestens:
 
+- `id`
 - `saying`
 - `imageUrl`
 - `rating`
 
 Dabei gilt:
 
+- `id` identifiziert den Focus als eigenstaendige Komposition
 - `saying` ist die in den User-Store uebernommene Saying-Datenform fuer diesen Focus
 - `imageUrl` ist die in den User-Store uebernommene Bildreferenz fuer diesen Focus
 - `rating` ist die eigene Bewertung des Focus
@@ -128,13 +146,29 @@ Weitere Felder wie Name oder Notizen koennen spaeter hinzukommen, wenn ihre fach
 
 ## Focus-Bildung als Datenvorgang
 
-Die Bildung eines Focus verlaeuft fachlich in dieser Reihenfolge:
+Die Arbeit mit Foci verlaeuft in `Collection > Foci` aktuell in zwei Modi:
 
-1. der Benutzer waehlt ein `Image`
-2. der Benutzer waehlt ein `Saying`
-3. die Kombination wird als Vorschau sichtbar
-4. bestaetigt der Benutzer die Kombination, werden die benoetigten Daten in den User-Pool uebernommen und dort als `Focus` mit eigener Bewertung gespeichert
-5. wird dieselbe gespeicherte Kombination wieder aufgehoben, wird dieser `Focus` aus dem User-Pool entfernt
+1. Focus-Browser-Modus
+2. Focus-Editor-Modus
+
+Im Focus-Browser-Modus gilt:
+
+1. die Focus-Liste zeigt `Foci` aus dem Factory-Bestand
+2. der Benutzer kann einen angezeigten Factory-Focus in den User-Store aufnehmen
+3. der Benutzer kann einen bereits aufgenommenen Focus wieder aus dem User-Store entfernen
+4. der Toggle zeigt in diesem Zustand den Text `Edit -&gt;`
+
+Im Focus-Editor-Modus gilt:
+
+1. aktiviert der Benutzer den Toggle, wechselt `Collection > Foci` vom Focus-Browser-Modus in den Focus-Editor-Modus
+2. der Toggle zeigt in diesem Zustand den Text `&lt;- Foci`
+3. nur im aktiven Editor-Modus werden die beiden anderen Tabs `Images` und `Sayings` benutzbar
+4. diese beiden Tabs zeigen `Images` und `Sayings` aus dem User-Store
+5. der Benutzer waehlt dort genau ein `Image` und genau ein `Saying` aus seinem User-Store
+6. diese Auswahl wird als aktuelle Focus-Vorschau sichtbar
+7. bestaetigt der Benutzer die Kombination, wird daraus ein neuer `Focus` gebildet und in den User-Store uebernommen
+8. wird derselbe gespeicherte Focus wieder aufgehoben, wird dieser `Focus` aus dem User-Pool entfernt
+9. aktiviert der Benutzer den Toggle erneut, verlaesst `Collection > Foci` den Editor-Modus und zeigt wieder die Focus-Liste
 
 In der Developer-Richtung darf diese Bestaetigung ueber die Sternbewertung erfolgen.
 
@@ -151,6 +185,8 @@ Wenn Einheiten in Listen erscheinen, gilt:
 
 Damit die UI aus Daten lesbar werden kann, braucht das Produkt mindestens diese aktuelle Zustandswerte:
 
+- aktueller `Collection`-Subview
+- aktiver Modus in `Collection > Foci`
 - aktuell ausgewaehltes `Saying`
 - aktuell ausgewaehltes `Image`
 - aktuelle Focus-Vorschau
@@ -166,6 +202,8 @@ Sie machen nur sichtbar, welche vorhandene Einheit gerade im Vordergrund steht.
 Die lokale Speicherung traegt mindestens:
 
 - die Benutzerauswahl
+- die in den User-Store aufgenommenen `Sayings`
+- die in den User-Store aufgenommenen `Images`
 - den User-Pool der gespeicherten `Foci`
 - die gespeicherten `Mindsets`
 - das zuletzt als aktuell gesetzte `Mindset`

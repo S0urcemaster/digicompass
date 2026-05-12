@@ -39,9 +39,10 @@ Die aktuelle Fachlogik unterscheidet zwischen vorhandenen Daten und der persoenl
 
 Dabei gilt:
 
-- `Sayings` und `Images` liegen als vorhandene Basisdaten im Produkt vor
-- die gleich benannten Entitaeten `Saying` und `Image` repraesentieren diese beiden Basisdatenquellen als Elemente
+- `Sayings`, `Images` und `Foci` liegen als vorhandene Basisdaten im Produkt vor
+- die Entitaeten `Saying`, `Image` und `Focus` repraesentieren diese Basisdatenquellen in ihrer jeweiligen Grundform
 - der Benutzer kann aus `Sayings` und aus `Images` jeweils eine Auswahl treffen
+- der Benutzer kann zusaetzlich `Foci` aus dem Factory-Bestand in seinen User-Store uebernehmen
 - diese Benutzerauswahl wird lokal gespeichert
 - die lokal gespeicherte Benutzerauswahl bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung
 - spaeter entstehende User-Daten muessen dabei nicht konsistent an den Basisbestand zurueckgebunden bleiben
@@ -105,6 +106,7 @@ Aus der bisherigen Produktstruktur ergibt sich aktuell:
 
 - Ein `Saying` kann ausgewaehlt, eingeordnet und bewertet werden.
 - Ein `Image` kann ausgewaehlt, eingeordnet und bewertet werden.
+- Ein vorkomponierter `Focus` kann aus dem Factory-Bestand in den User-Store uebernommen oder daraus entfernt werden.
 - Aus lokal gespeicherten Saying- und Image-Auswahlen kann ein `Focus` zusammengestellt werden.
 - Ein `Focus` entsteht, wenn bedeutungstragende Elemente zu einer gemeinsam wahrnehmbaren Einheit verbunden werden.
 - Ein `Mindset` entsteht, wenn mehrere Foci zu einer hoeheren Orientierungseinheit verbunden werden.

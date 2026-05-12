@@ -34,10 +34,10 @@ Fuer die aktuellen Element-Arten gilt zusaetzlich:
 
 Eine Benutzerauswahl ist fachlich tragfaehig, wenn:
 
-- sie sich auf vorhandene `Sayings` oder `Images` bezieht
-- die ausgewaehlten Elemente fuer den Benutzer als eigene Auswahl wiedererkennbar bleiben
+- sie sich auf vorhandene `Sayings`, `Images` oder `Foci` bezieht
+- die ausgewaehlten Einheiten fuer den Benutzer als eigene Auswahl wiedererkennbar bleiben
 - diese Auswahl lokal gespeichert bleibt
-- die Auswahl als Ausgangsbasis fuer die Bildung eines Focus nutzbar ist
+- die Auswahl als Ausgangsbasis fuer die Bildung eines Focus oder fuer die Uebernahme eines vorkomponierten Focus nutzbar ist
 
 Die Benutzerauswahl ist damit nicht nur ein fluechtiger Klickzustand.
 
@@ -148,6 +148,7 @@ Damit die Fachlogik im Produkt wirksam werden kann, muessen fuer die aktuellen P
 
 - `Sayings` auswaehlen
 - `Images` auswaehlen
+- `Foci` auswaehlen
 - diese Auswahl lokal speichern
 - Elemente auswaehlen
 - Elemente bewerten

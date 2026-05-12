@@ -52,23 +52,29 @@ Weitere Element-Arten koennen hinzukommen, wenn sie dieselbe Grundform tragen.
 
 ## Basisdaten und repraesentierte Entitaeten
 
-Die aktuellen Basisdaten des Produkts bestehen aus zwei fortlaufend gepflegten Datenquellen:
+Die aktuellen Basisdaten des Produkts bestehen aus drei fortlaufend gepflegten Datenquellen:
 
 - `Sayings`
 - `Images`
+- `Foci`
 
-Diese beiden Datenquellen werden im Produkt durch die gleich benannten Entitaeten `Saying` und `Image` repraesentiert.
+Diese Bestandsformen werden im Produkt durch die Entitaeten `Saying`, `Image` und `Focus` repraesentiert.
 
 Dabei gilt:
 
 - `Sayings` bilden den gewachsenen Bestand an verfuegbaren Spruechen
 - `Images` bilden den gewachsenen Bestand an verfuegbaren Bildern
-- neue Eintraege koennen zu beiden Bestaenden fortlaufend hinzukommen
-- jeder einzelne Eintrag aus diesen Bestaenden erscheint fachlich als eigenes Element
+- `Foci` bilden den gewachsenen Bestand an verfuegbaren vorkomponierten Focus-Einheiten
+- diese vorkomponierten `Foci` werden vom Developer vorgefertigt
+- sie dienen unter anderem einem schnelleren und einfacheren Start in die App
+- sie koennen spaeter auch vorbereitete Orientierung fuer den `Navigator` tragen
+- neue Eintraege koennen zu allen drei Bestaenden fortlaufend hinzukommen
+- jeder einzelne Eintrag aus den Bestaenden `Sayings` und `Images` erscheint fachlich als eigenes Element
+- jeder einzelne Eintrag aus dem Bestand `Foci` erscheint fachlich als eigene Komposition
 
 Damit sind `Saying` und `Image` nicht nur Beispielarten von Elementen.
 
-Sie repraesentieren die beiden aktuellen Basisbestaende, aus denen der Benutzer seine weitere Orientierung bildet.
+Sie repraesentieren gemeinsam mit `Focus` die aktuellen Basisbestaende, aus denen der Benutzer seine weitere Orientierung bildet.
 
 ## Saying
 
@@ -166,6 +172,11 @@ Sie gehoeren zum gemeinsamen darstellbaren Kopf des Focus.
 Ein Focus traegt diese fuer ihn noetigen Daten im User-Store selbst.
 
 Er wird nicht nur ueber eine garantierte Referenzkonsistenz zum Basisbestand getragen.
+
+Ein Focus kann im Produkt in zwei Herkunftsformen vorkommen:
+
+- als vorkomponierter `Focus` im Factory-Bestand
+- als vom Benutzer aus genau einem Saying und genau einem Image neu gebildeter `Focus` im User-Store
 
 Ein Focus verbindet sein `Saying` und sein `Image` so, dass Denken und Fuehlen gemeinsam lesbar werden.
 
