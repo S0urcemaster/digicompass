@@ -2,7 +2,7 @@
 
 Diese Datei beschreibt die datengetragene Produktform von Digi Compass.
 
-Sie klaert, welche fachlichen Entitaeten im Datenmodell getragen werden, welche Daten in den User-Store uebernommen werden und welcher UI-Zustand aus Daten sichtbar gemacht wird.
+Sie klaert, welche fachlichen Entitaeten im Datenmodell getragen werden, welche Daten in den persoenlichen Store uebernommen werden und welcher UI-Zustand aus Daten sichtbar gemacht wird.
 
 ## Leitfrage
 
@@ -16,15 +16,14 @@ Es wandern nur Daten.
 
 Die UI fuehrt keine davon getrennten reichhaltigen Produktobjekte ein, sondern macht vorhandene Daten, Auswahlen, Vorschauen und gespeicherte Verbindungen sichtbar.
 
-Zwischen Basisdaten und User-Store wird dabei keine garantierte Konsistenz vorausgesetzt.
+Zwischen Basisdaten und Store wird dabei keine garantierte Konsistenz vorausgesetzt.
 
 ## Grundunterscheidung
 
 Digi Compass unterscheidet datenlogisch mindestens diese Bereiche:
 
 1. Basisdaten
-2. User-Pool
-3. Mindset-Pool
+2. Store
 4. aktueller UI-Zustand
 
 ## Basisdaten
@@ -47,36 +46,31 @@ Dabei gilt zusaetzlich:
 - diese vorgefertigten `Foci` dienen unter anderem einem schnelleren und einfacheren Start
 - sie koennen spaeter auch vorbereitete Orientierung fuer den `Navigator` bereitstellen
 
-## User-Pool
+## Store
 
-Der User-Pool enthaelt die vom Benutzer ausgewaehlten oder neu gebildeten und lokal gespeicherten `Sayings`, `Images` und `Foci`.
+Der Store enthaelt die vom Benutzer ausgewaehlten oder neu gebildeten und lokal gespeicherten `Sayings`, `Images`, `Foci` und `Mindsets`.
 
 Dabei gilt:
 
-- `Sayings` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
-- `Images` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
-- `Foci` koennen aus dem Factory-Bestand in den User-Store aufgenommen und wieder entfernt werden
-- `Foci` koennen zusaetzlich im Produkt neu aus je einem Saying und einem Image des User-Store gebildet werden
+- `Sayings` koennen aus dem Factory-Bestand in den Store aufgenommen und wieder entfernt werden
+- `Images` koennen aus dem Factory-Bestand in den Store aufgenommen und wieder entfernt werden
+- `Foci` koennen aus dem Factory-Bestand in den Store aufgenommen und wieder entfernt werden
+- `Foci` koennen zusaetzlich im Produkt neu aus je einem Saying und einem Image des Store gebildet werden
+- `Mindsets` koennen zusaetzlich im Produkt neu aus gespeicherten `Foci` des Store gebildet werden
 
 Ein `Focus` entsteht nicht dadurch, dass ganze UI-Objekte verschoben werden.
 
-Ein `Focus` entsteht datenlogisch entweder dadurch, dass ein vorkomponierter Factory-Focus in den User-Store uebernommen wird oder dadurch, dass die fuer einen neuen Focus benoetigten Daten aus dem User-Store zusammengefuehrt werden.
+Ein `Focus` entsteht datenlogisch entweder dadurch, dass ein vorkomponierter Factory-Focus in den Store uebernommen wird oder dadurch, dass die fuer einen neuen Focus benoetigten Daten aus dem Store zusammengefuehrt werden.
 
-Ein neu gebildeter Focus traegt im User-Store mindestens:
+Ein neu gebildeter Focus traegt im Store mindestens:
 
 - das gewaehlte `Saying`
 - die `url` des gewaehlten `Image`
 - die eigene `rating` des Focus
 
-Dieselbe uebernommene oder neu gebildete Focus-Einheit kann aus dem User-Pool auch wieder entfernt werden.
+Dieselbe uebernommene oder neu gebildete Focus-Einheit kann aus dem Store auch wieder entfernt werden.
 
-Der User-Pool referenziert damit nicht auf eine garantierte Konsistenz zum Factory-Bestand, sondern traegt seine fuer die Benutzung noetigen Daten eigenstaendig.
-
-## Mindset-Pool
-
-Der Mindset-Pool enthaelt die vom Benutzer zusammengestellten `Mindsets`.
-
-Ein `Mindset` verbindet gespeicherte `Foci` zu einer hoeheren Orientierungseinheit.
+Der Store referenziert damit nicht auf eine garantierte Konsistenz zum Factory-Bestand, sondern traegt seine fuer die Benutzung noetigen Daten eigenstaendig.
 
 ## Entitaeten
 
@@ -122,13 +116,13 @@ Aktuell traegt ein `Focus` mindestens:
 Dabei gilt:
 
 - `id` identifiziert den Focus als eigenstaendige Komposition
-- `saying` ist die in den User-Store uebernommene Saying-Datenform fuer diesen Focus
-- `imageUrl` ist die in den User-Store uebernommene Bildreferenz fuer diesen Focus
+- `saying` ist die in den Store uebernommene Saying-Datenform fuer diesen Focus
+- `imageUrl` ist die in den Store uebernommene Bildreferenz fuer diesen Focus
 - `rating` ist die eigene Bewertung des Focus
 
 Ein `Focus` repraesentiert damit nicht bloss einen Verweis auf Factory-Daten.
 
-Er traegt die fuer seine Benutzung noetige Datenform im User-Store selbst.
+Er traegt die fuer seine Benutzung noetige Datenform im Store selbst.
 
 ### Mindset
 
@@ -146,29 +140,24 @@ Weitere Felder wie Name oder Notizen koennen spaeter hinzukommen, wenn ihre fach
 
 ## Focus-Bildung als Datenvorgang
 
-Die Arbeit mit Foci verlaeuft in `Collection > Foci` aktuell in zwei Modi:
+Die Bildung eines neuen `Focus` verlaeuft aktuell im `Collection > Editor > Foci`-Tab in dieser Reihenfolge:
 
-1. Focus-Browser-Modus
-2. Focus-Editor-Modus
+1. der Benutzer arbeitet mit `Images` und `Sayings`, die bereits im Store vorhanden sind
+2. der Benutzer waehlt genau ein `Image` aus dem Store
+3. der Benutzer waehlt genau ein `Saying` aus dem Store
+4. die Kombination wird als aktuelle Focus-Vorschau sichtbar
+5. bestaetigt der Benutzer die Kombination, wird daraus ein neuer `Focus` gebildet und in den Store uebernommen
+6. wird derselbe gespeicherte Focus wieder aufgehoben, wird dieser `Focus` aus dem Store entfernt
 
-Im Focus-Browser-Modus gilt:
+## Mindset-Bildung als Datenvorgang
 
-1. die Focus-Liste zeigt `Foci` aus dem Factory-Bestand
-2. der Benutzer kann einen angezeigten Factory-Focus in den User-Store aufnehmen
-3. der Benutzer kann einen bereits aufgenommenen Focus wieder aus dem User-Store entfernen
-4. der Toggle zeigt in diesem Zustand den Text `Edit -&gt;`
+Die Bildung eines neuen `Mindset` verlaeuft aktuell im `Collection > Editor > Mindsets`-Tab in dieser Reihenfolge:
 
-Im Focus-Editor-Modus gilt:
-
-1. aktiviert der Benutzer den Toggle, wechselt `Collection > Foci` vom Focus-Browser-Modus in den Focus-Editor-Modus
-2. der Toggle zeigt in diesem Zustand den Text `&lt;- Foci`
-3. nur im aktiven Editor-Modus werden die beiden anderen Tabs `Images` und `Sayings` benutzbar
-4. diese beiden Tabs zeigen `Images` und `Sayings` aus dem User-Store
-5. der Benutzer waehlt dort genau ein `Image` und genau ein `Saying` aus seinem User-Store
-6. diese Auswahl wird als aktuelle Focus-Vorschau sichtbar
-7. bestaetigt der Benutzer die Kombination, wird daraus ein neuer `Focus` gebildet und in den User-Store uebernommen
-8. wird derselbe gespeicherte Focus wieder aufgehoben, wird dieser `Focus` aus dem User-Pool entfernt
-9. aktiviert der Benutzer den Toggle erneut, verlaesst `Collection > Foci` den Editor-Modus und zeigt wieder die Focus-Liste
+1. der Benutzer arbeitet mit `Foci`, die bereits im Store vorhanden sind
+2. der Benutzer waehlt mehrere `Foci` aus dem Store
+3. diese Zusammenstellung wird als aktuelle Mindset-Vorschau sichtbar
+4. bestaetigt der Benutzer die Kombination, wird daraus ein neues `Mindset` gebildet und in den Store uebernommen
+5. wird dasselbe gespeicherte `Mindset` wieder aufgehoben, wird dieses `Mindset` aus dem Store entfernt
 
 In der Developer-Richtung darf diese Bestaetigung ueber die Sternbewertung erfolgen.
 
@@ -186,11 +175,12 @@ Wenn Einheiten in Listen erscheinen, gilt:
 Damit die UI aus Daten lesbar werden kann, braucht das Produkt mindestens diese aktuelle Zustandswerte:
 
 - aktueller `Collection`-Subview
-- aktiver Modus in `Collection > Foci`
+- aktueller `Editor`-Tab
 - aktuell ausgewaehltes `Saying`
 - aktuell ausgewaehltes `Image`
 - aktuelle Focus-Vorschau
 - aktuell ausgewaehlter `Focus`
+- aktuelle Mindset-Vorschau
 - aktuell ausgewaehltes `Mindset`
 
 Diese Zustandswerte repraesentieren keinen neuen Fachbestand.
@@ -201,11 +191,10 @@ Sie machen nur sichtbar, welche vorhandene Einheit gerade im Vordergrund steht.
 
 Die lokale Speicherung traegt mindestens:
 
-- die Benutzerauswahl
-- die in den User-Store aufgenommenen `Sayings`
-- die in den User-Store aufgenommenen `Images`
-- den User-Pool der gespeicherten `Foci`
-- die gespeicherten `Mindsets`
+- den Store mit den aufgenommenen `Sayings`
+- den Store mit den aufgenommenen `Images`
+- den Store mit den gespeicherten `Foci`
+- den Store mit den gespeicherten `Mindsets`
 - das zuletzt als aktuell gesetzte `Mindset`
 
 Dadurch kann die App beim erneuten Oeffnen in den zuletzt gespeicherten Orientierungskontext zurueckkehren.

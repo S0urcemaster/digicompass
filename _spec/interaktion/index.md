@@ -19,11 +19,11 @@ Diese Arbeitszustaende machen die fachlichen Operationen `Auswaehlen`, `Einordne
 Die Interaktion soll es dem Benutzer ermoeglichen:
 
 - zwischen den drei Top-Level-Views `Mindset`, `Navigator` und `Collection` zu wechseln
-- innerhalb von `Collection` zwischen `Images`, `Sayings` und `Foci` zu wechseln
+- innerhalb von `Collection` zwischen `Images`, `Sayings`, `Foci` und `Editor` zu wechseln
 - bedeutungstragende Einheiten wahrzunehmen
 - eine aktuelle Einheit gezielt auszuwaehlen
-- Saying- und Image-Auswahlen lokal zu erhalten
-- Factory-`Foci` in den User-Store aufzunehmen oder aus ihm zu entfernen
+- bedeutsame Einheiten in den persoenlichen Store aufzunehmen
+- Factory-`Foci` in den Store aufzunehmen oder aus ihm zu entfernen
 - ihre Relevanz sichtbar zu machen
 - Elemente zu einem Focus zu verbinden
 - Foci zu einem Mindset zu verbinden
@@ -54,7 +54,7 @@ Die Hauptaufgabe ist:
 
 - ein Element wahrnehmen
 - ein Element auswaehlen
-- eine Saying- oder Image-Auswahl aus dem Factory-Bestand in den User-Store aufnehmen
+- eine Saying- oder Image-Auswahl aus dem Factory-Bestand in den Store aufnehmen
 - ein Element bewerten
 - ein Element als moeglichen Bestandteil eines Focus lesen
 
@@ -63,7 +63,7 @@ Mindestens sichtbar sein muss:
 - die aktuell betrachtete Einheit
 - ihre Darstellungsform
 - ihre Kategorie oder Kategorien
-- ob sie zur lokalen Benutzerauswahl gehoert
+- ob sie zum persoenlichen Store gehoert
 - ihre aktuelle oder moegliche Relevanz
 - der naechste moegliche Schritt in Richtung Focus-Bildung
 
@@ -73,15 +73,14 @@ In diesem Zustand arbeitet der Benutzer an einer ersten orientierenden Kompositi
 
 Die Hauptaufgabe ist:
 
-- einen Factory-`Focus` in den User-Store aufnehmen oder aus ihm entfernen
-- genau ein ausgewaehltes Saying und genau ein ausgewaehltes Image zusammenzubringen
+- einen Factory-`Focus` in den Store aufnehmen oder aus ihm entfernen
+- genau ein ausgewaehltes Saying und genau ein ausgewaehltes Image aus dem Store zusammenzubringen
 - ihre Verbindung als gemeinsame Richtung lesbar zu machen
 - den Focus als eigene Einheit zu bewerten
 - zu pruefen, ob der Focus tragfaehig genug fuer ein Mindset ist
 
 Mindestens sichtbar sein muss:
 
-- ob der Toggle gerade `Edit -&gt;` oder `&lt;- Foci` zeigt
 - welches Saying und welches Image den aktuellen Focus bilden
 - welche Kategorien diese beiden Bestandteile tragen
 - welche Einheit aktuell innerhalb des Focus im Vordergrund steht
@@ -94,7 +93,7 @@ In diesem Zustand arbeitet der Benutzer an einer hoeheren Orientierungseinheit a
 
 Die Hauptaufgabe ist:
 
-- Foci zusammenzufuehren
+- Foci aus dem Store zusammenzufuehren
 - ihre gemeinsame Richtung lesbar zu machen
 - das Mindset als eigene Einheit zu bewerten
 - ein Mindset als aktuelle groessere Ansicht zu setzen
@@ -127,15 +126,14 @@ In der aktuellen festen View-Grundform gilt zusaetzlich:
 Die Interaktionsschicht muss mindestens diese Benutzeroperationen tragen:
 
 - zwischen `Mindset`, `Navigator` und `Collection` wechseln
-- innerhalb von `Collection` zwischen `Images`, `Sayings` und `Foci` wechseln
+- innerhalb von `Collection` zwischen `Images`, `Sayings`, `Foci` und `Editor` wechseln
 - eine Einheit auswaehlen
 - eine Auswahl lokal speichern und wieder laden koennen
 - eine Einheit bewerten
-- `Sayings` aus dem Factory-Bestand in den User-Store aufnehmen und daraus entfernen
-- `Images` aus dem Factory-Bestand in den User-Store aufnehmen und daraus entfernen
-- `Foci` aus dem Factory-Bestand in den User-Store aufnehmen und daraus entfernen
-- den Focus-Editor in `Collection > Foci` aktivieren
-- in `Collection > Foci` ueber den Toggle zwischen `Edit -&gt;` und `&lt;- Foci` wechseln
+- `Sayings` aus dem Factory-Bestand in den Store aufnehmen und daraus entfernen
+- `Images` aus dem Factory-Bestand in den Store aufnehmen und daraus entfernen
+- `Foci` aus dem Factory-Bestand in den Store aufnehmen und daraus entfernen
+- innerhalb von `Collection > Editor` zwischen `Foci` und `Mindsets` wechseln
 - Elemente in einen Focus uebernehmen
 - Elemente aus einem Focus loesen koennen
 - einen Focus auswaehlen
@@ -168,8 +166,9 @@ Mindestens diese Uebergaenge muessen moeglich sein:
 2. von einer Focus-Bearbeitung zurueck zur Element-Ebene
 3. von einem Focus zur Mindset-Bearbeitung
 4. von einer Mindset-Bearbeitung zurueck zur Focus-Ebene
-5. von `Collection > Foci` im Browser-Modus in den Focus-Editor-Modus
-6. vom Focus-Editor-Modus zurueck in den Focus-Browser-Modus
+5. von `Collection > Foci` zum `Collection > Editor > Foci`
+6. von `Collection > Editor > Foci` zum `Collection > Editor > Mindsets`
+7. von `Collection > Editor` zurueck zu sammelnden Unter-Views der `Collection`
 
 ## Regel fuer Uebergaenge
 
@@ -219,4 +218,4 @@ Die folgenden Punkte bleiben in dieser ersten Interaktionsschicht bewusst offen:
 - ob die Arbeitszustaende als eigene Screens, umschaltbare Modi oder eingebettete Bereiche erscheinen
 - welche konkrete Navigationsform den Ebenenwechsel am besten traegt
 - wie stark Bearbeitung und Browsing in derselben Ansicht zusammengefuehrt werden sollen
-- wie der erste Subview in `Collection > Foci` den Editor-Modus sprachlich und visuell anzeigt
+- wie der `Editor` innerhalb von `Collection` auf kleinen Flaechen konkret priorisiert und angeordnet wird

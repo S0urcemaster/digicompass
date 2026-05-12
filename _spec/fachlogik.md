@@ -33,23 +33,24 @@ Auswaehlen bedeutet fachlich:
 
 Auswaehlen ist damit die Einstiegsoperation weiterer fachlicher Bearbeitung.
 
-## Benutzerauswahl als Arbeitsbestand
+## Store als Arbeitsbestand
 
-Die aktuelle Fachlogik unterscheidet zwischen vorhandenen Daten und der persoenlichen Benutzerauswahl.
+Die aktuelle Fachlogik unterscheidet zwischen vorhandenen Daten und dem persoenlichen Store.
 
 Dabei gilt:
 
 - `Sayings`, `Images` und `Foci` liegen als vorhandene Basisdaten im Produkt vor
 - die Entitaeten `Saying`, `Image` und `Focus` repraesentieren diese Basisdatenquellen in ihrer jeweiligen Grundform
-- der Benutzer kann aus `Sayings` und aus `Images` jeweils eine Auswahl treffen
-- der Benutzer kann zusaetzlich `Foci` aus dem Factory-Bestand in seinen User-Store uebernehmen
-- diese Benutzerauswahl wird lokal gespeichert
-- die lokal gespeicherte Benutzerauswahl bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung
-- spaeter entstehende User-Daten muessen dabei nicht konsistent an den Basisbestand zurueckgebunden bleiben
+- der Benutzer kann `Sayings`, `Images` und `Foci` aus dem Factory-Bestand in seinen Store uebernehmen
+- neue `Foci` koennen aus Store-`Sayings` und Store-`Images` gebildet werden
+- neue `Mindsets` koennen aus Store-`Foci` gebildet werden
+- dieser Store wird lokal gespeichert
+- der lokal gespeicherte Store bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung
+- spaeter entstehende Store-Daten muessen dabei nicht konsistent an den Basisbestand zurueckgebunden bleiben
 
-Die Benutzerauswahl ist damit keine neue Kompositionsebene.
+Der Store ist damit keine neue Kompositionsebene.
 
-Sie ist die lokal erhaltene Auswahlbasis, aus der spaetere Verbindungen gebildet werden.
+Er ist die lokal erhaltene Arbeitsbasis, aus der spaetere Verbindungen gebildet werden.
 
 ## Einordnen
 
@@ -106,10 +107,10 @@ Aus der bisherigen Produktstruktur ergibt sich aktuell:
 
 - Ein `Saying` kann ausgewaehlt, eingeordnet und bewertet werden.
 - Ein `Image` kann ausgewaehlt, eingeordnet und bewertet werden.
-- Ein vorkomponierter `Focus` kann aus dem Factory-Bestand in den User-Store uebernommen oder daraus entfernt werden.
-- Aus lokal gespeicherten Saying- und Image-Auswahlen kann ein `Focus` zusammengestellt werden.
+- Ein vorkomponierter `Focus` kann aus dem Factory-Bestand in den Store uebernommen oder daraus entfernt werden.
+- Aus lokal gespeicherten `Sayings` und `Images` des Store kann ein `Focus` zusammengestellt werden.
 - Ein `Focus` entsteht, wenn bedeutungstragende Elemente zu einer gemeinsam wahrnehmbaren Einheit verbunden werden.
-- Ein `Mindset` entsteht, wenn mehrere Foci zu einer hoeheren Orientierungseinheit verbunden werden.
+- Ein `Mindset` entsteht, wenn mehrere Store-`Foci` zu einer hoeheren Orientierungseinheit verbunden werden.
 - Ein `Mindset` kann betrachtet und als aktuell bevorzugte groessere Ansicht gesetzt werden.
 
 Damit ist `Focus` die erste aktuelle Form verbundenen Sinns im Produkt.

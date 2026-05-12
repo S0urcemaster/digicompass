@@ -30,18 +30,18 @@ Fuer die aktuellen Element-Arten gilt zusaetzlich:
 - ein `Saying` zeigt seine Kategorien und seine Bewertung an
 - ein `Image` zeigt seine Kategorie und seine Bewertung an
 
-## Fachregel fuer eine tragfaehige Benutzerauswahl
+## Fachregel fuer einen tragfaehigen Store
 
-Eine Benutzerauswahl ist fachlich tragfaehig, wenn:
+Ein Store ist fachlich tragfaehig, wenn:
 
-- sie sich auf vorhandene `Sayings`, `Images` oder `Foci` bezieht
+- er sich auf vorhandene `Sayings`, `Images` oder `Foci` bezieht
 - die ausgewaehlten Einheiten fuer den Benutzer als eigene Auswahl wiedererkennbar bleiben
-- diese Auswahl lokal gespeichert bleibt
-- die Auswahl als Ausgangsbasis fuer die Bildung eines Focus oder fuer die Uebernahme eines vorkomponierten Focus nutzbar ist
+- diese Einheiten lokal gespeichert bleiben
+- diese Einheiten als Ausgangsbasis fuer die Bildung eines Focus, fuer die Uebernahme eines vorkomponierten Focus und fuer die Bildung eines Mindset nutzbar sind
 
-Die Benutzerauswahl ist damit nicht nur ein fluechtiger Klickzustand.
+Der Store ist damit nicht nur ein fluechtiger Klickzustand.
 
-Sie ist der lokal verankerte persoenliche Bestand, aus dem Orientierung weiter aufgebaut wird.
+Er ist der lokal verankerte persoenliche Bestand, aus dem Orientierung weiter aufgebaut wird.
 
 ## Fachregel fuer einen tragfaehigen Focus
 

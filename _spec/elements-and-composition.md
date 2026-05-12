@@ -169,14 +169,14 @@ Die Focus-Kategorien werden als vereinigte Menge aus Saying-Kategorien und Image
 
 Sie gehoeren zum gemeinsamen darstellbaren Kopf des Focus.
 
-Ein Focus traegt diese fuer ihn noetigen Daten im User-Store selbst.
+Ein Focus traegt diese fuer ihn noetigen Daten im Store selbst.
 
 Er wird nicht nur ueber eine garantierte Referenzkonsistenz zum Basisbestand getragen.
 
 Ein Focus kann im Produkt in zwei Herkunftsformen vorkommen:
 
 - als vorkomponierter `Focus` im Factory-Bestand
-- als vom Benutzer aus genau einem Saying und genau einem Image neu gebildeter `Focus` im User-Store
+- als vom Benutzer aus genau einem Saying und genau einem Image neu gebildeter `Focus` im Store
 
 Ein Focus verbindet sein `Saying` und sein `Image` so, dass Denken und Fuehlen gemeinsam lesbar werden.
 

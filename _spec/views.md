@@ -64,6 +64,31 @@ Dabei gilt:
 - `selected` ist die grosse aktive Fokusdarstellung
 - `preview` ist die kleinere Vorschauvariante derselben Grundkomponente
 
+## Browser-Raster
+
+Der `Image`-Browser, der `Saying`-Browser und der `Focus`-Browser folgen derselben Rasterlogik.
+
+Dabei gilt:
+
+- ein Browser zeigt genau ein grosses `selected`-Element
+- ein Browser zeigt zusaetzlich genau acht kleinere `preview`-Elemente
+- das Gesamtraster besteht aus vier Spalten und drei Zeilen in der Masseinheit einer kleinen Karte
+- die grosse `selected`-Karte belegt links oben eine Flaeche von zwei Spalten und zwei Zeilen
+- die acht `preview`-Karten belegen die verbleibenden Rasterfelder
+
+Die Matrix lautet ausgeschrieben:
+
+1. Zeile 1: `s | s | p | p`
+2. Zeile 2: `s | s | p | p`
+3. Zeile 3: `p | p | p | p`
+
+Dabei bedeutet:
+
+- `s` steht fuer `selected`
+- `p` steht fuer `preview`
+
+Die `preview`-Karten folgen dabei der verbleibenden Rasterordnung von rechts oben ueber rechts unten bis durch die untere Reihe.
+
 ## Kartenraster
 
 Die Oberflaeche einer `Image`- oder `Focus`-Karte ist in fuenf Reihen gegliedert:
@@ -133,21 +158,23 @@ Der `Navigator` ist als eigener Hauptbereich gesetzt, auch wenn seine konkrete F
 
 ### Collection
 
-- Rolle: gleichberechtigte Top-Level-View fuer Sammlung, Auswahl und Aufbau des User-Pools
+- Rolle: gleichberechtigte Top-Level-View fuer Sammlung, Auswahl und Aufbau des persoenlichen Store
 - Position in der bevorzugten View-Anordnung: rechts
 
-Die `Collection` hat aktuell drei untergeordnete Views:
+Die `Collection` hat aktuell vier untergeordnete Views:
 
 1. `Images`
 2. `Sayings`
 3. `Foci`
+4. `Editor`
 
 Die `Collection` traegt insbesondere:
 
 - Auswahl von `Sayings`, `Images` und `Foci` aus dem Factory-Bestand
-- Aufnahme dieser Einheiten in den User-Store
-- Focus-Bildung aus User-Store-`Sayings` und User-Store-`Images`
-- Verwaltung des User-Pools der persoenlich aufgenommenen Einheiten
+- Aufnahme dieser Einheiten in den persoenlichen Store
+- Aufbau von `Foci` aus Store-`Sayings` und Store-`Images`
+- Aufbau von `Mindsets` aus gespeicherten `Foci`
+- Verwaltung des persoenlichen Store
 
 ### Collection Images
 
@@ -155,9 +182,12 @@ Die Unter-View `Images` zeigt `Images` aus dem Factory-Bestand.
 
 Dort gilt:
 
+- der `Image`-Browser ist in derselben Rasterlogik aufgebaut wie der `Focus`-Browser, jedoch ohne Saying-Inhalt
+- genau ein `Image` wird als grosses `selected`-Element gezeigt
+- genau acht weitere `Images` werden als kleinere `preview`-Elemente gezeigt
 - der Benutzer kann `Images` auswaehlen
-- der Benutzer kann ausgewaehlte `Images` in den User-Store aufnehmen
-- der Benutzer kann bereits aufgenommene `Images` wieder aus dem User-Store entfernen
+- der Benutzer kann ausgewaehlte `Images` in den Store aufnehmen
+- der Benutzer kann bereits aufgenommene `Images` wieder aus dem Store entfernen
 
 ### Collection Sayings
 
@@ -165,32 +195,66 @@ Die Unter-View `Sayings` zeigt `Sayings` aus dem Factory-Bestand.
 
 Dort gilt:
 
+- der `Saying`-Browser folgt derselben Hochformat- und Rasterlogik wie der `Image`-Browser
+- der `Saying`-Browser ist damit im Prinzip ein `Image`-Browser ohne Image
+- genau ein `Saying` wird als grosses `selected`-Element gezeigt
+- genau acht weitere `Sayings` werden als kleinere `preview`-Elemente gezeigt
+- Kategorien und Bewertung bleiben in `selected` und `preview` sichtbar
 - der Benutzer kann `Sayings` auswaehlen
-- der Benutzer kann ausgewaehlte `Sayings` in den User-Store aufnehmen
-- der Benutzer kann bereits aufgenommene `Sayings` wieder aus dem User-Store entfernen
+- der Benutzer kann ausgewaehlte `Sayings` in den Store aufnehmen
+- der Benutzer kann bereits aufgenommene `Sayings` wieder aus dem Store entfernen
 
 ### Collection Foci
 
-Die Unter-View `Foci` traegt:
-
-- einen Toggle-Schalter
-- den Focus-Browser
-- die beiden Editor-Tabs `Images` und `Sayings`
+Die Unter-View `Foci` zeigt `Foci` aus dem Factory-Bestand.
 
 Dabei gilt:
 
-- in der Fokusstellung zeigt der Toggle den Text `Edit -&gt;`
-- in dieser Stellung wird die Focus-Liste angezeigt
-- die Focus-Liste zeigt die `Foci` aus dem Factory-Bestand
-- in diesem Zustand kann der Benutzer `Foci` in den User-Store aufnehmen oder aus ihm entfernen
-- wird der Toggle aktiviert, wechselt die Unter-View in den Focus-Editor
-- im aktiven Focus-Editor zeigt der Toggle den Text `&lt;- Foci`
-- nur im aktiven Focus-Editor funktionieren `Images` und `Sayings` als Tabs fuer den User-Store
-- diese beiden Tabs zeigen nur die `Images` und `Sayings`, die der Benutzer zuvor in `Collection > Images` und `Collection > Sayings` aufgenommen hat
-- die dortige Auswahl bildet den aktuellen Focus-Editor
-- genau ein Saying und genau ein Image ergeben in diesem Editor einen neuen `Focus`
-- dieser neue `Focus` kann dem User-Store hinzugefuegt werden
-- aktiviert der Benutzer `&lt;- Foci`, verlaesst er den Editor und kehrt zur Focus-Liste zurueck
+- der `Focus`-Browser folgt derselben 4x3-Rasterlogik wie der `Image`-Browser
+- genau ein `Focus` wird als grosses `selected`-Element gezeigt
+- genau acht weitere `Foci` werden als kleinere `preview`-Elemente gezeigt
+- der Benutzer kann `Foci` auswaehlen
+- der Benutzer kann ausgewaehlte `Foci` in den Store aufnehmen
+- der Benutzer kann bereits aufgenommene `Foci` wieder aus dem Store entfernen
+
+### Collection Editor
+
+Die Unter-View `Editor` ist der Ort, an dem neue orientierende Einheiten aktiv gebildet werden.
+
+Sie ist kein untergeordnetes Restverhalten der Sammlung, sondern eine eigene produktive Arbeitszone innerhalb der `Collection`.
+
+Der `Editor` hat aktuell zwei Tabs:
+
+1. `Foci`
+2. `Mindsets`
+
+Der `Editor` ist fachlich ein besonders wichtiger Bereich des Produkts.
+
+Hier entsteht der fuer Digi Compass zentrale Moment des Verbindens:
+
+- im `Foci`-Editor werden Denken und Fuehlen durch Saying und Image zusammengefuehrt
+- im `Mindsets`-Editor werden mehrere Foci zu groesserer Orientierung verbunden
+
+### Collection Editor Foci
+
+Der Tab `Foci` im `Editor` bildet neue `Foci` aus dem persoenlichen Store.
+
+Dort gilt:
+
+- die Eingaben stammen aus den zuvor in `Collection > Images` und `Collection > Sayings` aufgenommenen Store-Einheiten
+- genau ein Saying und genau ein Image bilden die aktuelle Focus-Vorschau
+- aus dieser Vorschau kann ein neuer `Focus` entstehen
+- dieser neue `Focus` kann dem Store hinzugefuegt werden
+
+### Collection Editor Mindsets
+
+Der Tab `Mindsets` im `Editor` bildet neue `Mindsets` aus gespeicherten `Foci`.
+
+Dort gilt:
+
+- die Eingaben stammen aus den im Store vorhandenen `Foci`
+- mehrere `Foci` koennen zu einem `Mindset` verbunden werden
+- das entstehende `Mindset` kann dem Store hinzugefuegt werden
 
 ## Startregel
 
@@ -204,4 +268,4 @@ Die folgenden Punkte bleiben auf dieser Schicht sichtbar:
 
 - welche konkrete Funktion der `Navigator` dauerhaft tragen soll
 - wie die drei Top-Level-Views auf kleinen Smartphone-Flaechen konkret umgeschaltet werden
-- wie der Focus-Editor innerhalb von `Collection > Foci` layoutseitig auf kleinen Flaechen angeordnet wird
+- wie der `Editor` innerhalb von `Collection` layoutseitig auf kleinen Flaechen angeordnet wird
