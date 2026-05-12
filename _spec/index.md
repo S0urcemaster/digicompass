@@ -16,6 +16,14 @@ Diese Orientierung entsteht durch Auswaehlen, Einordnen, Bewerten und Verbinden 
 
 ## Reading Order
 
-1. [Product Intent Mode](./product-intent-mode.md)
+### Meta-Spezifikation
 
-Dieser Einstiegspunkt bleibt absichtlich knapp und verweist nur auf die aktuell verbindlichen Kerndateien.
+1. [Spec Meta](./meta/index.md)
+2. [Product Intent Mode](./meta/product-intent-mode.md)
+
+### Fach-Spezifikation
+
+1. [DNA](./dna.md)
+2. [Elements And Composition](./elements-and-composition.md)
+
+Dieser Einstiegspunkt bleibt absichtlich knapp und trennt die Form der Spezifikation von ihrem Produktinhalt.
