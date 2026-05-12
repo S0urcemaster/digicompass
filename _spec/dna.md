@@ -1,12 +1,18 @@
 # DNA
 
-Diese Datei beschreibt die kleinste technische Einheit von Digi Compass und das Bauprinzip, aus dem alle groesseren Strukturen entstehen.
+Diese Datei beschreibt die kleinste fachliche Einheit von Digi Compass und das Bauprinzip, aus dem alle groesseren Strukturen entstehen.
+
+## Leitfrage
+
+Welche dauerhaft gueltige Grundlogik traegt alle weiteren fachlichen Einheiten von Digi Compass?
 
 ## Kernsatz
 
 Die kleinste eigenstaendige Einheit von Digi Compass ist das Element.
 
-Ein Element kann identifiziert, dargestellt, eingeordnet, bewertet und in groessere Einheiten eingebunden werden.
+Aus Elementen entstehen Kompositionen.
+
+Aus Kompositionen koennen weitere Kompositionen entstehen.
 
 ## Rolle des Elements
 
@@ -30,61 +36,25 @@ Alles im System ist entweder:
 
 Dadurch bleibt das Produkt in allen Ebenen aus derselben Grundlogik aufgebaut.
 
-## Element-Eigenschaften
+## Gemeinsame Mindestform
 
-Ein Element hat mindestens:
+Jede eigenstaendige Einheit in Digi Compass traegt mindestens:
 
 - eine stabile Identitaet
-- eine klar bestimmbare Art
-- eine Form, in der es angezeigt werden kann
-- eine Form, in der es eingeordnet werden kann
-- eine Form, in der seine Relevanz ausgedrueckt werden kann
+- eine bestimmbare Art
+- eine darstellbare Form
+- eine einordenbare Bedeutung
+- eine bewertbare Relevanz
 
-Diese Eigenschaften duerfen je nach Element-Art unterschiedlich ausgepraegt sein, bleiben aber als gemeinsame Struktur erhalten.
-
-## Element-Arten
-
-Die alte Spezifikation zeigt aktuell mindestens diese Element-Arten:
-
-- Saying
-- Image
-
-Diese Arten sind konkrete Auspraegungen des allgemeinen Elements und keine getrennten Grundprinzipien.
-
-## Komposition
-
-Eine Komposition verbindet Elemente zu einer neuen, wiederum eigenstaendig bearbeitbaren Einheit.
-
-Eine Komposition:
-
-- hat eine eigene Identitaet
-- kann dargestellt werden
-- kann eingeordnet werden
-- kann bewertet werden
-- kann selbst wieder in groessere Kompositionen eingehen
-
-## Aktuelle Ableitungen
-
-Aus der bisherigen Produktlogik lassen sich aktuell diese Ableitungen lesen:
-
-- Saying: Element
-- Image: Element
-- Focus: Komposition aus Elementen
-- Mindset: Komposition aus Kompositionen
+Diese Mindestform bleibt ueber Elemente und Kompositionen hinweg erhalten, auch wenn ihre konkrete Auspraegung unterschiedlich sein kann.
 
 ## Wirkung auf die weitere Spezifikation
 
-Jede kuenftige Spec-Datei soll dieselbe DNA mittragen.
+Jede kuenftige Fach-Datei soll dieselbe DNA mittragen.
 
 Das bedeutet:
 
-- Datenmodelle beschreiben Elemente und Kompositionen
-- UI-Komponenten zeigen Elemente oder Kompositionen
-- Interaktionen helfen beim Auswaehlen, Einordnen, Bewerten oder Verbinden
-- neue Inhaltstypen werden zuerst als Element-Art oder Kompositions-Art eingeordnet
-
-## Leitfrage
-
-Bei jeder neuen Struktur soll zuerst klar werden:
-
-Ist dies ein Element, eine Komposition aus Elementen oder eine Komposition aus Kompositionen?
+- Datenmodelle beschreiben Elemente, Kompositionen oder ihre Beziehungen.
+- Interaktionen wirken auf Auswaehlen, Einordnen, Bewerten oder Verbinden.
+- Darstellungen zeigen Elemente, Kompositionen oder ihre Orientierung im groesseren Zusammenhang.
+- Neue Produkteinheiten werden zuerst als Element-Art oder Kompositions-Art eingeordnet.

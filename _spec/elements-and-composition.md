@@ -39,6 +39,8 @@ Jedes Element traegt mindestens:
 - eine einordenbare Bedeutung
 - eine bewertbare Relevanz
 
+Ein Element ist damit die erste konkrete Auspraegung der in der DNA beschriebenen Mindestform.
+
 ## Element-Arten
 
 Die aktuelle Fachlogik zeigt mindestens diese Element-Arten:
@@ -73,6 +75,8 @@ Jede Komposition traegt mindestens:
 - eine einordenbare Bedeutung
 - eine bewertbare Relevanz
 
+Eine Komposition ist damit dieselbe Grundlogik in einer groesseren, zusammengesetzten Einheit.
+
 ## Zusammensetzung
 
 Eine Komposition kann auf zwei Arten entstehen:
@@ -102,6 +106,14 @@ Ein Focus bildet aktuell die erste Kompositionsebene des Produkts.
 Ein Mindset verbindet mehrere Foci zu einer hoeheren Orientierungseinheit.
 
 Ein Mindset bildet aktuell die zweite Kompositionsebene des Produkts.
+
+## Offene Entscheidungen
+
+Die folgenden Punkte sind als aktuelle Klaerungsstellen sichtbar:
+
+- Die genaue Bedeutung von `Art` soll noch expliziter geklaert werden: fachliche Klasse, technische Typisierung und Darstellungsrolle sind noch nicht sauber getrennt.
+- Die Begriffe `Bedeutung`, `Einordnung` und `Relevanz` sind als stabile Unterscheidung angelegt, ihre genaue Abgrenzung soll in einer spaeteren Fach-Datei explizit werden.
+- Weitere Element-Arten sind moeglich, werden aber erst eingefuehrt, wenn ihre gemeinsame Grundform und ihr eigener fachlicher Beitrag klar beschrieben sind.
 
 ## Gemeinsame Wirkung auf die Fach-Spezifikation
 
