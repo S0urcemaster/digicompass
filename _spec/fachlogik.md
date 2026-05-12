@@ -39,7 +39,8 @@ Die aktuelle Fachlogik unterscheidet zwischen vorhandenen Daten und der persoenl
 
 Dabei gilt:
 
-- `Sayings` und `Images` liegen als vorhandene Elemente im Produkt vor
+- `Sayings` und `Images` liegen als vorhandene Basisdaten im Produkt vor
+- die gleich benannten Entitaeten `Saying` und `Image` repraesentieren diese beiden Basisdatenquellen als Elemente
 - der Benutzer kann aus `Sayings` und aus `Images` jeweils eine Auswahl treffen
 - diese Benutzerauswahl wird lokal gespeichert
 - die lokal gespeicherte Benutzerauswahl bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung

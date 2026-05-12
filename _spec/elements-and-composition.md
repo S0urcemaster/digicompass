@@ -50,6 +50,26 @@ Die aktuelle Fachlogik zeigt mindestens diese Element-Arten:
 
 Weitere Element-Arten koennen hinzukommen, wenn sie dieselbe Grundform tragen.
 
+## Basisdaten und repraesentierte Entitaeten
+
+Die aktuellen Basisdaten des Produkts bestehen aus zwei fortlaufend gepflegten Datenquellen:
+
+- `Sayings`
+- `Images`
+
+Diese beiden Datenquellen werden im Produkt durch die gleich benannten Entitaeten `Saying` und `Image` repraesentiert.
+
+Dabei gilt:
+
+- `Sayings` bilden den gewachsenen Bestand an verfuegbaren Spruechen
+- `Images` bilden den gewachsenen Bestand an verfuegbaren Bildern
+- neue Eintraege koennen zu beiden Bestaenden fortlaufend hinzukommen
+- jeder einzelne Eintrag aus diesen Bestaenden erscheint fachlich als eigenes Element
+
+Damit sind `Saying` und `Image` nicht nur Beispielarten von Elementen.
+
+Sie repraesentieren die beiden aktuellen Basisbestaende, aus denen der Benutzer seine weitere Orientierung bildet.
+
 ## Komposition
 
 Eine Komposition verbindet mehrere Einheiten zu einer neuen eigenstaendigen Einheit.
