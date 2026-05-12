@@ -45,6 +45,33 @@ Auch eine offene Entscheidung ist eine gueltige Aussage der Spezifikation.
 
 Ihre Geltung liegt dann nicht in einem festgelegten Ergebnis, sondern in einer klar markierten Klaerungsstelle.
 
+## Bestand und Ersetzung
+
+Neue Aussagen werden zunaechst als Praezisierung, Schaerfung oder Erweiterung bestehender Geltung gelesen.
+
+Eine bestehende gueltige Aussage behaelt ihren Bestand, solange ihre Ersetzung nicht explizit benannt und in ihrer Reichweite klar eingegrenzt ist.
+
+Stabile Zielzustaende, Kernbegriffe und DNA-Aussagen tragen deshalb Bestand ueber spaetere Detailaussagen hinweg.
+
+Eine neue Aussage kann eine bestehende Aussage in genau einer dieser Formen weiterfuehren:
+
+- Praezisierung
+- Schaerfung
+- Erweiterung
+- Ersetzung
+
+Ersetzung ist die staerkste Form.
+
+Sie wird ausdruecklich kenntlich gemacht und bezieht sich klar auf die Aussage, den Begriff oder die Regel, deren Geltung neu gefasst wird.
+
+## Begriffsbestand
+
+Ein bereits geklaerter Begriff behaelt seine Bedeutung ueber die Spezifikation hinweg.
+
+Eine neue Formulierung liest denselben Begriff deshalb zuerst in seiner bereits geklaerten Bedeutung.
+
+Wenn ein Begriff eine neue Bedeutung erhalten soll, wird diese Neufassung explizit als Bedeutungswechsel geklaert.
+
 ## Aufgabe der Spezifikation
 
 Die Spezifikation soll mit verschiedenen Agenten in hoher Zuverlaessigkeit zu derselben fachlichen Richtung fuehren.
