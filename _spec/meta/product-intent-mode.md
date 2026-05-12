@@ -62,6 +62,20 @@ Wenn der Benutzer zustimmt, prueft der Agent mindestens:
 
 Wenn der Benutzer die Bearbeitung direkt beginnen will, darf der Agent diese Vorvalidierung ueberspringen.
 
+## Theme-Wahl vor UI-Ableitung
+
+Wenn nach der Spezifikationsarbeit eine konkrete UI-Ableitung, ein Build oder eine Umsetzung mit Darstellungsschwerpunkt beginnt, klaert der Agent vor diesem Schritt die gewuenschte UI-Richtung.
+
+Dabei gilt:
+
+- zuerst kommt die Frage nach der optionalen Spec-Validierung
+- danach kommt bei UI-naher Umsetzung die Frage nach dem Theme
+- ohne ausdrueckliche Theme-Wahl gilt `default`
+- eine Theme-Wahl gilt zunaechst nur fuer den aktuellen Run
+- eine run-spezifische Theme-Wahl ersetzt nicht automatisch die dauerhafte Produkt-Default-Richtung
+
+Diese Reihenfolge trennt die Stabilisierung der Produktspezifikation von der Wahl der aktuellen Darstellungsrichtung.
+
 ## Prioritaetsregel
 
 Wenn diese Ebenen gemeinsam gewichtet werden, gilt diese Reihenfolge:

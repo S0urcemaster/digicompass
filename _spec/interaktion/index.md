@@ -20,9 +20,11 @@ Die Interaktion soll es dem Benutzer ermoeglichen:
 
 - bedeutungstragende Einheiten wahrzunehmen
 - eine aktuelle Einheit gezielt auszuwaehlen
+- Saying- und Image-Auswahlen lokal zu erhalten
 - ihre Relevanz sichtbar zu machen
 - Elemente zu einem Focus zu verbinden
 - Foci zu einem Mindset zu verbinden
+- ein Mindset als aktuelle Hauptansicht zu betrachten
 - zwischen diesen Ebenen orientiert zu wechseln
 
 ## Aktuelle Arbeitszustaende
@@ -37,6 +39,8 @@ Diese Arbeitszustaende muessen nicht als gleichnamige Screens umgesetzt werden.
 
 Sie muessen aber als unterscheidbare Benutzungszustaende im Produkt lesbar sein.
 
+Die Mindset-Ansicht ist dabei die primaere Hauptansicht des Produkts.
+
 ## Arbeitszustand Elemente sichten
 
 In diesem Zustand arbeitet der Benutzer auf der Ebene einzelner Elemente.
@@ -45,6 +49,7 @@ Die Hauptaufgabe ist:
 
 - ein Element wahrnehmen
 - ein Element auswaehlen
+- eine Saying- oder Image-Auswahl lokal erhalten
 - ein Element bewerten
 - ein Element als moeglichen Bestandteil eines Focus lesen
 
@@ -52,6 +57,7 @@ Mindestens sichtbar sein muss:
 
 - die aktuell betrachtete Einheit
 - ihre Darstellungsform
+- ob sie zur lokalen Benutzerauswahl gehoert
 - ihre aktuelle oder moegliche Relevanz
 - der naechste moegliche Schritt in Richtung Focus-Bildung
 
@@ -82,6 +88,7 @@ Die Hauptaufgabe ist:
 - Foci zusammenzufuehren
 - ihre gemeinsame Richtung lesbar zu machen
 - das Mindset als eigene Einheit zu bewerten
+- ein Mindset als aktuelle groessere Ansicht zu setzen
 - die Orientierungskraft des Mindset im groesseren Zusammenhang wahrzunehmen
 
 Mindestens sichtbar sein muss:
@@ -89,6 +96,7 @@ Mindestens sichtbar sein muss:
 - welche Foci zum aktuellen Mindset gehoeren
 - welcher Focus aktuell im Vordergrund steht
 - welche Bewertung das Mindset traegt oder tragen kann
+- ob dieses Mindset aktuell als Hauptansicht voreingestellt ist
 - welche naechste Bearbeitung moeglich ist
 
 ## Notwendige Benutzeroperationen
@@ -96,6 +104,7 @@ Mindestens sichtbar sein muss:
 Die Interaktionsschicht muss mindestens diese Benutzeroperationen tragen:
 
 - eine Einheit auswaehlen
+- eine Auswahl lokal speichern und wieder laden koennen
 - eine Einheit bewerten
 - Elemente in einen Focus uebernehmen
 - Elemente aus einem Focus loesen koennen
@@ -103,6 +112,7 @@ Die Interaktionsschicht muss mindestens diese Benutzeroperationen tragen:
 - einen Focus bewerten
 - Foci in ein Mindset uebernehmen
 - Foci aus einem Mindset loesen koennen
+- ein Mindset als aktuelle Hauptansicht setzen koennen
 - zwischen Elemente-, Focus- und Mindset-Arbeit wechseln
 
 Diese Operationen beschreiben die fachlich notwendige Benutzbarkeit.
@@ -139,6 +149,17 @@ In jedem Arbeitszustand soll der Benutzer mindestens drei Dinge erkennen koennen
 - welcher naechste sinnvolle Schritt moeglich ist
 
 Diese Sichtbarkeit ist wichtiger als eine bestimmte Komponentenform.
+
+## Startverhalten
+
+Beim Oeffnen der App soll direkt das zuletzt als aktuell gesetzte Mindset erscheinen.
+
+Dabei gilt:
+
+- die App startet in der Mindset-Ansicht
+- gezeigt wird das zuletzt voreingestellte Mindset in seiner groesseren Ansicht
+- diese Ansicht soll unmittelbar lesbar machen, an welchen Spruch sich der Benutzer erinnern wollte
+- der Zusammenhang zwischen aktuellem Mindset, enthaltenen Foci und dem erinnerten Spruch soll erkennbar bleiben
 
 ## Darstellungswirkung
 

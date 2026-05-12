@@ -25,6 +25,19 @@ Ein Element ist damit mehr als ein bloss gespeicherter Inhalt.
 
 Es ist eine bearbeitbare Einheit der persoenlichen Orientierung.
 
+## Fachregel fuer eine tragfaehige Benutzerauswahl
+
+Eine Benutzerauswahl ist fachlich tragfaehig, wenn:
+
+- sie sich auf vorhandene `Sayings` oder `Images` bezieht
+- die ausgewaehlten Elemente fuer den Benutzer als eigene Auswahl wiedererkennbar bleiben
+- diese Auswahl lokal gespeichert bleibt
+- die Auswahl als Ausgangsbasis fuer die Bildung eines Focus nutzbar ist
+
+Die Benutzerauswahl ist damit nicht nur ein fluechtiger Klickzustand.
+
+Sie ist der lokal verankerte persoenliche Bestand, aus dem Orientierung weiter aufgebaut wird.
+
 ## Fachregel fuer einen tragfaehigen Focus
 
 Ein Focus gilt fachlich als tragfaehig, wenn:
@@ -52,6 +65,17 @@ Ein Mindset gilt fachlich als tragfaehig, wenn:
 Ein Mindset ist damit nicht nur eine Ablage fuer mehrere Foci.
 
 Ein Mindset ist die aktuelle groesste Orientierungseinheit des Produkts.
+
+## Fachregel fuer ein aktuelles Mindset
+
+Ein aktuelles Mindset gilt fachlich als gelungen gesetzt, wenn:
+
+- aus den vorhandenen Mindsets genau eines als aktuelle Hauptansicht voreingestellt werden kann
+- dieses Mindset in groesserer Ansicht betrachtet werden kann
+- diese Voreinstellung beim erneuten Oeffnen der App erhalten bleibt
+- das Mindset fuer den Benutzer lesbar macht, an welchen Spruch er sich erinnern wollte
+
+Das aktuelle Mindset verbindet damit gespeicherte Orientierung mit unmittelbarer Wiederbegegnung beim App-Start.
 
 ## Mindestregel fuer Einordnung
 
@@ -93,6 +117,9 @@ Wo diese Bedingungen nicht erreicht sind, liegt fachlich eher eine lose Zusammen
 
 Damit die Fachlogik im Produkt wirksam werden kann, muessen fuer die aktuellen Produkteinheiten mindestens diese Bearbeitungen moeglich sein:
 
+- `Sayings` auswaehlen
+- `Images` auswaehlen
+- diese Auswahl lokal speichern
 - Elemente auswaehlen
 - Elemente bewerten
 - Elemente zu einem Focus verbinden
@@ -100,6 +127,7 @@ Damit die Fachlogik im Produkt wirksam werden kann, muessen fuer die aktuellen P
 - Foci bewerten
 - Foci zu einem Mindset verbinden
 - Mindsets auswaehlen
+- ein Mindset als aktuelle Hauptansicht setzen
 - Mindsets bewerten
 
 Diese Mindestoperationen beschreiben die fachliche Bearbeitbarkeit.

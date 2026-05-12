@@ -33,6 +33,21 @@ Auswaehlen bedeutet fachlich:
 
 Auswaehlen ist damit die Einstiegsoperation weiterer fachlicher Bearbeitung.
 
+## Benutzerauswahl als Arbeitsbestand
+
+Die aktuelle Fachlogik unterscheidet zwischen vorhandenen Daten und der persoenlichen Benutzerauswahl.
+
+Dabei gilt:
+
+- `Sayings` und `Images` liegen als vorhandene Elemente im Produkt vor
+- der Benutzer kann aus `Sayings` und aus `Images` jeweils eine Auswahl treffen
+- diese Benutzerauswahl wird lokal gespeichert
+- die lokal gespeicherte Benutzerauswahl bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung
+
+Die Benutzerauswahl ist damit keine neue Kompositionsebene.
+
+Sie ist die lokal erhaltene Auswahlbasis, aus der spaetere Verbindungen gebildet werden.
+
 ## Einordnen
 
 Einordnen macht sichtbar, in welchem Bedeutungszusammenhang eine Einheit gelesen wird.
@@ -88,12 +103,16 @@ Aus der bisherigen Produktstruktur ergibt sich aktuell:
 
 - Ein `Saying` kann ausgewaehlt, eingeordnet und bewertet werden.
 - Ein `Image` kann ausgewaehlt, eingeordnet und bewertet werden.
+- Aus lokal gespeicherten Saying- und Image-Auswahlen kann ein `Focus` zusammengestellt werden.
 - Ein `Focus` entsteht, wenn bedeutungstragende Elemente zu einer gemeinsam wahrnehmbaren Einheit verbunden werden.
 - Ein `Mindset` entsteht, wenn mehrere Foci zu einer hoeheren Orientierungseinheit verbunden werden.
+- Ein `Mindset` kann betrachtet und als aktuell bevorzugte groessere Ansicht gesetzt werden.
 
 Damit ist `Focus` die erste aktuelle Form verbundenen Sinns im Produkt.
 
 `Mindset` ist die aktuelle Form groesserer Orientierung aus mehreren verbundenen Foci.
+
+Die aktuelle Mindset-Ansicht ist zugleich die primaere Hauptansicht des Produkts.
 
 ## Fachregel fuer Kompositionen
 

@@ -66,6 +66,16 @@ Ein Agent liest in dieser Schicht:
 - die in `/_spec/index.md` benannte aktive UI-Richtung als bevorzugte UI-Ableitung
 - Developer-Schaerfungen nur dann als bevorzugte Richtung, wenn sie ausdruecklich fuer die laufende Arbeit herangezogen oder spaeter in die Haupt-Spezifikation uebernommen werden
 
+## Theme-Wahl fuer Runs
+
+Vor einer konkreten UI-Ableitung, einem Build oder einer Umsetzung mit Darstellungsschwerpunkt soll die UI-Richtung fuer den aktuellen Run geklaert werden.
+
+Dabei gilt:
+
+- ohne Auswahl gilt die aktive Produkt-Default-Richtung aus `/_spec/index.md`
+- eine abweichende Wahl wie `developer` gilt zunaechst nur fuer den aktuellen Run
+- die run-spezifische Wahl veraendert nicht automatisch die dauerhafte Produkt-Default-Richtung
+
 ## Offene Entscheidungen
 
 Die folgenden Punkte bleiben in dieser Schicht bewusst offen:
