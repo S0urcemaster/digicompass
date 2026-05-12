@@ -18,6 +18,18 @@ Auf dem Desktop bleibt dieselbe Hochformat-Logik erhalten.
 
 Desktop vergroessert das Produkt also nicht zu einer grundsaetzlich anderen Flaechenlogik, sondern zeigt dieselbe Hochformat-App in einem groesseren umgebenden Raum.
 
+## Minimale verbindliche UI-Definitionen
+
+Die folgenden UI-Aussagen sind nicht optional, sondern Teil der verbindlichen Darstellungsgrundlage:
+
+- Digi Compass kennt zwei funktional unterschiedliche Button-Arten.
+- Es gibt Schaltflaechen auf dem App-Gehaeuse.
+- Es gibt benutzbare Elemente auf Images.
+- Benutzbare Elemente auf Images sollen das Bild moeglichst wenig verdecken.
+- Gleichzeitig sollen diese benutzbaren Elemente so gross wie moeglich lesbar und benutzbar bleiben.
+
+Diese Regeln gelten unabhaengig davon, welche UI-Variante spaeter konkret ausgearbeitet wird.
+
 ## Rolle der UI-Spezifikation
 
 Die UI-Spezifikation beschreibt nicht zuerst exakte Pixel-Loesungen.
@@ -49,8 +61,10 @@ Sie werden erst dann zu engeren Vorgaben, wenn eine spaetere Schaerfung dies aus
 Ein Agent liest in dieser Schicht:
 
 - die feste Smartphone- und Hochformat-Regel als verbindlich
+- die minimalen UI-Definitionen als verbindlich
 - die UI-Varianten zunaechst als Empfehlungsschicht
-- spaetere Developer-Schaerfungen nur dann als bindende Richtung, wenn sie ausdruecklich aktiviert oder in die Haupt-Spezifikation uebernommen wurden
+- die in `/_spec/index.md` benannte aktive UI-Richtung als bevorzugte UI-Ableitung
+- Developer-Schaerfungen nur dann als bevorzugte Richtung, wenn sie ausdruecklich fuer die laufende Arbeit herangezogen oder spaeter in die Haupt-Spezifikation uebernommen werden
 
 ## Offene Entscheidungen
 

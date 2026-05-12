@@ -16,6 +16,16 @@ Diese Orientierung entsteht durch Auswaehlen, Einordnen, Bewerten und Verbinden 
 
 ## Reading Order
 
+## Aktive UI-Richtung
+
+Die aktuell bevorzugte UI-Richtung fuer die Darstellung ist:
+
+- `default`
+
+Wenn eine UI-Ableitung erzeugt wird, ist diese Richtung in `/_spec/ui/default-theme.md` zunaechst als aktive Default-Richtung zu lesen.
+
+Fuer laufende Schaerfungsarbeit kann voruebergehend mit einer anderen UI-Datei gearbeitet werden, ohne die aktive Produkt-Default-Richtung zu aendern.
+
 ### Meta-Spezifikation
 
 1. [Spec Meta](./meta/index.md)

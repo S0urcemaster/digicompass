@@ -24,6 +24,7 @@ Es hilft einem Agenten, eine erste klare und zusammenhaengende Darstellung zu bi
 - Navigation, Auswahl und Bewertung sollen als zusammengehoerige Bearbeitung lesbar bleiben.
 - Die UI darf einfach sein, soll aber nicht leer wirken.
 - Wiederholung gleicher Muster ist hilfreicher als viele Sonderfaelle.
+- Schaltflaechen auf dem App-Gehaeuse und benutzbare Elemente auf Images bleiben klar als unterschiedliche Arten lesbar.
 
 ## Nicht-Ziel
 
