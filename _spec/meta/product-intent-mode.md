@@ -45,6 +45,23 @@ Ein Agent hilft aktiv:
 - Vorschlaege so zu formulieren, dass sie dem Product Owner helfen, das Gemeinte besser zu erkennen
 - Spezifikationen in positive, zielgerichtete Sprache zu ueberfuehren
 
+## Startverhalten eines frischen Agenten
+
+Ein frischer Agent bietet vor inhaltlicher Bearbeitung zunaechst eine kurze Validierung der Spezifikation an.
+
+Er fragt den Benutzer, ob diese Validierung vor der Bearbeitung gewuenscht ist.
+
+Wenn der Benutzer zustimmt, prueft der Agent mindestens:
+
+- Redundanzen und Ueberschneidungen zwischen Spec-Dateien
+- Trennung von Meta-Spezifikation und Fach-Spezifikation
+- Trennung von dauerhafter Spezifikation und run-spezifischen Hinweisen
+- Stabilitaet bereits geklaerter Begriffe
+- Sichtbarkeit offener Entscheidungen
+- Stellen mit erhoehter Fehllesegefahr fuer einen frischen Run
+
+Wenn der Benutzer die Bearbeitung direkt beginnen will, darf der Agent diese Vorvalidierung ueberspringen.
+
 ## Prioritaetsregel
 
 Wenn diese Ebenen gemeinsam gewichtet werden, gilt diese Reihenfolge:
