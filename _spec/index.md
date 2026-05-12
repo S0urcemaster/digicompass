@@ -38,7 +38,8 @@ Fuer laufende Schaerfungsarbeit kann voruebergehend mit einer anderen UI-Datei g
 3. [Fachlogik](./fachlogik.md)
 4. [Orientierungsregeln](./orientierungsregeln.md)
 5. [Domain And Store](./domain-and-store.md)
-6. [UI Specification](./ui/index.md)
-7. [Interaktion](./interaktion/index.md)
+6. [Views](./views.md)
+7. [UI Specification](./ui/index.md)
+8. [Interaktion](./interaktion/index.md)
 
 Dieser Einstiegspunkt bleibt absichtlich knapp und trennt die Form der Spezifikation von ihrem Produktinhalt.

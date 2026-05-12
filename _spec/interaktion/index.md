@@ -18,6 +18,7 @@ Diese Arbeitszustaende machen die fachlichen Operationen `Auswaehlen`, `Einordne
 
 Die Interaktion soll es dem Benutzer ermoeglichen:
 
+- zwischen den drei Top-Level-Views `Mindset`, `Navigator` und `Collection` zu wechseln
 - bedeutungstragende Einheiten wahrzunehmen
 - eine aktuelle Einheit gezielt auszuwaehlen
 - Saying- und Image-Auswahlen lokal zu erhalten
@@ -40,6 +41,8 @@ Diese Arbeitszustaende muessen nicht als gleichnamige Screens umgesetzt werden.
 Sie muessen aber als unterscheidbare Benutzungszustaende im Produkt lesbar sein.
 
 Die Mindset-Ansicht ist dabei die primaere Hauptansicht des Produkts.
+
+Sie ist zugleich eine von drei gleichberechtigten Top-Level-Views.
 
 ## Arbeitszustand Elemente sichten
 
@@ -101,10 +104,25 @@ Mindestens sichtbar sein muss:
 - ob dieses Mindset aktuell als Hauptansicht voreingestellt ist
 - welche naechste Bearbeitung moeglich ist
 
+In der aktuellen festen View-Grundform gilt zusaetzlich:
+
+- ein `Mindset` zeigt hoechstens fuenf `Foci`
+- die View zeigt dafuer genau fuenf Kartenplaetze
+- mindestens ein `Focus` wird erwartet
+- ein Mindset zeigt eine grosse aktive Focus-Karte
+- daneben werden vier kleinere Focus-Karten gezeigt
+- fehlende `Foci` bleiben als leere Plaetze sichtbar
+- genau einer der vorhandenen `Foci` ist die grosse aktive Karte
+- ein Klick auf eine kleine Karte macht diese zur grossen aktiven Karte
+- nur auf der grossen aktiven Karte ist die Bewertung direkt einstellbar
+- in dieser View schaltet dieselbe Bewertung den aktiven Wert nicht aus
+- auf der grossen aktiven Karte ist eine Umschaltung in die Vollbildansicht moeglich
+
 ## Notwendige Benutzeroperationen
 
 Die Interaktionsschicht muss mindestens diese Benutzeroperationen tragen:
 
+- zwischen `Mindset`, `Navigator` und `Collection` wechseln
 - eine Einheit auswaehlen
 - eine Auswahl lokal speichern und wieder laden koennen
 - eine Einheit bewerten

@@ -119,6 +119,11 @@ Aktuell traegt ein `Mindset` mindestens:
 - `foci`
 - `rating`
 
+Dabei gilt:
+
+- ein `Mindset` traegt mindestens einen `Focus`
+- ein `Mindset` traegt hoechstens fuenf `Foci`
+
 Weitere Felder wie Name oder Notizen koennen spaeter hinzukommen, wenn ihre fachliche Rolle erneut explizit festgelegt wird.
 
 ## Focus-Bildung als Datenvorgang
