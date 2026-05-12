@@ -23,6 +23,7 @@ Die aktuelle Developer-Richtung bevorzugt:
 - moeglichst grosse Schaltflaechen
 - moeglichst wenig Rand
 - moeglichst wenig Abstand
+- moeglichst wenig getrennte Bedienhandlungen fuer eng zusammengehoerige Aktionen
 
 Diese Richtung gilt fuer das App-Gehaeuse als bevorzugte Default-Schaerfung.
 
@@ -63,3 +64,13 @@ Wenn mit `developer` gearbeitet wird, sollen Agenten:
 - Rand und Abstand knapp halten
 - Image-Buttons so platzieren, dass Bildflaeche maximal erhalten bleibt
 - keine luftige oder grosszuegig verstreute UI als Default annehmen
+
+## Bewertung und Favorisierung
+
+In der aktuellen Developer-Richtung darf die Sternbewertung zugleich die Favorisierung tragen.
+
+Dabei gilt:
+
+- die Favorisierung soll ohne zusaetzlichen separaten Button schaltbar sein
+- Bewertung und Favorisierung duerfen als eng zusammengehoerige Aktion benutzbar werden
+- die UI soll diese Doppelrolle klar lesbar machen, damit kein verdeckter Modus entsteht

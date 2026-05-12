@@ -44,6 +44,7 @@ Dabei gilt:
 - der Benutzer kann aus `Sayings` und aus `Images` jeweils eine Auswahl treffen
 - diese Benutzerauswahl wird lokal gespeichert
 - die lokal gespeicherte Benutzerauswahl bildet den aktuellen persoenlichen Arbeitsbestand fuer weitere Orientierung
+- spaeter entstehende User-Daten muessen dabei nicht konsistent an den Basisbestand zurueckgebunden bleiben
 
 Die Benutzerauswahl ist damit keine neue Kompositionsebene.
 

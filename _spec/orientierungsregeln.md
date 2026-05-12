@@ -25,6 +25,11 @@ Ein Element ist damit mehr als ein bloss gespeicherter Inhalt.
 
 Es ist eine bearbeitbare Einheit der persoenlichen Orientierung.
 
+Fuer die aktuellen Element-Arten gilt zusaetzlich:
+
+- ein `Saying` zeigt seine Kategorien und seine Bewertung an
+- ein `Image` zeigt seine Kategorie und seine Bewertung an
+
 ## Fachregel fuer eine tragfaehige Benutzerauswahl
 
 Eine Benutzerauswahl ist fachlich tragfaehig, wenn:
@@ -42,15 +47,18 @@ Sie ist der lokal verankerte persoenliche Bestand, aus dem Orientierung weiter a
 
 Ein Focus gilt fachlich als tragfaehig, wenn:
 
-- er aus bedeutungstragenden Elementen gebildet ist
+- er aus genau einem `Saying` und genau einem `Image` gebildet ist
 - seine Bestandteile als zusammengehoerig lesbar sind
 - aus dieser Verbindung eine gemeinsame Richtung wahrnehmbar wird
+- die Kategorien seines `Saying` und seines `Image` lesbar bleiben
 - der Focus als eigene Einheit bewertet werden kann
 - der Focus wieder in eine groessere Orientierung eingehen kann
 
 Ein Focus ist damit nicht nur ein Paar oder eine Sammlung von Elementen.
 
 Ein Focus ist die erste aktuelle Produkteinheit, in der verbundene Bedeutung als eigene Einheit sichtbar wird.
+
+Ein tragfaehiger Focus zeigt seine Bestandteile nicht nur mit, sondern traegt auch eine eigene sichtbare Bewertung.
 
 ## Fachregel fuer ein tragfaehiges Mindset
 
@@ -101,6 +109,27 @@ Das bedeutet mindestens:
 
 Bewertung ist damit kein dekorativer Zusatz, sondern Teil der Fachlogik.
 
+Fuer die aktuelle Bedienlogik gilt zusaetzlich:
+
+- die Bewertung ist nur fuer das aktuell fokussierte Element einer Liste aktiv manipulierbar
+- Listenelemente, die nicht fokussiert sind, zeigen ihre Bewertung nur an
+- eine manipulierbare Bewertung setzt deshalb eine vorherige Auswahl der Einheit voraus
+
+## Fachregel fuer Favorisierung ueber Bewertung
+
+In der aktuellen Developer-Richtung darf die Sternbewertung zusaetzlich eine Favorisierung an- und ausschalten.
+
+Dabei gilt:
+
+- dieselbe Bedienhandlung kann sowohl Bewertung als auch Favorisierung ausdruecken
+- fuer das Umschalten der Favorisierung ist kein zusaetzlicher eigener Button noetig
+- diese Koppelung ist zunaechst eine Developer-Schaerfung der Bedienung
+
+Die fachliche Grundgeltung bleibt dabei:
+
+- Bewertung macht Relevanz sichtbar
+- Favorisierung hebt eine Einheit zusaetzlich als besonders bevorzugt hervor
+
 ## Mindestregel fuer Verbinden
 
 Verbinden ist fachlich gelungen, wenn aus mehreren Einheiten eine neue lesbare Einheit entsteht.
@@ -122,9 +151,11 @@ Damit die Fachlogik im Produkt wirksam werden kann, muessen fuer die aktuellen P
 - diese Auswahl lokal speichern
 - Elemente auswaehlen
 - Elemente bewerten
+- Elemente favorisieren koennen
 - Elemente zu einem Focus verbinden
 - Foci auswaehlen
 - Foci bewerten
+- Foci favorisieren koennen
 - Foci zu einem Mindset verbinden
 - Mindsets auswaehlen
 - ein Mindset als aktuelle Hauptansicht setzen

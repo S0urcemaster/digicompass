@@ -57,6 +57,7 @@ Mindestens sichtbar sein muss:
 
 - die aktuell betrachtete Einheit
 - ihre Darstellungsform
+- ihre Kategorie oder Kategorien
 - ob sie zur lokalen Benutzerauswahl gehoert
 - ihre aktuelle oder moegliche Relevanz
 - der naechste moegliche Schritt in Richtung Focus-Bildung
@@ -67,14 +68,15 @@ In diesem Zustand arbeitet der Benutzer an einer ersten orientierenden Kompositi
 
 Die Hauptaufgabe ist:
 
-- ausgewaehlte Elemente zusammenzubringen
+- genau ein ausgewaehltes Saying und genau ein ausgewaehltes Image zusammenzubringen
 - ihre Verbindung als gemeinsame Richtung lesbar zu machen
 - den Focus als eigene Einheit zu bewerten
 - zu pruefen, ob der Focus tragfaehig genug fuer ein Mindset ist
 
 Mindestens sichtbar sein muss:
 
-- welche Elemente den aktuellen Focus bilden
+- welches Saying und welches Image den aktuellen Focus bilden
+- welche Kategorien diese beiden Bestandteile tragen
 - welche Einheit aktuell innerhalb des Focus im Vordergrund steht
 - welche Bewertung der Focus traegt oder tragen kann
 - welche naechste Bearbeitung moeglich ist
@@ -118,6 +120,15 @@ Die Interaktionsschicht muss mindestens diese Benutzeroperationen tragen:
 Diese Operationen beschreiben die fachlich notwendige Benutzbarkeit.
 
 Sie legen noch nicht fest, ob dies ueber Buttons, Gesten, Listen, Karten oder andere UI-Muster erfolgt.
+
+## Regel fuer Listen und Fokus
+
+Wenn Einheiten in einer Liste erscheinen, gilt:
+
+- Listenelemente zeigen Kategorien und Bewertung nur an
+- Listenelemente sind nicht direkt manipulierbar
+- erst die ausgewaehlte und dadurch fokussierte Einheit wird aktiv bearbeitbar
+- insbesondere die Bewertung ist nur an der fokussierten Einheit manipulierbar
 
 ## Zustandswechsel
 

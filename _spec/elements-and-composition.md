@@ -70,6 +70,38 @@ Damit sind `Saying` und `Image` nicht nur Beispielarten von Elementen.
 
 Sie repraesentieren die beiden aktuellen Basisbestaende, aus denen der Benutzer seine weitere Orientierung bildet.
 
+## Saying
+
+Ein `Saying` ist ein kurzer Spruch aus dem kuratierten Bestand des Produkts.
+
+Dabei gilt:
+
+- ein `Saying` wurde vom kuratierenden Developer gesammelt
+- ein `Saying` wird in den Bestand aufgenommen, weil der kuratierende Developer ihn fuer weitgehend wahr haelt
+- ein `Saying` traegt seine Bedeutung primaer als sprachlich und logisch erfassbarer Text
+- ein `Saying` zeigt seine Kategorien an
+- ein `Saying` kann mehrere Kategorien tragen
+- ein `Saying` zeigt seine Bewertung an
+- ein `Saying` kann vom Benutzer ausgewaehlt, bewertet und in einen Focus aufgenommen werden
+
+Damit ist ein `Saying` die aktuelle sprachliche Grundform orientierender Bedeutung im Produkt.
+
+## Image
+
+Ein `Image` ist ein vom kuratierenden Developer mit KI erstelltes hochformatiges Bild.
+
+Dabei gilt:
+
+- ein `Image` ist ungefaehr im Verhaeltnis `5:7` angelegt
+- ein `Image` ist auf Hochformat hin ausgerichtet
+- ein `Image` soll einen emotionalen Bezug zu sprachlich und logisch erfassbaren Inhalten herstellen
+- ein `Image` zeigt seine Kategorie an
+- ein `Image` traegt aktuell genau eine Kategorie
+- ein `Image` zeigt seine Bewertung an
+- ein `Image` kann vom Benutzer ausgewaehlt, bewertet und in einen Focus aufgenommen werden
+
+Damit ist ein `Image` die aktuelle bildliche Grundform orientierender Bedeutung im Produkt.
+
 ## Komposition
 
 Eine Komposition verbindet mehrere Einheiten zu einer neuen eigenstaendigen Einheit.
@@ -118,6 +150,27 @@ Die bisherige Produktstruktur laesst sich so einordnen:
 ## Rolle von Focus
 
 Ein Focus verbindet bedeutungstragende Elemente zu einer gemeinsam wahrnehmbaren Einheit.
+
+Ein Focus besteht immer aus genau einem `Saying` und genau einem `Image`.
+
+Ein Focus zeigt:
+
+- die Kategorien seines `Saying`
+- die Kategorie seines `Image`
+- seine eigene Bewertung
+
+Ein Focus traegt diese fuer ihn noetigen Daten im User-Store selbst.
+
+Er wird nicht nur ueber eine garantierte Referenzkonsistenz zum Basisbestand getragen.
+
+Ein Focus verbindet sein `Saying` und sein `Image` so, dass Denken und Fuehlen gemeinsam lesbar werden.
+
+Die Verbindung soll dem Benutzer ermoeglichen:
+
+- einen logisch erfassbaren Spruch wahrzunehmen
+- dazu einen emotionalen Bildbezug zu erleben
+- diese Kombination als eigene orientierende Einheit in seine Bibliothek aufzunehmen
+- diese Einheit selbst zu bewerten
 
 Ein Focus bildet aktuell die erste Kompositionsebene des Produkts.
 
