@@ -159,6 +159,10 @@ Ein Focus zeigt:
 - die Kategorie seines `Image`
 - seine eigene Bewertung
 
+Die Focus-Kategorien werden als vereinigte Menge aus Saying-Kategorien und Image-Kategorie gelesen.
+
+Sie gehoeren zum gemeinsamen darstellbaren Kopf des Focus.
+
 Ein Focus traegt diese fuer ihn noetigen Daten im User-Store selbst.
 
 Er wird nicht nur ueber eine garantierte Referenzkonsistenz zum Basisbestand getragen.

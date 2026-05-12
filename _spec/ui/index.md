@@ -23,10 +23,14 @@ Desktop vergroessert das Produkt also nicht zu einer grundsaetzlich anderen Flae
 Die folgenden UI-Aussagen sind nicht optional, sondern Teil der verbindlichen Darstellungsgrundlage:
 
 - Digi Compass kennt zwei funktional unterschiedliche Button-Arten.
+- Digi Compass kennt fuer `Focus` zwei Darstellungsarten: `selected` und `preview`.
 - Es gibt Schaltflaechen auf dem App-Gehaeuse.
 - Es gibt benutzbare Elemente auf Images.
 - Benutzbare Elemente auf Images sollen das Bild moeglichst wenig verdecken.
 - Gleichzeitig sollen diese benutzbaren Elemente so gross wie moeglich lesbar und benutzbar bleiben.
+- `Image`- und `Focus`-Karten folgen einer festen Fuenf-Reihen-Gliederung aus `header`, `content`, `content`, `content`, `footer`.
+- Kategorien, Text und Bewertung auf Karten sollen den verfuegbaren Raum moeglichst weitgehend nutzen.
+- Komponenten auf Bildflaechen sollen im Kontrast zum Bildtyp `hell`, `dunkel` oder `mix` stehen.
 
 Diese Regeln gelten unabhaengig davon, welche UI-Variante spaeter konkret ausgearbeitet wird.
 

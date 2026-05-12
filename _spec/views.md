@@ -51,6 +51,78 @@ Dabei gilt:
 
 Die `Mindset`-View liest ihre Karten aus dem aktuell gesetzten `Mindset`.
 
+## Focus-Karten
+
+`Focus` wird aktuell in zwei Darstellungen gezeigt:
+
+1. `selected`
+2. `preview`
+
+Dabei gilt:
+
+- die `selected`-Darstellung ist genau doppelt so gross wie eine `preview`
+- `selected` ist die grosse aktive Fokusdarstellung
+- `preview` ist die kleinere Vorschauvariante derselben Grundkomponente
+
+## Kartenraster
+
+Die Oberflaeche einer `Image`- oder `Focus`-Karte ist in fuenf Reihen gegliedert:
+
+1. `header`
+2. `content`
+3. `content`
+4. `content`
+5. `footer`
+
+Diese Gliederung bleibt in `selected` und `preview` erhalten.
+
+## Header
+
+Im `header` werden Kategorien angezeigt.
+
+Dabei gilt:
+
+- bei `Image` wird die Bildkategorie angezeigt
+- bei `Saying` werden Saying-Kategorien angezeigt
+- bei `Focus` wird die vereinigte Menge aus Saying-Kategorien und Image-Kategorie angezeigt
+- Kategorien stammen aus `data/categories.json`
+- die sichtbare Kategorienmenge wird auf hoechstens fuenf Eintraege reduziert
+- die Schriftgroesse im `header` soll so gewaehlt werden, dass moeglichst fuenf Kategorien in den verfuegbaren Raum passen
+
+## Content
+
+Im mittleren `content`-Bereich wird der Saying-Text gezeigt.
+
+Dabei gilt:
+
+- der Text nutzt den verfuegbaren Raum moeglichst weitgehend aus
+- die Texteigenschaften werden aus dem `Saying` bestimmt
+- dazu gehoeren mindestens Schriftgroesse und Schriftfarbe
+- weitere typografische Eigenschaften wie Dichte, Letter-Spacing oder Zeilenabstand duerfen fuer die konkrete Komponente angepasst werden, wenn dies der Lesbarkeit und dem Flaechennutzen dient
+- fuer solche typografischen Schaerfungen kann spaeter eine eigene Editor- oder Zusatzfunktion hinzukommen
+
+## Footer
+
+Im `footer` wird die Bewertungskomponente angezeigt.
+
+Dabei gilt:
+
+- die Bewertung nutzt den verfuegbaren Platz moeglichst weitgehend aus
+- in `selected` ist sie aktiv benutzbar, wenn die jeweilige View dies erlaubt
+- in `preview` ist sie grundsaetzlich nur anzeigend, solange keine ausdrueckliche Bearbeitungsregel etwas anderes festlegt
+
+## Kontrastregel
+
+Jedes `Image` traegt einen Typ, ob es eher `hell`, `dunkel` oder `mix` ist.
+
+Komponenten auf einer `Image`- oder `Focus`-Karte sollen im Kontrast zur Bildfarbe stehen.
+
+Das gilt insbesondere fuer:
+
+- Kategorien im `header`
+- Saying-Text im `content`
+- Bewertung im `footer`
+
 ### Navigator
 
 - Rolle: gleichberechtigte Top-Level-View
