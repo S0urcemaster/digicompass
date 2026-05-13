@@ -155,62 +155,97 @@
   },
   {
     "id": 22,
+    "url": "dummheit dunkel 1.jpg",
+    "color": "dunkel",
+    "category": "Dummheit",
+    "rating": 0
+  },
+  {
+    "id": 23,
+    "url": "dummheit dunkel 2.jpg",
+    "color": "dunkel",
+    "category": "Dummheit",
+    "rating": 0
+  },
+  {
+    "id": 24,
+    "url": "dummheit dunkel 3.jpg",
+    "color": "dunkel",
+    "category": "Dummheit",
+    "rating": 0
+  },
+  {
+    "id": 25,
+    "url": "dummheit dunkel 4.jpg",
+    "color": "dunkel",
+    "category": "Dummheit",
+    "rating": 0
+  },
+  {
+    "id": 26,
+    "url": "dummheit hell 1.jpg",
+    "color": "hell",
+    "category": "Dummheit",
+    "rating": 0
+  },
+  {
+    "id": 27,
     "url": "spiegel dunkel 1.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 23,
+    "id": 28,
     "url": "spiegel dunkel 2.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 24,
+    "id": 29,
     "url": "spiegel dunkel 3.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 25,
+    "id": 30,
     "url": "spiegel dunkel 4.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 26,
+    "id": 31,
     "url": "spiegel dunkel 5.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 27,
+    "id": 32,
     "url": "spiegel dunkel 6.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 28,
+    "id": 33,
     "url": "spiegel dunkel 7.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 29,
+    "id": 34,
     "url": "spiegel dunkel 8.jpg",
     "color": "dunkel",
     "category": "Spiegel",
     "rating": 0
   },
   {
-    "id": 30,
+    "id": 35,
     "url": "spiegel dunkel 9.jpg",
     "color": "dunkel",
     "category": "Spiegel",
