@@ -1895,8 +1895,7 @@
     "text": "Wer nicht Gerechtigkeit jagt : jagt nur für sich selbst - denn für wen sonst ?",
     "fontSize": 50,
     "categories": [
-      "Gerechtigkeit",
-      "Egoismus"
+      "Gerechtigkeit"
     ],
     "rating": 0.5
   },
@@ -1915,7 +1914,6 @@
     "text": "Manche brauchen die Zahlen - manche nutzen sie",
     "fontSize": 50,
     "categories": [
-      "Abhängigkeit",
       "Klugheit"
     ],
     "rating": 0.5
@@ -3042,7 +3040,6 @@
     "text": "Was du willst : Kontrolle ist gut / Vertrauen ist besser · Was du kriegst : Vertrauen ist gut / Kontrolle ist besser",
     "fontSize": 34,
     "categories": [
-      "Gut und Böse",
       "Erkenntnis"
     ],
     "rating": 0.5
