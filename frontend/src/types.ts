@@ -8,6 +8,7 @@ export type Saying = {
   text: string;
   fontSize: number;
   categories: string[];
+  source: string[];
   rating: number;
 };
 
