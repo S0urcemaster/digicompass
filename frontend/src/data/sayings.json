@@ -3867,5 +3867,33 @@
       "Sean"
     ],
     "rating": 0.5
+  },
+  {
+    "id": 344,
+    "text": "Ein Wort definiert nicht das Ding - es ist sein Name",
+    "fontSize": 44,
+    "categories": [
+      "Sprache",
+      "Definition",
+      "Wahrheit"
+    ],
+    "source": [
+      "Sean"
+    ],
+    "rating": 0.5
+  },
+  {
+    "id": 345,
+    "text": "Gott ist nicht für die Schwachen - sie sind der Tross der Reichen · Nur die Reichen liebt Gott",
+    "fontSize": 34,
+    "categories": [
+      "Glaube",
+      "Macht",
+      "Reichtum"
+    ],
+    "source": [
+      "Sean"
+    ],
+    "rating": 0.5
   }
 ]
