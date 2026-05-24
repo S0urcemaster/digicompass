@@ -3895,5 +3895,19 @@
       "Sean"
     ],
     "rating": 0.5
+  },
+  {
+    "id": 346,
+    "text": "Diejenigen die Mut und Glauben haben : sollten niemals im Unglück zugrunde gehen",
+    "fontSize": 34,
+    "categories": [
+      "Glaube",
+      "Mut",
+      "Tod"
+    ],
+    "source": [
+      "Sean"
+    ],
+    "rating": 0.5
   }
 ]
