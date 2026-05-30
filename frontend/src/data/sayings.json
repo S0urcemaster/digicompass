@@ -3909,5 +3909,19 @@
       "Sean"
     ],
     "rating": 0.5
+  },
+  {
+    "id": 347,
+    "text": "Kunst erobert Herzen",
+    "fontSize": 50,
+    "categories": [
+      "Kunst",
+      "Freude",
+      "Liebe"
+    ],
+    "source": [
+      "Sean"
+    ],
+    "rating": 0.5
   }
 ]
