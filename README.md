@@ -4,7 +4,10 @@
 
 Digi Compass ist ein System zum Aufbau persoenlicher Orientierung aus bedeutungstragenden Elementen.
 
-Die fachliche Primaerquelle des Projekts ist die Spezifikation in [`/_spec/index.md`](./_spec/index.md).
+Die fruehere fachliche Spezifikation in [`/_spec/index.md`](./_spec/index.md) ist
+als veralteter Zwischenstand markiert. Eine neue Projekt-Spezifikation soll erst
+auf Basis des weiter fortgeschrittenen Canon in
+`/home/sntr/code/agenttheory/.theo/index.xml` geschrieben werden.
 
 ## Produktkern
 
