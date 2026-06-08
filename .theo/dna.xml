@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<dna>
+
+  <def name="Kernsatz">Die kleinste eigenstaendige Einheit von Digi Compass ist das Element
+    Aus Elementen entstehen Kompositionen
+    Aus Kompositionen koennen weitere Kompositionen entstehen
+  </def>
+
+  <def name="Mindestform">Jede eigenstaendige Einheit traegt mindestens :
+    Identitaet / Darstellbarkeit / Einordnung / Bewertung / Verknuepfbarkeit
+    Diese Mindestform bleibt ueber Elemente und Kompositionen hinweg erhalten
+  </def>
+
+  <def name="Bauprinzip">Alles im System ist entweder :
+    ein Element /
+    eine Komposition aus Elementen /
+    eine Komposition aus bereits gebildeten Kompositionen
+  </def>
+
+</dna>

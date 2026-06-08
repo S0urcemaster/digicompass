@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grundformen>
+
+  <def>Digi Compass arbeitet mit zwei fachlichen Grundformen : Element und Komposition</def>
+
+  <definitionen name="Element">
+    <def>Ein Element ist die kleinste eigenstaendige Einheit . Es kann identifiziert / angezeigt / eingeordnet / bewertet und in groessere Einheiten aufgenommen werden</def>
+    <def name="Saying">Sprachliche Grundform aus dem kuratierten Bestand
+      Traegt : Text / Schriftgroesse / Kategorien (mehrere moeglich) / Bewertung
+    </def>
+    <def name="Image">Bildliche Grundform . Hochformatig (ca. 5:7) / mit KI erstellt
+      Traegt : URL / Farbtyp (hell / dunkel / mix) / genau eine Kategorie / Bewertung
+    </def>
+  </definitionen>
+
+  <definitionen name="Komposition">
+    <def>Eine Komposition verbindet mehrere Einheiten zu einer neuen eigenstaendigen Einheit . Sie kann selbst wieder in groessere Einheiten eingehen</def>
+    <def name="Focus">Erste Kompositionsebene : verbindet genau ein Saying und genau ein Image
+      Traegt : Saying / Image-URL / eigene Bewertung
+      Kategorien : vereinigte Menge aus Saying-Kategorien und Image-Kategorie
+    </def>
+    <def name="Mindset">Zweite Kompositionsebene : verbindet mehrere Foci zu einer hoeheren Orientierungseinheit
+      Traegt : mindestens einen / hoechstens fuenf Foci
+    </def>
+  </definitionen>
+
+  <definitionen name="Basisdaten">
+    <def>Der Factory-Bestand besteht aus drei gepflegten Datenquellen : Sayings / Images / Foci</def>
+    <def>Sayings und Images erscheinen fachlich als Elemente
+      Foci aus dem Factory-Bestand erscheinen fachlich als Kompositionen
+    </def>
+    <def>Factory-Foci werden vom Developer vorgefertigt . Sie ermoeglichen einen schnelleren Einstieg und koennen spaeter vorbereitete Orientierung fuer den Navigator tragen</def>
+  </definitionen>
+
+</grundformen>

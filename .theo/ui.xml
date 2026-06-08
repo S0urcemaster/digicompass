@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui>
+
+  <regel name="Hochformat">Digi Compass wird auf Smartphones optimiert . Die primaere Produktform ist ein schmales Hochformat
+    Desktop zeigt dieselbe Hochformat-App in einem groesseren umgebenden Raum - keine grundsaetzlich andere Flaechenlogik
+  </regel>
+
+  <definitionen name="Verbindliche UI-Regeln">
+    <regel>Digi Compass kennt zwei funktional unterschiedliche Button-Arten : Gehaeuse-Buttons und Image-Buttons</regel>
+    <regel>Digi Compass kennt fuer Focus zwei Darstellungsarten : selected und preview</regel>
+    <regel>Benutzbare Elemente auf Images sollen das Bild moeglichst wenig verdecken - gleichzeitig so gross wie moeglich lesbar und benutzbar bleiben</regel>
+    <regel>Image- und Focus-Karten folgen einer festen Fuenf-Reihen-Gliederung : header / content / content / content / footer</regel>
+    <regel>Kategorien / Text und Bewertung auf Karten sollen den verfuegbaren Raum moeglichst weitgehend nutzen</regel>
+    <regel>Komponenten auf Bildflaechen sollen im Kontrast zum Bildtyp hell / dunkel oder mix stehen</regel>
+  </definitionen>
+
+  <def name="Variantenprinzip">Die UI darf in ihrer konkreten Ausformung variieren / solange fachliche Richtung / Kernoperationen und Hochformat-Regel erhalten bleiben
+    UI-Varianten sind zunaechst Empfehlungen - sie werden erst zu engeren Vorgaben wenn eine Schaerfung dies ausdruecklich festlegt
+  </def>
+
+  <definitionen name="Default-Theme">
+    <def>Die App wirkt als zusammenhaengendes / ruhiges Hochformat-Objekt</def>
+    <def>Die Benutzerfuehrung bleibt auf wenigen klar lesbaren Ebenen</def>
+    <def>Eine aktuelle Einheit soll sichtbar hervortreten / ohne die naechsten moeglichen Schritte zu verstecken</def>
+    <def>Wiederholung gleicher Muster ist hilfreicher als viele Sonderfaelle</def>
+    <def>Gehaeuse-Buttons und Image-Buttons bleiben klar als unterschiedliche Arten lesbar</def>
+  </definitionen>
+
+  <definitionen name="Developer-Richtung">
+    <def>Gilt nur wenn ausdruecklich als aktive Richtung fuer den laufenden Run gewaehlt</def>
+    <def>Moeglichst grosse Gehaeuse-Buttons / moeglichst wenig Rand und Abstand</def>
+    <def>Image-Buttons : Bildflaeche maximal erhalten / Eingriff nur soweit Benutzbarkeit es braucht</def>
+    <def>Sternbewertung darf zugleich die Favorisierung tragen - ohne zusaetzlichen separaten Button</def>
+  </definitionen>
+
+  <regel name="Theme-Wahl">Vor einer UI-Ableitung oder einem Build mit Darstellungsschwerpunkt soll die UI-Richtung fuer den aktuellen Run geklaert werden
+    Ohne Auswahl gilt Default
+    Eine run-spezifische Wahl veraendert nicht die dauerhafte Produkt-Default-Richtung
+  </regel>
+
+</ui>

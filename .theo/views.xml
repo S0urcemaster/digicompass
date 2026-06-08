@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<views>
+
+  <def>Digi Compass kennt drei gleichberechtigte Top-Level-Views : Mindset / Navigator / Collection
+    Die App startet in der Mindset-View mit dem zuletzt gesetzten Mindset
+  </def>
+
+  <definitionen name="Top-Level-Views">
+
+    <def name="Mindset">Primaere Hauptansicht fuer Orientierung aus gespeicherten Foci . Position : mittig
+      Zeigt eine grosse aktive Focus-Karte und vier kleinere Focus-Karten
+      Ein Mindset traegt hoechstens fuenf Foci . Die View zeigt genau fuenf Kartenplaetze
+      Fehlende Foci bleiben als leere Plaetze sichtbar
+      Ein Klick auf eine kleine Karte macht diese zur aktiven grossen Karte
+      Nur auf der grossen Karte ist die Bewertung direkt einstellbar
+      In dieser View schaltet dieselbe Bewertung den aktiven Wert nicht aus
+      Auf der grossen Karte ist eine Umschaltung in die Vollbildansicht moeglich
+    </def>
+
+    <def name="Navigator">Gleichberechtigte Top-Level-View . Position : links
+      Fachlich noch nicht ausdefiniert
+    </def>
+
+    <def name="Collection">Gleichberechtigte Top-Level-View fuer Sammlung / Auswahl und Aufbau des persoenlichen Store . Position : rechts
+      Vier Unterviews : Images / Sayings / Foci / Editor
+    </def>
+
+  </definitionen>
+
+  <definitionen name="Collection-Unterviews">
+
+    <def name="Images">Zeigt Images aus dem Factory-Bestand im Browser-Raster
+      Benutzer kann Images auswaehlen / in den Store aufnehmen und wieder entfernen
+    </def>
+
+    <def name="Sayings">Zeigt Sayings aus dem Factory-Bestand im Browser-Raster
+      Saying-Browser ist im Prinzip ein Image-Browser ohne Image
+      Benutzer kann Sayings auswaehlen / in den Store aufnehmen und wieder entfernen
+    </def>
+
+    <def name="Foci">Zeigt Foci aus dem Factory-Bestand im Browser-Raster
+      Benutzer kann Foci auswaehlen / in den Store aufnehmen und wieder entfernen
+    </def>
+
+    <def name="Editor">Ort an dem neue orientierende Einheiten aktiv gebildet werden
+      Zwei Tabs : Foci / Mindsets
+      Im Foci-Tab : neuer Focus aus genau einem Store-Saying und genau einem Store-Image
+      Im Mindsets-Tab : neues Mindset aus mehreren Store-Foci
+    </def>
+
+  </definitionen>
+
+  <definitionen name="Browser-Raster">
+    <def>Raster aus 4 Spalten und 3 Zeilen in der Masseinheit einer kleinen Karte
+      Genau ein grosses selected-Element (belegt links oben 2x2)
+      Genau acht kleinere preview-Elemente (verbleibende Felder)
+    </def>
+    <def name="Matrix">Zeile 1 : s s p p
+      Zeile 2 : s s p p
+      Zeile 3 : p p p p
+    </def>
+  </definitionen>
+
+  <definitionen name="Kartenraster">
+    <def>Jede Image- oder Focus-Karte ist in fuenf Reihen gegliedert : header / content / content / content / footer
+      Diese Gliederung bleibt in selected und preview erhalten
+    </def>
+    <def name="Header">Zeigt Kategorien an
+      Bei Focus : vereinigte Menge aus Saying-Kategorien und Image-Kategorie
+      Sichtbare Kategorienmenge auf hoechstens fuenf Eintraege reduziert
+    </def>
+    <def name="Content">Zeigt den Saying-Text
+      Nutzt den verfuegbaren Raum moeglichst weitgehend aus
+    </def>
+    <def name="Footer">Zeigt die Bewertungskomponente
+      In selected aktiv benutzbar wenn die View dies erlaubt
+      In preview grundsaetzlich nur anzeigend
+    </def>
+  </definitionen>
+
+  <regel name="Kontrast">Komponenten auf Image- oder Focus-Karten sollen im Kontrast zum Bildtyp stehen
+    Gilt insbesondere fuer Kategorien im Header / Saying-Text im Content / Bewertung im Footer
+  </regel>
+
+  <def name="Focus-Darstellungsarten">selected ist genau doppelt so gross wie preview
+    selected ist die grosse aktive Fokusdarstellung
+    preview ist die kleinere Vorschauvariante derselben Grundkomponente
+  </def>
+
+</views>

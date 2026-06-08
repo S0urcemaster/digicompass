@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fachlogik>
+
+  <def>Persoenliche Orientierung entsteht durch vier zusammenwirkende Operationen :
+    Auswaehlen / Einordnen / Bewerten / Verbinden
+  </def>
+
+  <definitionen name="Operationen">
+    <def name="Auswaehlen">Bringt eine Einheit in den aktuellen Arbeitszusammenhang
+      Einstiegsoperation fuer alle weiteren fachlichen Bearbeitungen
+    </def>
+    <def name="Einordnen">Macht sichtbar / in welchem Bedeutungszusammenhang eine Einheit gelesen wird
+      Staerkt die Lesbarkeit von Bedeutung
+    </def>
+    <def name="Bewerten">Drueckt aus / welche Relevanz eine Einheit fuer die persoenliche Orientierung traegt
+      Kein dekorativer Zusatz - Teil der Fachlogik
+    </def>
+    <def name="Verbinden">Fuehrt mehrere Einheiten zu einer neuen eigenstaendigen Einheit zusammen
+      Durch Verbinden entstehen Kompositionen
+    </def>
+  </definitionen>
+
+  <def name="Store">Die Fachlogik unterscheidet vorhandene Basisdaten vom persoenlichen Store
+    Der Store ist der lokal gespeicherte persoenliche Arbeitsbestand des Benutzers
+    Aus dem Store werden neue Foci und Mindsets gebildet
+    Der Store benoetigt keine garantierte Konsistenz zum Factory-Bestand
+  </def>
+
+  <regel>Eine Komposition gilt erst als vollwertige Einheit wenn :
+    ihre Bestandteile als zusammengehoerig lesbar sind /
+    ihre Gesamtbedeutung als eigene Einheit wahrnehmbar wird /
+    sie selbst wieder in weitere Orientierung eingehen kann
+  </regel>
+
+  <def name="Orientierung">Orientierung ist kein vom System getrenntes Zusatzobjekt
+    Sie entsteht als Wirkung : bedeutungstragende Einheiten werden bewusst ausgewaehlt / eingeordnet / bewertet und verbunden
+  </def>
+
+</fachlogik>

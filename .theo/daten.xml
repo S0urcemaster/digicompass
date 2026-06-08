@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<daten>
+
+  <def>Die UI von Digi Compass wird durch fachliche Daten und einen kleinen aktuellen UI-Zustand repraesentiert
+    Es wandern nur Daten
+    Zwischen Basisdaten und Store wird keine garantierte Konsistenz vorausgesetzt
+  </def>
+
+  <definitionen name="Bereiche">
+    <def name="Basisdaten">Gewachsener Ausgangsbestand : Sayings / Images / Foci
+      Bei Auslieferung bereits vorhanden
+      Factory-Foci sind vom Developer vorgefertigt
+      Bilddateien liegen unter images/ im Projektwurzelverzeichnis
+      JSON-Basisdaten liegen unter frontend/src/data/
+    </def>
+    <def name="Store">Lokal gespeicherter persoenlicher Arbeitsbestand
+      Sayings / Images / Foci koennen aus dem Factory-Bestand aufgenommen und wieder entfernt werden
+      Neue Foci koennen aus Store-Sayings und Store-Images gebildet werden
+      Neue Mindsets koennen aus Store-Foci gebildet werden
+    </def>
+    <def name="UI-Zustand">Minimaler aktueller Zustand - kein neuer Fachbestand
+      Macht sichtbar welche vorhandene Einheit gerade im Vordergrund steht
+    </def>
+  </definitionen>
+
+  <definitionen name="Entitaeten">
+    <def name="Saying">id / text / fontSize / categories / rating
+      categories ist eine Menge mehrerer Kategorien
+    </def>
+    <def name="Image">id / url / color / category / rating
+      category ist aktuell genau eine Kategorie
+      color ist der Bildtyp : hell / dunkel / mix
+    </def>
+    <def name="Focus">id / saying / imageUrl / rating
+      saying ist die in den Store uebernommene Saying-Datenform
+      imageUrl ist die in den Store uebernommene Bildreferenz
+      Ein Focus traegt die fuer seine Benutzung noetige Datenform im Store selbst
+    </def>
+    <def name="Mindset">foci / rating
+      Mindestens ein / hoechstens fuenf Foci
+    </def>
+  </definitionen>
+
+  <def name="Focus-Bildung">Im Collection > Editor > Foci-Tab :
+    1. Benutzer arbeitet mit Images und Sayings aus dem Store
+    2. Benutzer waehlt genau ein Image aus dem Store
+    3. Benutzer waehlt genau ein Saying aus dem Store
+    4. Kombination wird als aktuelle Focus-Vorschau sichtbar
+    5. Bei Bestaetigung entsteht ein neuer Focus im Store
+  </def>
+
+  <def name="Mindset-Bildung">Im Collection > Editor > Mindsets-Tab :
+    1. Benutzer arbeitet mit Foci aus dem Store
+    2. Benutzer waehlt mehrere Foci aus dem Store
+    3. Zusammenstellung wird als aktuelle Mindset-Vorschau sichtbar
+    4. Bei Bestaetigung entsteht ein neues Mindset im Store
+  </def>
+
+  <definitionen name="Minimaler UI-Zustand">
+    <def>Aktueller Collection-Subview / aktueller Editor-Tab</def>
+    <def>Aktuell ausgewaehltes Saying / aktuell ausgewaehltes Image / aktuelle Focus-Vorschau</def>
+    <def>Aktuell ausgewaehlter Focus / aktuelle Mindset-Vorschau / aktuell ausgewaehltes Mindset</def>
+  </definitionen>
+
+  <def name="Lokale Speicherung">Traegt mindestens :
+    Store mit aufgenommenen Sayings / Images / Foci / Mindsets
+    Zuletzt als aktuell gesetztes Mindset
+  </def>
+
+</daten>

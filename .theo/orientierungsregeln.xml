@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<orientierungsregeln>
+
+  <def>Digi Compass bildet Orientierung dann : wenn Elemente und Kompositionen nicht nur vorhanden sind / sondern fachlich lesbar / persoenlich gewichtet und zu tragfaehigen groesseren Einheiten verbunden sind</def>
+
+  <definitionen name="Fachregeln">
+
+    <def name="Tragfaehiges Element">Ein Element ist tragfaehig wenn :
+      es als eigene Einheit identifizierbar ist /
+      es in wahrnehmbarer Form dargestellt werden kann /
+      es als bedeutungstragend lesbar wird /
+      seine Relevanz ausdrueckbar ist
+    </def>
+
+    <def name="Tragfaehiger Store">Der Store ist tragfaehig wenn :
+      er sich auf vorhandene Sayings / Images oder Foci bezieht /
+      die Einheiten als eigene Auswahl wiedererkennbar bleiben /
+      sie lokal gespeichert bleiben /
+      sie als Basis fuer Focus- und Mindset-Bildung nutzbar sind
+    </def>
+
+    <def name="Tragfaehiger Focus">Ein Focus ist tragfaehig wenn :
+      er aus genau einem Saying und genau einem Image gebildet ist /
+      seine Bestandteile als zusammengehoerig lesbar sind /
+      eine gemeinsame Richtung wahrnehmbar wird /
+      er als eigene Einheit bewertet werden kann /
+      er wieder in groessere Orientierung eingehen kann
+    </def>
+
+    <def name="Tragfaehiges Mindset">Ein Mindset ist tragfaehig wenn :
+      es aus mehreren Foci gebildet ist /
+      zwischen den Foci eine erkennbare gemeinsame Richtung lesbar wird /
+      es als eigene Einheit bewertet werden kann /
+      es dem Benutzer hilft / sich zu einer realen Situation zu orientieren
+    </def>
+
+  </definitionen>
+
+  <definitionen name="Mindestregeln">
+
+    <regel name="Einordnen">Einordnen ist gelungen wenn eine Einheit in ihrer Richtung lesbar wird - nicht nur wiedererkannt</regel>
+
+    <regel name="Bewerten">Bewerten ist gelungen wenn die persoenliche Relevanz ausdruecklich sichtbar wird
+      Die Bewertung ist nur an der aktuell fokussierten Einheit manipulierbar
+      Listenelemente zeigen Bewertung nur an
+    </regel>
+
+    <regel name="Verbinden">Verbinden ist gelungen wenn aus mehreren Einheiten eine neue lesbare Einheit entsteht
+      Die Ausgangseinheiten bleiben als Bestandteile erkennbar
+      Wo diese Bedingungen nicht erreicht sind - liegt eine lose Zusammenstellung vor / keine tragfaehige Komposition
+    </regel>
+
+  </definitionen>
+
+  <def name="Unterscheidung">Sammlung liegt vor wenn Einheiten nur abgelegt oder nebeneinander gehalten werden
+    Orientierung liegt vor wenn Einheiten als bedeutungstragend gelesen / ihre Relevanz sichtbar / ihre Verbindung zu groesseren lesbaren Einheiten gefuehrt wird
+  </def>
+
+</orientierungsregeln>

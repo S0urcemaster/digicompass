@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <theory name="digicompass">
-    
+
   <!-- Die innerste Schachtel : Darin steht : wie es geformt sein soll -->
   <ref name=".canon/index.xml" />
 
@@ -10,5 +10,20 @@
   <autor>Digi Craft</autor>
 
   <def>Digi Compass hilft Menschen : aus bedeutungsvollen Elementen eine persoenliche Orientierung aufzubauen</def>
+
+  <ref name="dna.xml">Grundlogik des Produkts</ref>
+  <ref name="grundformen.xml">Grundformen : Element und Komposition</ref>
+  <ref name="fachlogik.xml">Fachoperationen und Store</ref>
+  <ref name="orientierungsregeln.xml">Fachregeln fuer Tragfaehigkeit</ref>
+  <ref name="daten.xml">Entitaeten / Store / UI-Zustand</ref>
+  <ref name="views.xml">Top-Level-Views / Raster / Kartenstruktur</ref>
+  <ref name="ui.xml">Darstellungsregeln / Themes</ref>
+  <ref name="interaktion.xml">Arbeitszustaende / Uebergaenge / Bedienregeln</ref>
+  <ref name="meta.xml">Spec-Geltung / Agentenmodus</ref>
+
+  <wirkfeld name="Mobile Frontend">
+    <def>Ein Webfrontend fuer Mobile</def>
+    <ref name="frontend/" />
+  </wirkfeld>
 
 </theory>

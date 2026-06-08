@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<interaktion>
+
+  <def>Die Interaktion fuehrt den Benutzer durch aufeinander bezogene Arbeitszustaende
+    Diese machen die fachlichen Operationen Auswaehlen / Einordnen / Bewerten / Verbinden konkret benutzbar
+  </def>
+
+  <definitionen name="Arbeitszustaende">
+
+    <def name="Elemente sichten">Hauptaufgabe : ein Element wahrnehmen / auswaehlen / in den Store aufnehmen / bewerten / als moeglichen Focus-Bestandteil lesen
+      Mindestens sichtbar : die aktuelle Einheit / ihre Darstellungsform / Kategorien / Store-Zugehoerigkeit / Relevanz / naechster moeglicher Schritt
+    </def>
+
+    <def name="Focus bearbeiten">Hauptaufgabe : genau ein Saying und genau ein Image aus dem Store zusammenbringen / als gemeinsame Richtung lesbar machen / als eigene Einheit bewerten
+      Alternativ : einen Factory-Focus in den Store aufnehmen oder entfernen
+      Mindestens sichtbar : welches Saying und Image den Focus bilden / Kategorien beider Bestandteile / aktuelle Focus-Bewertung / naechster moeglicher Schritt
+    </def>
+
+    <def name="Mindset bearbeiten">Hauptaufgabe : Foci aus dem Store zusammenfuehren / gemeinsame Richtung lesbar machen / als eigene Einheit bewerten / als aktuelle Hauptansicht setzen
+      Mindestens sichtbar : welche Foci gehoeren zum Mindset / welcher Focus steht im Vordergrund / Mindset-Bewertung / ob dieses Mindset aktuell voreingestellt ist
+    </def>
+
+  </definitionen>
+
+  <regel name="Listen">Listenelemente zeigen Kategorien und Bewertung nur an - sind nicht direkt manipulierbar
+    Erst die ausgewaehlte / dadurch fokussierte Einheit wird aktiv bearbeitbar
+    Insbesondere die Bewertung ist nur an der fokussierten Einheit manipulierbar
+  </regel>
+
+  <definitionen name="Notwendige Uebergaenge">
+    <def>Von einem Element zur Focus-Bearbeitung / und zurueck</def>
+    <def>Von einem Focus zur Mindset-Bearbeitung / und zurueck</def>
+    <def>Von Collection > Foci zum Collection > Editor > Foci</def>
+    <def>Von Collection > Editor > Foci zum Collection > Editor > Mindsets</def>
+    <def>Von Collection > Editor zurueck zu sammelnden Unterviews</def>
+  </definitionen>
+
+  <regel name="Zustandswechsel">Ein Zustandswechsel ist gelungen wenn :
+    die neue Arbeitsebene klar erkennbar wird /
+    die aktuelle Einheit auf der neuen Ebene lesbar bleibt /
+    der Benutzer den Zusammenhang zur vorherigen Ebene nicht verliert
+  </regel>
+
+  <regel name="Sichtbarkeit">In jedem Arbeitszustand soll der Benutzer mindestens erkennen koennen :
+    was gerade die aktuelle Einheit ist /
+    auf welcher Ebene er gerade arbeitet /
+    welcher naechste sinnvolle Schritt moeglich ist
+  </regel>
+
+  <def name="Startverhalten">Die App startet in der Mindset-Ansicht mit dem zuletzt voreingestellten Mindset
+    Diese Ansicht soll unmittelbar lesbar machen : an welchen Spruch der Benutzer sich erinnern wollte
+  </def>
+
+</interaktion>

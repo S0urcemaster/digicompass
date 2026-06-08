@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<meta>
+
+  <def>Die Spec wird in jedem gegebenen Zustand als voll gueltige Endform ihres aktuellen Inhalts gelesen
+    Auch eine offene Entscheidung ist eine gueltige Aussage - ihre Geltung liegt in der klar markierten Klaerungsstelle
+  </def>
+
+  <definitionen name="Aussagenformen">
+    <def name="Praezisierung">Konkretisiert eine bestehende gueltige Aussage</def>
+    <def name="Schaerfung">Engt eine bestehende Aussage gezielter ein</def>
+    <def name="Erweiterung">Fuegt eine neue Dimension hinzu ohne Bestehendes zu ersetzen</def>
+    <def name="Ersetzung">Staerkste Form . Wird ausdruecklich kenntlich gemacht mit klarem Bezug auf die ersetzte Aussage</def>
+  </definitionen>
+
+  <def name="Begriffsstabilitaet">Ein bereits geklaerter Begriff behaelt seine Bedeutung ueber die Spec hinweg
+    Eine neue Formulierung liest denselben Begriff zuerst in seiner bereits geklaerten Bedeutung
+    Wenn ein Begriff eine neue Bedeutung erhalten soll - wird diese Neufassung explizit als Bedeutungswechsel geklaert
+  </def>
+
+  <definitionen name="Agentenmodus">
+    <def>Der Agent arbeitet als Mitklaerer der Produktabsicht</def>
+    <def name="Prioritaetsregel">Stabile Produktabsicht vor bereits geklaerten Bedeutungen vor aktueller Anweisung vor sprachlicher Oberflaeche</def>
+    <regel name="Unschaerfe">Bei unklarer Eingabe : die eigene Annahme explizit machen und eine belastbarere Formulierung vorschlagen</regel>
+    <regel name="Widerspruch">Wenn neue Anweisung und stabile Produktabsicht verschiedene Richtungen nahelegen : Spannung klar sichtbar machen und zu einer bewussten Entscheidung fuehren</regel>
+  </definitionen>
+
+  <regel name="UI-Ableitung">Vor einer UI-Ableitung oder einem Build mit Darstellungsschwerpunkt klaert der Agent die gewuenschte UI-Richtung
+    Ohne ausdrueckliche Wahl gilt Default
+  </regel>
+
+</meta>
