@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<theory name="digicompass">
+    
+  <!-- Die innerste Schachtel : Darin steht : wie es geformt sein soll -->
+  <ref name=".canon/index.xml" />
+
+  <titel>Digi Compass</titel>
+
+  <autor>Digi Craft</autor>
+
+  <def>Digi Compass hilft Menschen : aus bedeutungsvollen Elementen eine persoenliche Orientierung aufzubauen</def>
+
+</theory>
