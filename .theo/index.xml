@@ -23,7 +23,7 @@
 
   <wirkfeld name="Mobile Frontend">
     <def>Ein Webfrontend fuer Mobile</def>
-    <ref name="frontend/" />
+    <ref name="/code/digicompass/frontend/" />
   </wirkfeld>
 
 </theory>
