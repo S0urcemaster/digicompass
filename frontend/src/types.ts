@@ -1,7 +1,6 @@
 export type ColorType = 'hell' | 'dunkel' | 'mix';
-export type TopView = 'mindset' | 'navigator' | 'collection';
-export type CollectionSubview = 'images' | 'sayings' | 'foci' | 'editor';
-export type EditorTab = 'foci' | 'mindsets';
+export type TopView = 'primary' | 'navigator' | 'collection';
+export type CollectionTab = 'images' | 'sayings' | 'foci' | 'mindsets';
 
 export interface Saying {
   id: number;
@@ -32,8 +31,10 @@ export interface Focus {
 
 export interface Mindset {
   id: string;
+  name: string;
   foci: Focus[];
   rating: number;
+  notes: string;
 }
 
 export interface PersonalStore {
