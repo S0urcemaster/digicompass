@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- mobile.xml — strukturelle UI-Repraesentation . Digi Compass Mobile
+     Kein Styling . Keine Logik . Nur Aufbau und Relationen
+     max-width="430" . Hochformat . Bottom-Nav -->
+
+<app name="mobile" max-width="430">
+
+
+  <!-- ══════════════════════════════════════════════
+       VIEW-AREA  —  alles oberhalb der Navigation
+  ══════════════════════════════════════════════ -->
+
+  <col flex="1" overflow="hidden">
+
+
+    <!-- ─── NAVIGATOR ─────────────────────────── -->
+
+    <view name="navigator">
+      <label>noch nicht ausgearbeitet</label>
+    </view>
+
+
+    <!-- ─── MINDSET ───────────────────────────── -->
+
+    <view name="mindset" padding="12" gap="8">
+
+      <!-- grosse aktive Karte -->
+      <card size="selected" flex="1" aspect="5:7">
+        <header padding="5 5 3" gap="3">
+          <chips max="5" size="10" />
+          <button function="storeToggle" />
+          <button function="fullscreenVisible" />
+        </header>
+        <content padding="6 8">
+          <text size="14" weight="500" lines="6" line-height="1.3" />
+        </content>
+        <footer padding="4 6 5">
+          <rating stars="5" size="14" interactive="true" />
+        </footer>
+      </card>
+
+      <!-- fuenf Preview-Slots -->
+      <row gap="6" flex-shrink="0">
+        <card size="preview" flex="1" aspect="5:7" repeat="5">
+          <header padding="3 3 2" gap="2">
+            <chips max="5" size="6" />
+          </header>
+          <content padding="3 4">
+            <text size="9" weight="500" lines="4" />
+          </content>
+          <footer padding="2 4 3">
+            <rating stars="5" size="8" interactive="false" />
+          </footer>
+        </card>
+      </row>
+
+    </view>
+
+
+    <!-- ─── COLLECTION ────────────────────────── -->
+
+    <view name="collection">
+
+      <row height="40" border-bottom="1">
+        <button function="imagesVisible"   flex="1" />
+        <button function="sayingsVisible"  flex="1" />
+        <button function="fociVisible"     flex="1" />
+        <button function="editorVisible"   flex="1" />
+      </row>
+
+      <col flex="1" overflow="hidden">
+
+        <tab name="images">
+          <grid cols="4" rows="3" gap="2" pad="2">
+            <card size="selected" col-span="2" row-span="2" aspect="5:7" />
+            <card size="preview"  col-span="1" row-span="1" repeat="8" aspect="5:7">
+              <button function="storeToggle" />
+            </card>
+          </grid>
+          <row height="36" border-top="1" gap="12">
+            <button function="pagePrev" />
+            <label />
+            <button function="pageNext" />
+          </row>
+        </tab>
+
+        <!-- Sayings-Browser : gleiche Struktur wie Images . kein Bild -->
+        <tab name="sayings">
+          <grid cols="4" rows="3" gap="2" pad="2">
+            <card size="selected" col-span="2" row-span="2" no-image="true" />
+            <card size="preview"  col-span="1" row-span="1" repeat="8" no-image="true">
+              <button function="storeToggle" />
+            </card>
+          </grid>
+          <row height="36" border-top="1" gap="12">
+            <button function="pagePrev" />
+            <label />
+            <button function="pageNext" />
+          </row>
+        </tab>
+
+        <tab name="foci">
+          <grid cols="4" rows="3" gap="2" pad="2">
+            <card size="selected" col-span="2" row-span="2" aspect="5:7" />
+            <card size="preview"  col-span="1" row-span="1" repeat="8" aspect="5:7">
+              <button function="storeToggle" />
+            </card>
+          </grid>
+          <row height="36" border-top="1" gap="12">
+            <button function="pagePrev" />
+            <label />
+            <button function="pageNext" />
+          </row>
+        </tab>
+
+        <tab name="editor">
+
+          <row height="36" border-bottom="1">
+            <button function="fociEditorVisible"    flex="1" />
+            <button function="mindsetEditorVisible" flex="1" />
+          </row>
+
+          <tab name="foci-editor" scroll="true" padding="10" gap="12">
+            <!-- Bildauswahl -->
+            <section label="image">
+              <grid cols="4" gap="4">
+                <image aspect="5:7" repeat="n" selectable="true" />
+              </grid>
+            </section>
+            <!-- Saying-Auswahl -->
+            <section label="saying">
+              <list>
+                <item repeat="n" selectable="true" />
+              </list>
+            </section>
+            <!-- Vorschau + Anlegen -->
+            <section label="vorschau">
+              <card size="selected" width="50%" aspect="5:7" align="center" />
+            </section>
+            <button function="focusCreate" height="40" disabled-if="incomplete" />
+          </tab>
+
+          <tab name="mindset-editor" scroll="true" padding="10" gap="12">
+            <!-- Focus-Auswahl -->
+            <section label="foci">
+              <grid cols="3" gap="4">
+                <card size="preview" aspect="5:7" repeat="n" selectable="true" />
+              </grid>
+            </section>
+            <button function="mindsetCreate" height="40" disabled-if="incomplete" />
+          </tab>
+
+        </tab>
+
+      </col>
+
+    </view>
+
+  </col>
+
+
+  <!-- ══════════════════════════════════════════════
+       NAVIGATION  —  Bottom-Bar
+  ══════════════════════════════════════════════ -->
+
+  <row height="58" border-top="1">
+    <button function="navigatorVisible" flex="1">
+      <icon size="18" />
+      <label size="10" />
+    </button>
+    <button function="mindsetVisible" flex="1">
+      <icon size="18" />
+      <label size="10" />
+    </button>
+    <button function="collectionVisible" flex="1">
+      <icon size="18" />
+      <label size="10" />
+    </button>
+  </row>
+
+
+  <!-- ══════════════════════════════════════════════
+       FULLSCREEN  —  Overlay ueber allem
+  ══════════════════════════════════════════════ -->
+
+  <overlay name="fullscreen" z="100" position="fixed" inset="0">
+    <button function="fullscreenClose" position="top-right" size="36" />
+    <card size="selected" flex="1" aspect="auto" />
+  </overlay>
+
+
+</app>
