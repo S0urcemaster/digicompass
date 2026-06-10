@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- mobile1.xml — strukturelle UI-Repraesentation . Digi Compass Web (alter Stand)
+     Dokumentartig / scrollend . kein Hochformat-Zwang . Navigation oben
+     Responsive-Breakpoint bei 900px . max-width 1024px
+     Warm-Palette : panel=#fffaf2 . accent=#af6d10 . ink=#201a18 -->
+
+<app name="mobile1" max-width="1024" layout="document" scrollable="true">
+
+
+  <!-- ══════════════════════════════════════════════
+       HEADER  —  fix oben . Navigation als Tabs
+  ══════════════════════════════════════════════ -->
+
+  <col padding="4 5" gap="5" border-bottom="1">
+
+    <col gap="2">
+      <label type="eyebrow">Digi Compass</label>
+      <label type="h1">Mindsets fuer reale Situationen</label>
+      <label type="body">Beschreibung</label>
+    </col>
+
+    <!-- View-Tabs : 1 Spalte mobile / 3 Spalten ab sm -->
+    <row cols="1" cols-sm="3" gap="2">
+      <button function="navigatorVisible" />
+      <button function="primaryVisible" />
+      <button function="collectionVisible" />
+    </row>
+
+  </col>
+
+
+  <!-- ══════════════════════════════════════════════
+       CONTENT  —  scrollender Hauptbereich
+  ══════════════════════════════════════════════ -->
+
+  <col>
+
+
+    <!-- ─── NAVIGATOR ─────────────────────────── -->
+
+    <view name="navigator" padding="8 6">
+      <panel>
+        <label type="eyebrow">Navigator</label>
+      </panel>
+    </view>
+
+
+    <!-- ─── PRIMARY (Kompass) ─────────────────── -->
+
+    <view name="primary" gap="4">
+
+      <!-- Mindset-Tab-Navigation mit Blaetter-Paginierung -->
+      <!-- max. 4 Tabs sichtbar . ← → schalten Fenster -->
+      <row cols="auto 1fr auto" gap="2">
+        <button function="mindsetTabPrev" shape="pill" />
+        <row cols="4" gap="2">
+          <button function="mindsetSelect" repeat="4" />
+        </row>
+        <button function="mindsetTabNext" shape="pill" />
+      </row>
+
+      <!-- Focus-Bereich -->
+      <!-- mobile : 1 Spalte gestapelt -->
+      <!-- 900px  : 4 Spalten / 2 Reihen . grosse Karte links 2x2 . 4 klein rechts -->
+      <grid cols="1" cols-900="4" rows-900="2" gap="4">
+        <tile variant="focus" size="main"    col-span-900="2" row-span-900="2" />
+        <tile variant="focus" size="preview" repeat="4" />
+      </grid>
+
+      <!-- Mindset-Notizen -->
+      <textarea function="mindsetNotesChange" min-h="32" placeholder="Noch keine Notizen." />
+
+    </view>
+
+
+    <!-- ─── COLLECTION (Sammlung) ─────────────── -->
+
+    <view name="collection">
+
+      <!-- Collection-Tabs : 2 Spalten mobile / 4 Spalten ab sm -->
+      <row cols="2" cols-sm="4" gap="0">
+        <button function="imagesVisible" />
+        <button function="sayingsVisible" />
+        <button function="fociVisible" />
+        <button function="mindsetsVisible" />
+      </row>
+
+      <col>
+
+        <!-- ── TAB: Bilder ──────────────────── -->
+        <tab name="images">
+
+          <!-- Kategorie-Filter -->
+          <row cols="3" gap="0">
+            <button function="imageCategoryPrev" shape="pill" />
+            <button function="imageCategoryToggle" shape="pill" />
+            <button function="imageCategoryNext" shape="pill" />
+          </row>
+
+          <!-- Seiten-Navigation -->
+          <row gap="0">
+            <button function="imagePagePrev" shape="pill" flex="1" />
+            <label type="page-info" min-w="96" />
+            <button function="imagePageNext" shape="pill" flex="1" />
+          </row>
+
+          <!-- Mobile-Layout -->
+          <col breakpoint="mobile">
+            <panel variant="image" size="main" />
+            <grid cols="4" rows="2" count="8">
+              <tile variant="image" />
+            </grid>
+          </col>
+
+          <!-- Desktop-Layout ab 900px -->
+          <grid cols="4" breakpoint="900" gap="0">
+            <panel variant="image" size="main" col-span="2" row-span="2" />
+            <grid cols="2" col-span="2" count="4">
+              <tile variant="image" />
+            </grid>
+            <grid cols="4" col-span="4" count="4">
+              <tile variant="image" />
+            </grid>
+          </grid>
+
+          <toggle function="showImageIdToggle">Image-ID anzeigen</toggle>
+
+        </tab>
+
+
+        <!-- ── TAB: Sprüche ─────────────────── -->
+        <tab name="sayings">
+
+          <row cols="3" gap="0">
+            <button function="sayingCategoryPrev" shape="pill" />
+            <button function="sayingCategoryToggle" shape="pill" />
+            <button function="sayingCategoryNext" shape="pill" />
+          </row>
+
+          <row gap="0">
+            <button function="sayingPagePrev" shape="pill" flex="1" />
+            <label type="page-info" min-w="96" />
+            <button function="sayingPageNext" shape="pill" flex="1" />
+          </row>
+
+          <!-- Mobile -->
+          <col breakpoint="mobile">
+            <panel variant="saying" size="main" />
+            <list variant="saying" count="8" />
+          </col>
+
+          <!-- Desktop ab 900px : breites Panel oben + 8 kompakte Panels 2-spaltig -->
+          <grid cols="2" breakpoint="900" gap="0">
+            <panel variant="saying" size="wide"    aspect="20:7" col-span="2" />
+            <panel variant="saying" size="compact" aspect="20:7" repeat="8" />
+          </grid>
+
+          <toggle function="showSayingIdToggle">Spruch-ID anzeigen</toggle>
+
+        </tab>
+
+
+        <!-- ── TAB: Fokusse ─────────────────── -->
+        <tab name="foci">
+
+          <row cols="3" gap="0">
+            <button function="focusCategoryPrev" shape="pill" />
+            <button function="focusCategoryToggle" shape="pill" />
+            <button function="focusCategoryNext" shape="pill" />
+          </row>
+
+          <!-- Editor-Toggle : Fokusse-Liste / Bilder-Liste / Spruch-Liste -->
+          <row cols="3" gap="0">
+            <button function="focusEditorToggle" />
+            <button function="focusImageListVisible"  disabled-if="!editorMode" />
+            <button function="focusSayingListVisible" disabled-if="!editorMode" />
+          </row>
+
+          <row cols="3" gap="0">
+            <button function="focusListPagePrev" shape="pill" />
+            <label type="page-info" />
+            <button function="focusListPageNext" shape="pill" />
+          </row>
+
+          <!-- Mobile -->
+          <col breakpoint="mobile">
+            <tile variant="focus" size="main">
+              <button function="imageZoomVisible" position="top-right" size="84" shape="round" />
+            </tile>
+            <grid cols="4" rows="2" count="8">
+              <!-- zeigt Fokusse / Bilder / Sprüche je nach Modus -->
+              <tile variant="focus|image|saying" />
+            </grid>
+          </col>
+
+          <!-- Desktop ab 900px -->
+          <grid cols="4" breakpoint="900" gap="0">
+            <tile variant="focus" size="main" col-span="2" row-span="2">
+              <button function="imageZoomVisible" position="top-right" size="84" shape="round" />
+            </tile>
+            <!-- rechts oben : 4er Grid (Fokusse / Bilder / Sprueche je Modus) -->
+            <grid cols="2" col-span="2" count="4">
+              <tile variant="focus|image" />
+              <panel variant="saying" aspect="20:7" />
+            </grid>
+            <!-- rechts unten : 4er Grid -->
+            <grid cols="4" col-span="4" count="4">
+              <tile variant="focus|image" />
+              <panel variant="saying" aspect="20:7" />
+            </grid>
+          </grid>
+
+        </tab>
+
+
+        <!-- ── TAB: Mindsets ────────────────── -->
+        <tab name="mindsets">
+
+          <!-- Aktives Mindset / Entwurf -->
+          <row gap="0">
+            <col>
+              <label type="eyebrow">Aktives Mindset</label>
+              <!-- im Entwurf: editierbarer Name; sonst: statischer Name -->
+              <input function="mindsetNameChange" placeholder="Name" />
+              <label type="categories" />
+            </col>
+            <rating function="setMindsetRating" variant="mindset" />
+          </row>
+
+          <!-- 5 Focus-Slots horizontal scrollend . min-w 150px pro Slot -->
+          <row scroll-x="true" gap="0">
+            <button function="draftSlotSelect" min-w="150" flex="1" repeat="5">
+              <tile variant="focus|empty-slot" aspect="733:1024" />
+            </button>
+          </row>
+
+          <!-- Listen-Steuerung : Mindsets / Fokusse Tabs + Pagination -->
+          <row gap="0">
+            <row cols="2" gap="0">
+              <button function="mindsetListVisible" />
+              <button function="focusListForMindsetVisible" />
+            </row>
+            <row gap="0">
+              <button function="mindsetListPagePrev" shape="pill" flex="1" />
+              <label type="page-info" min-w="96" />
+              <button function="mindsetListPageNext" shape="pill" flex="1" />
+            </row>
+          </row>
+
+          <!-- Mindset- oder Fokus-Kacheln horizontal scrollend . min-w 170px -->
+          <!-- Slot bei Index = Anzahl : neues-Mindset (+) -->
+          <row scroll-x="true" gap="0">
+            <button function="mindsetSelect|startNewMindset" min-w="170" flex="1" repeat="5">
+              <tile variant="mindset|focus|new-mindset|empty" aspect="733:1024" />
+            </button>
+          </row>
+
+        </tab>
+
+      </col>
+
+    </view>
+
+  </col>
+
+
+  <!-- ══════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════ -->
+
+  <row padding="4 8" border-top="1">
+    <button function="factoryReset" />
+  </row>
+
+
+  <!-- ══════════════════════════════════════════════
+       OVERLAY  —  Bild-Zoom
+  ══════════════════════════════════════════════ -->
+
+  <overlay name="image-zoom" z="50" position="fixed" inset="0">
+    <button function="imageZoomClose" />
+    <image aspect="contain" max-radius="24" />
+  </overlay>
+
+
+</app>
